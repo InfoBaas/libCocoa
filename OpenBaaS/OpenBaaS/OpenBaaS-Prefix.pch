@@ -6,7 +6,7 @@
 
 #ifdef __OBJC__
     #import <Foundation/Foundation.h>
-    #import "OBSError.h"
+    #import "OBSError+_.h"
 #endif
 
 #define OBSAssertNO_NotYetImplemented       NSAssert(NO, @"Not yet Implemented")
