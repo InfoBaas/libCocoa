@@ -6,11 +6,11 @@
 //  Copyright (c) 2013 Infosistema. All rights reserved.
 //
 
-#import "OBSAccount_.h"
+#import "OBSAccount+_.h"
 
-#import "OBSEmailValidation_.h"
+#import "OBSEmailValidation+_.h"
 
-#import "OBSApplication_.h"
+#import "OBSApplication+_.h"
 
 #import "OBSConnection.h"
 

@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Infosistema. All rights reserved.
 //
 
-#import "OBSSession_.h"
+#import "OBSSession+_.h"
 
 @implementation OBSSession
 

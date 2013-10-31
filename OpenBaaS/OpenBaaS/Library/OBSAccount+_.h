@@ -1,5 +1,5 @@
 //
-//  OBSAccount_.h
+//  OBSAccount+_.h
 //  OpenBaaS
 //
 //  Created by Tiago Rodrigues on 31/10/2013.
