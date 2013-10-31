@@ -8,3 +8,5 @@
     #import <Foundation/Foundation.h>
     #import "OBSError.h"
 #endif
+
+#define OBSAssertNO_NotYetImplemented       NSAssert(NO, @"Not yet Implemented")

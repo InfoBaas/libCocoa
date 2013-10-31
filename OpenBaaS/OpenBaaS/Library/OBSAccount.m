@@ -12,7 +12,7 @@
 
 #import "OBSApplication_.h"
 
-#import "OBSServerConnection.h"
+#import "OBSConnection.h"
 
 @implementation OBSAccount
 
@@ -36,10 +36,14 @@
 }
 
 - (void)signUpWithEmail:(NSString *)email password:(NSString *)password completionHandler:(OBSAccountSignedUp)handler
-{}
+{
+    OBSAssertNO_NotYetImplemented;
+}
 
 - (void)signUpWithEmail:(NSString *)email password:(NSString *)password userName:(NSString *)userName userFile:(NSString *)userFile completionHandler:(OBSAccountSignedUp)handler
-{}
+{
+    OBSAssertNO_NotYetImplemented;
+}
 
 - (void)signInWithEmail:(NSString *)email password:(NSString *)password completionHandler:(OBSAccountSignedIn)handler
 {
@@ -48,13 +52,10 @@
         BOOL hasPassword = password && ![password isEqualToString:[NSString string]];
         if (hasEmail && hasPassword) {
             if (validateEmailFormat(email)) {
-                [OBSServerConnection createSessionWithAppId:self.application.appID
-                                                      email:email
-                                                   password:password
-                                          completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-#warning TODO: create session instance (OBSServer)
-                                              NSLog(@"RESPONSE: %@\nDATA: %@\nERROR: %@",response,data,error);
-                                          }];
+                [OBSConnection post_account:self signInWithEmail:email password:password completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+#warning TODO: create session instance (not here)
+                    NSLog(@"RESPONSE: %@\nDATA: %@\nERROR: %@",response,data,error);
+                }];
             } else if (handler) {
                 NSDictionary *userInfo = @{kOBSErrorUserInfoKeyInvalidParameters: @[@"email", kOBSErrorInvalidParameterBadFormat]};
                 // Create an error instace to send to the callback.
@@ -84,6 +85,8 @@
 }
 
 - (void)signUpFromSession:(OBSSession *)session withCompletionHandler:(OBSAccountSignedOut)handler
-{}
+{
+    OBSAssertNO_NotYetImplemented;
+}
 
 @end
