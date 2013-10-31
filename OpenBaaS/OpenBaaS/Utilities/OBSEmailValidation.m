@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Infosistema. All rights reserved.
 //
 
-#import "OBSEmailValidation.h"
+#import "OBSEmailValidation_.h"
 
 static NSString *const _kEmailRegEx =
 @"(?:[a-z0-9!#$%\\&'*+/=?\\^_`{|}~-]+(?:\\.[a-z0-9!#$%\\&'*+/=?\\^_`{|}"

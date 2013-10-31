@@ -8,10 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+@class OBSAccount;
+
 @interface OBSApplication : NSObject
 
 @property (nonatomic, readonly) NSString *appID;
 
 + (OBSApplication *)applicationWithAppID:(NSString *)appID;
+
+- (OBSAccount *)applicationAccount;
 
 @end

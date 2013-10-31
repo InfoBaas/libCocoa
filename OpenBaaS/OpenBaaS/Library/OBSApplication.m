@@ -6,7 +6,9 @@
 //  Copyright (c) 2013 Infosistema. All rights reserved.
 //
 
-#import "OBSApplication.h"
+#import "OBSApplication_.h"
+
+#import "OBSAccount_.h"
 
 @implementation OBSApplication
 
@@ -32,6 +34,11 @@
 + (OBSApplication *)applicationWithAppID:(NSString *)appID
 {
     return [[self alloc] initWithAppID:appID];
+}
+
+- (OBSAccount *)applicationAccount
+{
+    return [[OBSAccount alloc] initWithApplication:self];
 }
 
 @end

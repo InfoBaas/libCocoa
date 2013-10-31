@@ -18,5 +18,6 @@
 
 #pragma mark - Library
 
+#import "OBSAccount.h"
 #import "OBSApplication.h"
 #import "OBSSession.h"

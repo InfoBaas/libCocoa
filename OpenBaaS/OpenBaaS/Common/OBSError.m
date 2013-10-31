@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Infosistema. All rights reserved.
 //
 
-#import "OBSError.h"
+#import "OBSError_.h"
 
 #pragma mark Domains
 NSString *const kOBSErrorDomainLocal = @"com.openbaas.error.domain.client";
