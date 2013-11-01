@@ -8,6 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@interface OBSSession : NSObject
+@interface OBSSession : OBSObject
 
 @end

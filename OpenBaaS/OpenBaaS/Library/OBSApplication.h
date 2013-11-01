@@ -10,9 +10,7 @@
 
 @class OBSAccount;
 
-@interface OBSApplication : NSObject
-
-@property (nonatomic, strong, readonly) id<OBSClientProtocol> client;
+@interface OBSApplication : OBSObject
 
 + (OBSApplication *)applicationWithClient:(id<OBSClientProtocol>)client;
 

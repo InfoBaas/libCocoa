@@ -16,7 +16,7 @@ typedef void (^OBSAccountSignedUp)(OBSAccount *account, OBSError *error, OBSSess
 typedef void (^OBSAccountSignedIn)(OBSAccount *account, OBSError *error, OBSSession *session);
 typedef void (^OBSAccountSignedOut)(OBSAccount *account, OBSError *error, OBSSession *session);
 
-@interface OBSAccount : NSObject
+@interface OBSAccount : OBSObject
 
 @property (nonatomic, readonly) OBSApplication *application;
 

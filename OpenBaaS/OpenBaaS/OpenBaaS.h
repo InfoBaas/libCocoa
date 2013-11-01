@@ -17,6 +17,7 @@
 #pragma mark - Common
 
 #import "OBSError.h"
+#import "OBSObject.h"
 
 #pragma mark - Library
 

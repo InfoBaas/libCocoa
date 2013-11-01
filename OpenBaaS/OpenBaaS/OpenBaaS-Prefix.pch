@@ -8,6 +8,7 @@
     #import <Foundation/Foundation.h>
     #import "OBSClientProtocol.h"
     #import "OBSError+_.h"
+    #import "OBSObject+_.h"
 #endif
 
 #define OBSAssertNO_NotYetImplemented       {NSAssert(NO, @"Not yet Implemented");}

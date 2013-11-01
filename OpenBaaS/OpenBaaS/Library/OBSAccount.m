@@ -16,14 +16,9 @@
 
 @implementation OBSAccount
 
-- (id)init
-{
-    return nil;
-}
-
 - (id)initWithApplication:(OBSApplication *)application
 {
-    self = [super init];
+    self = [super initWithClient:application.client];
     if (self) {
         _application = application;
     }
@@ -37,7 +32,7 @@
 
 - (void)signUpWithEmail:(NSString *)email password:(NSString *)password completionHandler:(OBSAccountSignedUp)handler
 {
-    OBSAssertNO_NotYetImplemented
+    [self signUpWithEmail:email password:password userName:nil userFile:nil completionHandler:handler];
 }
 
 - (void)signUpWithEmail:(NSString *)email password:(NSString *)password userName:(NSString *)userName userFile:(NSString *)userFile completionHandler:(OBSAccountSignedUp)handler

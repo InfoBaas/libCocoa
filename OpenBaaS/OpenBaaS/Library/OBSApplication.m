@@ -12,25 +12,6 @@
 
 @implementation OBSApplication
 
-- (id)init
-{
-    return nil;
-}
-
-- (id)initWithClient:(id<OBSClientProtocol>)client
-{
-    self = [super init];
-    if (self) {
-        _client = client;
-    }
-    return self;
-}
-
-- (void)dealloc
-{
-    _client = nil;
-}
-
 + (OBSApplication *)applicationWithClient:(id<OBSClientProtocol>)client
 {
     return [[self alloc] initWithClient:client];
