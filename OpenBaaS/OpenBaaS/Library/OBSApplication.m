@@ -17,23 +17,28 @@
     return nil;
 }
 
-- (id)initWithAppID:(NSString *)appID
+- (id)initWithClient:(id<OBSClientProtocol>)client
 {
     self = [super init];
     if (self) {
-        _appID = appID;
+        _client = client;
     }
     return self;
 }
 
 - (void)dealloc
 {
-    _appID = nil;
+    _client = nil;
 }
 
-+ (OBSApplication *)applicationWithAppID:(NSString *)appID
++ (OBSApplication *)applicationWithClient:(id<OBSClientProtocol>)client
 {
-    return [[self alloc] initWithAppID:appID];
+    return [[self alloc] initWithClient:client];
+}
+
+- (NSString *)applicationId
+{
+    return [self.client appId];
 }
 
 - (OBSAccount *)applicationAccount

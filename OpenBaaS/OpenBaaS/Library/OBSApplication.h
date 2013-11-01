@@ -12,10 +12,11 @@
 
 @interface OBSApplication : NSObject
 
-@property (nonatomic, readonly) NSString *appID;
+@property (nonatomic, strong, readonly) id<OBSClientProtocol> client;
 
-+ (OBSApplication *)applicationWithAppID:(NSString *)appID;
++ (OBSApplication *)applicationWithClient:(id<OBSClientProtocol>)client;
 
+- (NSString *)applicationId;
 - (OBSAccount *)applicationAccount;
 
 @end

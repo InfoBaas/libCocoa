@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "OBSClientProtocol.h"
+
 #pragma mark - Utilities
 
 #import "OBSEmailValidation.h"

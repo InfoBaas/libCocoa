@@ -37,12 +37,12 @@
 
 - (void)signUpWithEmail:(NSString *)email password:(NSString *)password completionHandler:(OBSAccountSignedUp)handler
 {
-    OBSAssertNO_NotYetImplemented;
+    OBSAssertNO_NotYetImplemented
 }
 
 - (void)signUpWithEmail:(NSString *)email password:(NSString *)password userName:(NSString *)userName userFile:(NSString *)userFile completionHandler:(OBSAccountSignedUp)handler
 {
-    OBSAssertNO_NotYetImplemented;
+    OBSAssertNO_NotYetImplemented
 }
 
 - (void)signInWithEmail:(NSString *)email password:(NSString *)password completionHandler:(OBSAccountSignedIn)handler
@@ -86,7 +86,7 @@
 
 - (void)signUpFromSession:(OBSSession *)session withCompletionHandler:(OBSAccountSignedOut)handler
 {
-    OBSAssertNO_NotYetImplemented;
+    OBSAssertNO_NotYetImplemented
 }
 
 @end

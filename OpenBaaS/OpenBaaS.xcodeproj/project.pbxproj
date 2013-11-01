@@ -22,6 +22,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		CE62C75A1823D70200460A2D /* OBSClientProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = CE19109C182287CF00342286 /* OBSClientProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CE91C18C182257CB00A82866 /* OBSAccount.h in Headers */ = {isa = PBXBuildFile; fileRef = CE91C18A182257CB00A82866 /* OBSAccount.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CE91C18D182257CB00A82866 /* OBSAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = CE91C18B182257CB00A82866 /* OBSAccount.m */; };
 		CE91C1911822608700A82866 /* OBSConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = CE91C18F1822608700A82866 /* OBSConnection.h */; };
@@ -39,6 +40,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CE19109C182287CF00342286 /* OBSClientProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OBSClientProtocol.h; sourceTree = "<group>"; };
 		CE91C1841822547C00A82866 /* OBSApplication+_.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OBSApplication+_.h"; sourceTree = "<group>"; };
 		CE91C185182254A800A82866 /* OBSSession+_.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OBSSession+_.h"; sourceTree = "<group>"; };
 		CE91C1881822553900A82866 /* OBSError+_.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OBSError+_.h"; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 				CE95FEB9182139A300D390A3 /* Common */,
 				CE95FEAF182137B800D390A3 /* Library */,
 				CE95FEAB182125AC00D390A3 /* OpenBaaS.h */,
+				CE19109C182287CF00342286 /* OBSClientProtocol.h */,
 				CE95FEC5182153A700D390A3 /* Tools */,
 				CE95FE971821236E00D390A3 /* Supporting Files */,
 			);
@@ -199,6 +202,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE95FEAD182125AC00D390A3 /* OpenBaaS.h in Headers */,
+				CE62C75A1823D70200460A2D /* OBSClientProtocol.h in Headers */,
 				CE91C1911822608700A82866 /* OBSConnection.h in Headers */,
 				CE95FEB71821394E00D390A3 /* OBSEmailValidation.h in Headers */,
 				CE95FEBC182139BA00D390A3 /* OBSError.h in Headers */,

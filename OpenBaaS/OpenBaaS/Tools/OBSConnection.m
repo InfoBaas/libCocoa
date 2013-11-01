@@ -20,11 +20,10 @@
 {
     NSOperationQueue *queue = [NSOperationQueue currentQueue];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-#warning TODO
+        OBSAssertNO_NotYetImplemented
         //        [NSURLConnection sendAsynchronousRequest:request
         //                                           queue:queue
         //                               completionHandler:handler];
-        handler(nil, @"aSessionToken", nil);
     });
 }
 
