@@ -7,3 +7,9 @@
 //
 
 #import "OBSSession.h"
+
+@interface OBSSession (_)
+
+@property (nonatomic, strong, readonly) NSString *token;
+
+@end

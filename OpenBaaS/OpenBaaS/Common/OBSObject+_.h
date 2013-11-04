@@ -7,3 +7,9 @@
 //
 
 #import "OBSObject.h"
+
+@interface OBSObject (_)
+
+- (id)initWithClient:(id<OBSClientProtocol>)client;
+
+@end

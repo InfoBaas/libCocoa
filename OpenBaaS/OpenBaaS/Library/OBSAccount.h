@@ -12,20 +12,23 @@
 @class OBSApplication;
 @class OBSSession;
 
-typedef void (^OBSAccountSignedUp)(OBSAccount *account, OBSError *error, OBSSession *session);
-typedef void (^OBSAccountSignedIn)(OBSAccount *account, OBSError *error, OBSSession *session);
-typedef void (^OBSAccountSignedOut)(OBSAccount *account, OBSError *error, OBSSession *session);
+typedef void (^OBSAccountSignUp)(OBSAccount *account, OBSError *error, OBSSession *session);
+typedef void (^OBSAccountSignIn)(OBSAccount *account, OBSError *error, OBSSession *session);
+typedef void (^OBSAccountSignOut)(OBSAccount *account, OBSError *error, OBSSession *session);
+typedef void (^OBSAccountRecover)(OBSAccount *account, OBSError *error, BOOL sent);
 
 @interface OBSAccount : OBSObject
 
-@property (nonatomic, readonly) OBSApplication *application;
+@property (nonatomic, strong, readonly) OBSApplication *application;
 
-- (void)signUpWithEmail:(NSString *)email password:(NSString *)password completionHandler:(OBSAccountSignedUp)handler;
+- (void)signUpWithEmail:(NSString *)email password:(NSString *)password completionHandler:(OBSAccountSignUp)handler;
 
-- (void)signUpWithEmail:(NSString *)email password:(NSString *)password userName:(NSString *)userName userFile:(NSString *)userFile completionHandler:(OBSAccountSignedUp)handler;
+- (void)signUpWithEmail:(NSString *)email password:(NSString *)password userName:(NSString *)userName userFile:(NSString *)userFile completionHandler:(OBSAccountSignUp)handler;
 
-- (void)signInWithEmail:(NSString *)email password:(NSString *)password completionHandler:(OBSAccountSignedIn)handler;
+- (void)signInWithEmail:(NSString *)email password:(NSString *)password completionHandler:(OBSAccountSignIn)handler;
 
-- (void)signUpFromSession:(OBSSession *)session withCompletionHandler:(OBSAccountSignedOut)handler;
+- (void)signOutFromSession:(OBSSession *)session closingAllOthers:(BOOL)closeAll withCompletionHandler:(OBSAccountSignOut)handler;
+
+- (void)recoverPasswordForEmail:(NSString *)email withCompletionHandler:(OBSAccountRecover)handler;
 
 @end

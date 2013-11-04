@@ -14,6 +14,4 @@
 @property (nonatomic, assign) NSInteger tag;
 @property (nonatomic, strong) NSString *identifier;
 
-- (id)initWithClient:(id<OBSClientProtocol>)client;
-
 @end
