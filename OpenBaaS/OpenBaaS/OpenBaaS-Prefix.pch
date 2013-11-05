@@ -11,4 +11,4 @@
     #import "OBSObject+_.h"
 #endif
 
-#define OBSAssertNO_NotYetImplemented       {NSAssert(NO, @"Not yet Implemented");}
+#define OBS_NotYetImplemented           {NSAssert(NO, @"Not yet Implemented");}

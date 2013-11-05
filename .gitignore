@@ -1,10 +1,10 @@
 
-OpenBaaS/OpenBaaS.xcodeproj/xcuserdata/User.xcuserdatad/xcschemes/xcschememanagement.plist
+libCocoa.xcworkspace/xcuserdata
 
-libCocoa.xcworkspace/xcuserdata/User.xcuserdatad/UserInterfaceState.xcuserstate
+OpenBaaS/OpenBaaS.xcodeproj/xcuserdata
 
 OpenBaaS/OpenBaaS.framework
 
 OpenBaaS/build
 
-libCocoa.xcworkspace/xcuserdata/User.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist
+Examples/Account-iOS/Account-iOS.xcodeproj/xcuserdata

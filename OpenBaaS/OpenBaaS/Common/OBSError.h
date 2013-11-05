@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NSError OBSError;
+@interface OBSError : NSError @end
 
 #pragma mark Domains
 extern NSString *const kOBSErrorDomainLocal;
@@ -16,9 +16,12 @@ extern NSString *const kOBSErrorDomainRemote;
 
 #pragma mark Codes
 typedef enum {
-    kOBSErrorCodeMissingRequiredParameters,
-    kOBSErrorCodeInvalidParameters
-} kOBSErrorCode;
+    kOBSLocalErrorCodeMissingRequiredParameters,
+    kOBSLocalErrorCodeInvalidParameters
+} OBSLocalErrorCode;
+typedef enum {
+    kOBSRemoteErrorCodeUnknown
+} OBSRemoteErrorCode;
 
 #pragma mark UserInfo Keys
 // The value for this key is an array with the names of the required parameters
@@ -29,5 +32,5 @@ extern NSString *const kOBSErrorUserInfoKeyMissingRequiredParameters;
 // @"param1", @"reason1b", @"param2", @"reason2a"].
 extern NSString *const kOBSErrorUserInfoKeyInvalidParameters;
 
-#pragma mark Errors
-extern NSString *const kOBSErrorInvalidParameterBadFormat;
+#pragma mark Invalid Parameter Error Reasons
+extern NSString *const kOBSErrorInvalidParameterReasonBadFormat;

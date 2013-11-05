@@ -4,4 +4,7 @@
    <FileRef
       location = "group:OpenBaaS/OpenBaaS.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:Examples/Account-iOS/Account-iOS.xcodeproj">
+   </FileRef>
 </Workspace>

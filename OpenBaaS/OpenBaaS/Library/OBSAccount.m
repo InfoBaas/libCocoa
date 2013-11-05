@@ -42,15 +42,16 @@
         BOOL hasPassword = password && ![password isEqualToString:[NSString string]];
         if (hasEmail && hasPassword) {
             if (validateEmailFormat(email)) {
-                [OBSConnection post_account:self signUpWithEmail:email password:password userName:userName userFile:userFile completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                [OBSConnection post_account:self signUpWithEmail:email password:password userName:userName userFile:userFile completionHandler:^(NSData *data, NSError *error) {
 #warning TODO: create session instance (not here)
-                    NSLog(@"RESPONSE: %@\nDATA: %@\nERROR: %@",response,data,error);
+                    NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                    NSLog(@"DATA: %@\nERROR: %@",str,error);
                 }];
             } else if (handler) {
-                NSDictionary *userInfo = @{kOBSErrorUserInfoKeyInvalidParameters: @[@"email", kOBSErrorInvalidParameterBadFormat]};
+                NSDictionary *userInfo = @{kOBSErrorUserInfoKeyInvalidParameters: @[@"email", kOBSErrorInvalidParameterReasonBadFormat]};
                 // Create an error instace to send to the callback.
                 OBSError *error = [OBSError errorWithDomain:kOBSErrorDomainLocal
-                                                       code:kOBSErrorCodeInvalidParameters
+                                                       code:kOBSLocalErrorCodeInvalidParameters
                                                    userInfo:userInfo];
                 // Action completed with error.
                 handler(self, error, nil);
@@ -66,7 +67,7 @@
             NSDictionary *userInfo = @{kOBSErrorUserInfoKeyMissingRequiredParameters: [NSArray arrayWithArray:missingRequiredParameters]};
             // Create an error instace to send to the callback.
             OBSError *error = [OBSError errorWithDomain:kOBSErrorDomainLocal
-                                                   code:kOBSErrorCodeMissingRequiredParameters
+                                                   code:kOBSLocalErrorCodeMissingRequiredParameters
                                                userInfo:userInfo];
             // Action completed with error.
             handler(self, error, nil);
@@ -81,15 +82,16 @@
         BOOL hasPassword = password && ![password isEqualToString:[NSString string]];
         if (hasEmail && hasPassword) {
             if (validateEmailFormat(email)) {
-                [OBSConnection post_account:self signInWithEmail:email password:password completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                [OBSConnection post_account:self signInWithEmail:email password:password completionHandler:^(NSData *data, NSError *error) {
 #warning TODO: create session instance (not here)
-                    NSLog(@"RESPONSE: %@\nDATA: %@\nERROR: %@",response,data,error);
+                    NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                    NSLog(@"DATA: %@\nERROR: %@",str,error);
                 }];
             } else if (handler) {
-                NSDictionary *userInfo = @{kOBSErrorUserInfoKeyInvalidParameters: @[@"email", kOBSErrorInvalidParameterBadFormat]};
+                NSDictionary *userInfo = @{kOBSErrorUserInfoKeyInvalidParameters: @[@"email", kOBSErrorInvalidParameterReasonBadFormat]};
                 // Create an error instace to send to the callback.
                 OBSError *error = [OBSError errorWithDomain:kOBSErrorDomainLocal
-                                                       code:kOBSErrorCodeInvalidParameters
+                                                       code:kOBSLocalErrorCodeInvalidParameters
                                                    userInfo:userInfo];
                 // Action completed with error.
                 handler(self, error, nil);
@@ -105,7 +107,7 @@
             NSDictionary *userInfo = @{kOBSErrorUserInfoKeyMissingRequiredParameters: [NSArray arrayWithArray:missingRequiredParameters]};
             // Create an error instace to send to the callback.
             OBSError *error = [OBSError errorWithDomain:kOBSErrorDomainLocal
-                                                   code:kOBSErrorCodeMissingRequiredParameters
+                                                   code:kOBSLocalErrorCodeMissingRequiredParameters
                                                userInfo:userInfo];
             // Action completed with error.
             handler(self, error, nil);
@@ -116,9 +118,10 @@
 - (void)signOutFromSession:(OBSSession *)session closingAllOthers:(BOOL)closeAll withCompletionHandler:(OBSAccountSignOut)handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [OBSConnection post_accountSignOutWithSession:session all:closeAll completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        [OBSConnection post_accountSignOutWithSession:session all:closeAll completionHandler:^(NSData *data, NSError *error) {
 #warning TODO: process result
-            NSLog(@"RESPONSE: %@\nDATA: %@\nERROR: %@",response,data,error);
+            NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            NSLog(@"DATA: %@\nERROR: %@",str,error);
         }];
     });
 }
@@ -129,15 +132,16 @@
         BOOL hasEmail = email && ![email isEqualToString:[NSString string]];
         if (hasEmail) {
             if (validateEmailFormat(email)) {
-                [OBSConnection post_account:self recoveryWithEmail:email completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                [OBSConnection post_account:self recoveryWithEmail:email completionHandler:^(NSData *data, NSError *error) {
 #warning TODO: process result
-                    NSLog(@"RESPONSE: %@\nDATA: %@\nERROR: %@",response,data,error);
+                    NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                    NSLog(@"DATA: %@\nERROR: %@",str,error);
                 }];
             } else if (handler) {
-                NSDictionary *userInfo = @{kOBSErrorUserInfoKeyInvalidParameters: @[@"email", kOBSErrorInvalidParameterBadFormat]};
+                NSDictionary *userInfo = @{kOBSErrorUserInfoKeyInvalidParameters: @[@"email", kOBSErrorInvalidParameterReasonBadFormat]};
                 // Create an error instace to send to the callback.
                 OBSError *error = [OBSError errorWithDomain:kOBSErrorDomainLocal
-                                                       code:kOBSErrorCodeInvalidParameters
+                                                       code:kOBSLocalErrorCodeInvalidParameters
                                                    userInfo:userInfo];
                 // Action completed with error.
                 handler(self, error, NO);
@@ -152,7 +156,7 @@
             NSDictionary *userInfo = @{kOBSErrorUserInfoKeyMissingRequiredParameters: [NSArray arrayWithArray:missingRequiredParameters]};
             // Create an error instace to send to the callback.
             OBSError *error = [OBSError errorWithDomain:kOBSErrorDomainLocal
-                                                   code:kOBSErrorCodeMissingRequiredParameters
+                                                   code:kOBSLocalErrorCodeMissingRequiredParameters
                                                userInfo:userInfo];
             // Action completed with error.
             handler(self, error, NO);
