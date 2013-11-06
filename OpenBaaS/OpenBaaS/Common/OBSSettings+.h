@@ -20,4 +20,5 @@
 @end
 
 void _obs_settings_set_session (_obs_settings_session_t *session);
-void _obs_settings_get_session (_obs_settings_session_t **pSession);
+_obs_settings_session_t *_obs_settings_get_session (void);
+NSString *_obs_settings_get_sessionToken (void);

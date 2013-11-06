@@ -59,7 +59,7 @@
                     }
 
                     OBSSession *session = [OBSSession sessionFromJSON:json withClient:self.client];
-#warning session ?
+#warning session kOBSRemoteErrorCodeResultDataIllFormed ?
                     handler(self, session, nil);
                 }];
             } else if (handler) {
@@ -112,7 +112,7 @@
                     }
 
                     OBSSession *session = [OBSSession sessionFromJSON:json withClient:self.client];
-#warning session ?
+#warning session kOBSRemoteErrorCodeResultDataIllFormed ?
                     handler(self, session, nil);
                 }];
             } else if (handler) {

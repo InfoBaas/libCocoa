@@ -14,6 +14,8 @@
 
 @interface OBSConnection ()
 
++ (void)setCommonHeaderFieldsToRequest:(NSMutableURLRequest *)request;
+
 + (NSError *)errorWithResponse:(NSURLResponse *)response andData:(NSData *)data;
 + (void(^)(NSURLResponse *, NSData *, NSError *))innerHandlerWithOuterHandler:(void(^)(NSData *, NSError *))handler;
 
@@ -35,6 +37,16 @@
 }
 
 #pragma mark Extension
+
++ (void)setCommonHeaderFieldsToRequest:(NSMutableURLRequest *)request
+{
+    NSString *sessionToken = _obs_settings_get_sessionToken();
+    if (sessionToken) {
+        [request setValue:sessionToken forHTTPHeaderField:@"sessionToken"];
+    }
+
+#warning Missing Header Field: location=<latitude>:<longitude>
+}
 
 + (NSError *)errorWithResponse:(NSURLResponse *)response andData:(NSData *)data
 {
@@ -97,7 +109,7 @@
             return;
         }
 
-#warning Missing Header Fields: location=<latitude>:<longitude>
+        [self setCommonHeaderFieldsToRequest:request];
 
         [NSURLConnection sendAsynchronousRequest:request
                                            queue:[NSOperationQueue new]
@@ -121,7 +133,7 @@
             return;
         }
 
-#warning Missing Header Fields: location=<latitude>:<longitude>
+        [self setCommonHeaderFieldsToRequest:request];
 
         [NSURLConnection sendAsynchronousRequest:request
                                            queue:[NSOperationQueue new]
@@ -144,7 +156,7 @@
             return;
         }
 
-#warning Missing Header Fields: location=<latitude>:<longitude>
+        [self setCommonHeaderFieldsToRequest:request];
 
         [NSURLConnection sendAsynchronousRequest:request
                                            queue:[NSOperationQueue new]
@@ -166,6 +178,8 @@
             handler(nil, error);
             return;
         }
+
+        [self setCommonHeaderFieldsToRequest:request];
 
         [NSURLConnection sendAsynchronousRequest:request
                                            queue:[NSOperationQueue new]

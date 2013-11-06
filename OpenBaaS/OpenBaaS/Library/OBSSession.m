@@ -40,8 +40,7 @@
 
 + (OBSSession *)openCurrentSessionWithClient:(id<OBSClientProtocol>)client andCompletionHandler:(OBSSessionOpenCompletionHandler)handler
 {
-    _obs_settings_session_t *sessionInSettings = nil;
-    _obs_settings_get_session(&sessionInSettings);
+    _obs_settings_session_t *sessionInSettings = _obs_settings_get_session();
     if (!sessionInSettings) {
         return nil;
     }

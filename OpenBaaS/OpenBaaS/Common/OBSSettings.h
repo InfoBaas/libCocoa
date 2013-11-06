@@ -7,5 +7,3 @@
 //
 
 #import <Foundation/Foundation.h>
-
-BOOL obs_settings_hasSessionSaved (void);

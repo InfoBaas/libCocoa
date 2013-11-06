@@ -20,7 +20,8 @@ typedef enum {
     kOBSLocalErrorCodeInvalidParameters
 } OBSLocalErrorCode;
 typedef enum {
-    kOBSRemoteErrorCodeUnknown
+    kOBSRemoteErrorCodeUnknown,
+    kOBSRemoteErrorCodeResultDataIllFormed
 } OBSRemoteErrorCode;
 
 #pragma mark UserInfo Keys
