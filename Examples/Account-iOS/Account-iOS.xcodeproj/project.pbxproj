@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CE3CBBC1182A6024000C2F17 /* LCASessionInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3CBBC0182A6024000C2F17 /* LCASessionInfoViewController.m */; };
 		CE9393781827F94800E601A7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE9393771827F94800E601A7 /* Foundation.framework */; };
 		CE93937A1827F94800E601A7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE9393791827F94800E601A7 /* CoreGraphics.framework */; };
 		CE93937C1827F94800E601A7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE93937B1827F94800E601A7 /* UIKit.framework */; };
@@ -24,6 +25,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CE3CBBBF182A6024000C2F17 /* LCASessionInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LCASessionInfoViewController.h; sourceTree = "<group>"; };
+		CE3CBBC0182A6024000C2F17 /* LCASessionInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LCASessionInfoViewController.m; sourceTree = "<group>"; };
 		CE9393741827F94800E601A7 /* Account-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Account-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE9393771827F94800E601A7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		CE9393791827F94800E601A7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -108,6 +111,8 @@
 				CE9393BE1828243600E601A7 /* LCASignInViewController.m */,
 				CE9393B4182810C000E601A7 /* LCARecoverPasswordViewController.h */,
 				CE9393B5182810C000E601A7 /* LCARecoverPasswordViewController.m */,
+				CE3CBBBF182A6024000C2F17 /* LCASessionInfoViewController.h */,
+				CE3CBBC0182A6024000C2F17 /* LCASessionInfoViewController.m */,
 				CE93938F1827F94800E601A7 /* Images.xcassets */,
 				CE93937E1827F94800E601A7 /* Supporting Files */,
 			);
@@ -191,6 +196,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE3CBBC1182A6024000C2F17 /* LCASessionInfoViewController.m in Sources */,
 				CE9393BC1828208E00E601A7 /* LCASignUp2ViewController.m in Sources */,
 				CE9393841827F94800E601A7 /* main.m in Sources */,
 				CE9393B91828207100E601A7 /* LCASignUp1ViewController.m in Sources */,

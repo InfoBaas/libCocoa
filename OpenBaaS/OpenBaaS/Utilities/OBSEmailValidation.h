@@ -8,4 +8,4 @@
 
 #import <Foundation/Foundation.h>
 
-BOOL validateEmailFormat (NSString *email);
+BOOL obs_validateEmailFormat (NSString *email);

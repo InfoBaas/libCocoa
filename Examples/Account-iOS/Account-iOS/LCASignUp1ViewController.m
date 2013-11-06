@@ -9,6 +9,8 @@
 #import "LCASignUp1ViewController.h"
 #import "LCAAppDelegate.h"
 
+#import "LCASessionInfoViewController.h"
+
 @interface LCASignUp1ViewController ()
 
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
@@ -19,6 +21,14 @@
 @end
 
 @implementation LCASignUp1ViewController
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([[segue identifier] isEqualToString:@"Segue_2_SessionInfo"]) {
+        LCASessionInfoViewController *controller = [segue destinationViewController];
+        controller.session = sender;
+    }
+}
 
 - (IBAction)signUp:(id)sender
 {
@@ -41,7 +51,12 @@
     [account signUpWithEmail:self.emailTextField.text password:self.passwordTextField.text completionHandler:^(OBSAccount *account, OBSSession *session, OBSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [delegate hideWaitScreen];
-#warning TODO show session or error
+            if (session) {
+                [self performSegueWithIdentifier:@"Segue_2_SessionInfo" sender:session];
+            } else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[error description] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+                [alert show];
+            }
         });
     }];
 }

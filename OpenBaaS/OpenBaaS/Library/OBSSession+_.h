@@ -11,6 +11,6 @@
 @interface OBSSession (_)
 
 @property (nonatomic, strong) NSString *token;
-@property (nonatomic, strong) OBSUser *user;
+- (void)setUser:(OBSUser *)user;
 
 @end

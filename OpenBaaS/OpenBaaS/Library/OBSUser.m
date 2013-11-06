@@ -10,4 +10,21 @@
 
 @implementation OBSUser
 
+- (void)setUserId:(NSString *)userId
+{
+    _userId = userId;
+}
+- (void)setUserEmail:(NSString *)userEmail
+{
+    _userEmail = userEmail;
+}
+- (void)setUserName:(NSString *)userName
+{
+    _userName = userName;
+}
+- (void)setUserFile:(NSString *)userFile
+{
+    _userFile = userFile;
+}
+
 @end

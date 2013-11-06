@@ -192,11 +192,81 @@
                     <connections>
                         <outlet property="emailTextField" destination="dEO-AO-BZn" id="eMd-t4-O1e"/>
                         <outlet property="passwordTextField" destination="m86-cr-zev" id="ahr-Fy-D2z"/>
+                        <segue destination="hob-em-Mh9" kind="push" identifier="Segue_2_SessionInfo" id="Ngn-wk-7Za"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wW7-0k-JEv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="882" y="792"/>
+        </scene>
+        <!--Session Info View Controller - User Info-->
+        <scene sceneID="uEG-qH-4GY">
+            <objects>
+                <viewController id="hob-em-Mh9" customClass="LCASessionInfoViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="oYJ-L9-2WA"/>
+                        <viewControllerLayoutGuide type="bottom" id="xV9-iZ-MVK"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="pjF-WF-WQK">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="id: %@" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Db-Ne-u5I">
+                                <rect key="frame" x="20" y="84" width="280" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="e-mail: %@" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cSf-LU-dE3">
+                                <rect key="frame" x="20" y="113" width="280" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="name: %@" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JAa-EL-IaC">
+                                <rect key="frame" x="20" y="142" width="280" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="file:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0vC-R6-Cbf">
+                                <rect key="frame" x="20" y="171" width="140" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wcq-m4-sxx">
+                                <rect key="frame" x="168" y="171" width="132" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Sign Out Session">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="signOut:" destination="hob-em-Mh9" eventType="touchUpInside" id="YOb-7m-QLi"/>
+                                </connections>
+                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FCa-ct-JJP">
+                                <rect key="frame" x="20" y="200" width="280" height="124"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="User Info" id="o7Y-SZ-SGr"/>
+                    <connections>
+                        <outlet property="userEmailLabel" destination="cSf-LU-dE3" id="C9z-3y-IAL"/>
+                        <outlet property="userFileTextView" destination="FCa-ct-JJP" id="cXQ-E1-KR4"/>
+                        <outlet property="userIdLabel" destination="3Db-Ne-u5I" id="D3a-8Y-Jgj"/>
+                        <outlet property="userNameLabel" destination="JAa-EL-IaC" id="p3v-fD-qNW"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="v5d-4j-BlD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1497" y="42"/>
         </scene>
         <!--Sign Up2 View Controller - Sign Up-->
         <scene sceneID="B4o-IO-WGc">
@@ -267,6 +337,7 @@
                         <outlet property="passwordTextField" destination="Z8y-oC-Mtc" id="G2g-XZ-20k"/>
                         <outlet property="phoneNumberTextField" destination="Usq-45-VTz" id="2UL-2G-NRc"/>
                         <outlet property="userNameTextField" destination="EqH-fe-bJA" id="cR4-79-cn3"/>
+                        <segue destination="hob-em-Mh9" kind="push" identifier="Segue_2_SessionInfo" id="1jv-M7-8hX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hdp-3r-9Ce" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -321,6 +392,7 @@
                         <outlet property="confirmTextField" destination="OWw-HT-uGj" id="0Lf-0v-GHc"/>
                         <outlet property="emailTextField" destination="xfw-Db-NbI" id="J5t-tl-ljf"/>
                         <outlet property="passwordTextField" destination="AjO-4F-jRa" id="tvH-Ek-XlH"/>
+                        <segue destination="hob-em-Mh9" kind="push" identifier="Segue_2_SessionInfo" id="O9i-3R-6YE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0sg-un-b6e" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -333,4 +405,7 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="1jv-M7-8hX"/>
+    </inferredMetricsTieBreakers>
 </document>

@@ -18,9 +18,11 @@
 
 #import "OBSError.h"
 #import "OBSObject.h"
+#import "OBSSettings.h"
 
 #pragma mark - Library
 
 #import "OBSAccount.h"
 #import "OBSApplication.h"
 #import "OBSSession.h"
+#import "OBSUser.h"

@@ -10,9 +10,9 @@
 
 @interface OBSUser (_)
 
-@property (nonatomic, strong) NSString *userId;
-@property (nonatomic, strong) NSString *userEmail;
-@property (nonatomic, strong) NSString *userName;
-@property (nonatomic, strong) NSString *userFile;
+- (void)setUserId:(NSString *)userId;
+- (void)setUserEmail:(NSString *)userEmail;
+- (void)setUserName:(NSString *)userName;
+- (void)setUserFile:(NSString *)userFile;
 
 @end

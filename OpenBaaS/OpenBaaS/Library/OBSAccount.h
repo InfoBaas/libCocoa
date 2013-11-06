@@ -12,23 +12,23 @@
 @class OBSApplication;
 @class OBSSession;
 
-typedef void (^OBSAccountSignUp)(OBSAccount *account, OBSSession *session, OBSError *error);
-typedef void (^OBSAccountSignIn)(OBSAccount *account, OBSSession *session, OBSError *error);
-typedef void (^OBSAccountSignOut)(OBSAccount *account, OBSSession *session, BOOL signedOut, OBSError *error);
-typedef void (^OBSAccountRecover)(OBSAccount *account, BOOL sent, OBSError *error);
+typedef void (^OBSAccountSignUpCompletionHandler)(OBSAccount *account, OBSSession *session, OBSError *error);
+typedef void (^OBSAccountSignInCompletionHandler)(OBSAccount *account, OBSSession *session, OBSError *error);
+typedef void (^OBSAccountSignOutCompletionHandler)(OBSAccount *account, OBSSession *session, BOOL signedOut, OBSError *error);
+typedef void (^OBSAccountRecoverCompletionHandler)(OBSAccount *account, BOOL sent, OBSError *error);
 
 @interface OBSAccount : OBSObject
 
 @property (nonatomic, strong, readonly) OBSApplication *application;
 
-- (void)signUpWithEmail:(NSString *)email password:(NSString *)password completionHandler:(OBSAccountSignUp)handler;
+- (void)signUpWithEmail:(NSString *)email password:(NSString *)password completionHandler:(OBSAccountSignUpCompletionHandler)handler;
 
-- (void)signUpWithEmail:(NSString *)email password:(NSString *)password userName:(NSString *)userName userFile:(NSString *)userFile completionHandler:(OBSAccountSignUp)handler;
+- (void)signUpWithEmail:(NSString *)email password:(NSString *)password userName:(NSString *)userName userFile:(NSString *)userFile completionHandler:(OBSAccountSignUpCompletionHandler)handler;
 
-- (void)signInWithEmail:(NSString *)email password:(NSString *)password completionHandler:(OBSAccountSignIn)handler;
+- (void)signInWithEmail:(NSString *)email password:(NSString *)password completionHandler:(OBSAccountSignInCompletionHandler)handler;
 
-- (void)signOutFromSession:(OBSSession *)session closingAllOthers:(BOOL)closeAll withCompletionHandler:(OBSAccountSignOut)handler;
+- (void)signOutFromSession:(OBSSession *)session closingAllOthers:(BOOL)closeAll withCompletionHandler:(OBSAccountSignOutCompletionHandler)handler;
 
-- (void)recoverPasswordForEmail:(NSString *)email withCompletionHandler:(OBSAccountRecover)handler;
+- (void)recoverPasswordForEmail:(NSString *)email withCompletionHandler:(OBSAccountRecoverCompletionHandler)handler;
 
 @end

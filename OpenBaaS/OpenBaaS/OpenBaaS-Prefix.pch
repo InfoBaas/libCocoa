@@ -9,6 +9,7 @@
     #import "OBSClientProtocol.h"
     #import "OBSError+_.h"
     #import "OBSObject+_.h"
+    #import "OBSSettings+_.h"
 #endif
 
 #define OBS_NotYetImplemented           {NSAssert(NO, @"Not yet Implemented");}
