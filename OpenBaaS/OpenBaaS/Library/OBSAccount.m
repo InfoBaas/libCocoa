@@ -6,13 +6,13 @@
 //  Copyright (c) 2013 Infosistema. All rights reserved.
 //
 
-#import "OBSAccount+_.h"
+#import "OBSAccount+.h"
 
-#import "OBSEmailValidation+_.h"
+#import "OBSEmailValidation+.h"
 
-#import "OBSApplication+_.h"
-#import "OBSSession+_.h"
-#import "OBSUser+_.h"
+#import "OBSApplication+.h"
+#import "OBSSession+.h"
+#import "OBSUser+.h"
 
 #import "OBSConnection.h"
 
@@ -58,30 +58,8 @@
                         return;
                     }
 
-                    // Create a User object.
-#warning TODO: process result for user of session
-                    NSString *userId = json[@"userId"];
-                    NSString *userEmail = json[@"email"];
-                    NSString *userName = json[@"userName"];
-                    if ([userName isEqual:[NSNull null]]) {
-                        userName = nil;
-                    }
-                    NSString *userFile = json[@""];
-                    if ([userFile isEqual:[NSNull null]]) {
-                        userFile = nil;
-                    }
-                    OBSUser *user = [[OBSUser alloc] initWithClient:self.client];
-                    user.userId = userId;
-                    user.userEmail = userEmail;
-                    user.userName = userName;
-                    user.userFile = userFile;
-
-                    // Create a Session object.
-                    NSString *sessionToken = json[@"returnToken"];
-                    OBSSession *session = [[OBSSession alloc] initWithClient:self.client];
-                    session.token = sessionToken;
-                    session.user = user;
-
+                    OBSSession *session = [OBSSession sessionFromJSON:json withClient:self.client];
+#warning session ?
                     handler(self, session, nil);
                 }];
             } else if (handler) {
@@ -120,12 +98,22 @@
         if (hasEmail && hasPassword) {
             if (obs_validateEmailFormat(email)) {
                 [OBSConnection post_account:self signInWithEmail:email password:password completionHandler:^(NSData *data, NSError *error) {
+                    // Called with error?
                     if (error) {
                         handler(self, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
                         return;
                     }
-#warning TODO: process result
-                    NSLog(@"DATA: %@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+
+                    // Valid JSON?
+                    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+                    if (error) {
+                        handler(self, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+                        return;
+                    }
+
+                    OBSSession *session = [OBSSession sessionFromJSON:json withClient:self.client];
+#warning session ?
+                    handler(self, session, nil);
                 }];
             } else if (handler) {
                 NSDictionary *userInfo = @{kOBSErrorUserInfoKeyInvalidParameters: @[@"email", kOBSErrorInvalidParameterReasonBadFormat]};
@@ -159,12 +147,13 @@
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [OBSConnection post_accountSignOutWithSession:session all:closeAll completionHandler:^(NSData *data, NSError *error) {
+            // Called with error?
             if (error) {
                 handler(self, session, NO, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
                 return;
             }
-#warning TODO: process result
-            NSLog(@"DATA: %@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+
+            handler(self, session, YES, nil);
         }];
     });
 }
@@ -176,12 +165,13 @@
         if (hasEmail) {
             if (obs_validateEmailFormat(email)) {
                 [OBSConnection post_account:self recoveryWithEmail:email completionHandler:^(NSData *data, NSError *error) {
+                    // Called with error?
                     if (error) {
                         handler(self, NO, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
                         return;
                     }
-#warning TODO: process result
-                    NSLog(@"DATA: %@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+
+                    handler(self, YES, nil);
                 }];
             } else if (handler) {
                 NSDictionary *userInfo = @{kOBSErrorUserInfoKeyInvalidParameters: @[@"email", kOBSErrorInvalidParameterReasonBadFormat]};

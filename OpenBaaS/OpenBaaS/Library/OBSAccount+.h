@@ -1,5 +1,5 @@
 //
-//  OBSAccount+_.h
+//  OBSAccount+.h
 //  OpenBaaS
 //
 //  Created by Tiago Rodrigues on 31/10/2013.
@@ -8,7 +8,7 @@
 
 #import "OBSAccount.h"
 
-@interface OBSAccount (_)
+@interface OBSAccount ()
 
 - (id)initWithApplication:(OBSApplication *)application;
 

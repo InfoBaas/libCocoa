@@ -8,6 +8,7 @@
 
 #import "LCASignInViewController.h"
 #import "LCAAppDelegate.h"
+#import "LCASessionInfoViewController.h"
 
 @interface LCASignInViewController ()
 
@@ -19,17 +20,33 @@
 
 @implementation LCASignInViewController
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([[segue identifier] isEqualToString:@"Segue_2_SessionInfo"]) {
+        LCASessionInfoViewController *controller = [segue destinationViewController];
+        controller.session = sender;
+    }
+}
+
 - (IBAction)signIn:(id)sender
 {
     [self.emailTextField resignFirstResponder];
     [self.passwordTextField resignFirstResponder];
 
-#warning TODO present a wait screen
     LCAAppDelegate *delegate = (LCAAppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    [delegate showWaitScreen];
+
     OBSApplication *application = [OBSApplication applicationWithClient:delegate];
     OBSAccount *account = [application applicationAccount];
     [account signInWithEmail:self.emailTextField.text password:self.passwordTextField.text completionHandler:^(OBSAccount *account, OBSSession *session, OBSError *error) {
-#warning TODO dismiss the wait screen and show session or error
+        [delegate hideWaitScreen];
+        if (session) {
+            [self performSegueWithIdentifier:@"Segue_2_SessionInfo" sender:session];
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[error description] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+            [alert show];
+        }
     }];
 }
 

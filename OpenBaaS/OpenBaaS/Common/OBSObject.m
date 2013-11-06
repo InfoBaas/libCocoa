@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Infosistema. All rights reserved.
 //
 
-#import "OBSObject+_.h"
+#import "OBSObject+.h"
 
 @implementation OBSObject
 

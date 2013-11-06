@@ -1,5 +1,5 @@
 //
-//  OBSSession+_.h
+//  OBSSession+.h
 //  OpenBaaS
 //
 //  Created by Tiago Rodrigues on 31/10/2013.
@@ -8,9 +8,11 @@
 
 #import "OBSSession.h"
 
-@interface OBSSession (_)
+@interface OBSSession ()
 
 @property (nonatomic, strong) NSString *token;
-- (void)setUser:(OBSUser *)user;
+@property (nonatomic, strong) OBSUser *user;
+
++ (OBSSession *)sessionFromJSON:(NSDictionary *)json withClient:(id<OBSClientProtocol>)client;
 
 @end

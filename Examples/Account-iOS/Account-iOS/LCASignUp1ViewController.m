@@ -8,7 +8,6 @@
 
 #import "LCASignUp1ViewController.h"
 #import "LCAAppDelegate.h"
-
 #import "LCASessionInfoViewController.h"
 
 @interface LCASignUp1ViewController ()

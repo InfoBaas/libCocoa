@@ -6,25 +6,28 @@
 //  Copyright (c) 2013 Infosistema. All rights reserved.
 //
 
-#import "OBSUser+_.h"
+#import "OBSUser+.h"
 
 @implementation OBSUser
 
-- (void)setUserId:(NSString *)userId
++ (OBSUser *)userFromJSON:(NSDictionary *)json withClient:(id<OBSClientProtocol>)client
 {
-    _userId = userId;
-}
-- (void)setUserEmail:(NSString *)userEmail
-{
-    _userEmail = userEmail;
-}
-- (void)setUserName:(NSString *)userName
-{
-    _userName = userName;
-}
-- (void)setUserFile:(NSString *)userFile
-{
-    _userFile = userFile;
+    NSString *userId = json[@"userId"];
+    NSString *userEmail = json[@"email"];
+    NSString *userName = json[@"userName"];
+    if ([userName isEqual:[NSNull null]]) {
+        userName = nil;
+    }
+    NSString *userFile = json[@""];
+    if ([userFile isEqual:[NSNull null]]) {
+        userFile = nil;
+    }
+    OBSUser *user = [[OBSUser alloc] initWithClient:client];
+    user.userId = userId;
+    user.userEmail = userEmail;
+    user.userName = userName;
+    user.userFile = userFile;
+    return user;
 }
 
 @end

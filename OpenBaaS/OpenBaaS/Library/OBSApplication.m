@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Infosistema. All rights reserved.
 //
 
-#import "OBSApplication+_.h"
+#import "OBSApplication+.h"
 
-#import "OBSAccount+_.h"
+#import "OBSAccount+.h"
 
 @implementation OBSApplication
 

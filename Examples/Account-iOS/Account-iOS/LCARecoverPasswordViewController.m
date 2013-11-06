@@ -22,17 +22,21 @@
 {
     [self.emailTextField resignFirstResponder];
 
-#warning TODO present a wait screen
     LCAAppDelegate *delegate = (LCAAppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    [delegate showWaitScreen];
+
     OBSApplication *application = [OBSApplication applicationWithClient:delegate];
     OBSAccount *account = [application applicationAccount];
     [account recoverPasswordForEmail:self.emailTextField.text withCompletionHandler:^(OBSAccount *account, BOOL sent, OBSError *error) {
-#warning TODO dismiss the wait screen
+        [delegate hideWaitScreen];
         if (sent) {
-#warning TODO ask to be dismissed
-#warning TODO show confirmation to user
+            [self performSegueWithIdentifier:@"Unwind_backhome" sender:self];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Check Your Inbox" message:@"A recovery e-mail has been sent to your e-mail." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+            [alert show];
         } else {
-#warning TODO show error to user
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[error description] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+            [alert show];
         }
     }];
 }

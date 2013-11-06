@@ -8,6 +8,7 @@
 
 #import "LCASignUp2ViewController.h"
 #import "LCAAppDelegate.h"
+#import "LCASessionInfoViewController.h"
 
 @interface LCASignUp2ViewController ()
 
@@ -22,6 +23,14 @@
 @end
 
 @implementation LCASignUp2ViewController
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([[segue identifier] isEqualToString:@"Segue_2_SessionInfo"]) {
+        LCASessionInfoViewController *controller = [segue destinationViewController];
+        controller.session = sender;
+    }
+}
 
 - (IBAction)signUp:(id)sender
 {
@@ -43,12 +52,22 @@
     NSData *userFileData = [NSJSONSerialization dataWithJSONObject:userFileDic options:kNilOptions error:nil];
     NSString *userFile = [[NSString alloc] initWithData:userFileData encoding:NSUTF8StringEncoding];
 
-#warning TODO present a wait screen
     LCAAppDelegate *delegate = (LCAAppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    [delegate showWaitScreen];
+
     OBSApplication *application = [OBSApplication applicationWithClient:delegate];
     OBSAccount *account = [application applicationAccount];
     [account signUpWithEmail:self.emailTextField.text password:self.passwordTextField.text userName:self.userNameTextField.text userFile:userFile completionHandler:^(OBSAccount *account, OBSSession *session, OBSError *error) {
-#warning TODO dismiss the wait screen and show session or error
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [delegate hideWaitScreen];
+            if (session) {
+                [self performSegueWithIdentifier:@"Segue_2_SessionInfo" sender:session];
+            } else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[error description] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+                [alert show];
+            }
+        });
     }];
 }
 

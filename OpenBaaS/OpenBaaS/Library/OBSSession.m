@@ -6,34 +6,25 @@
 //  Copyright (c) 2013 Infosistema. All rights reserved.
 //
 
-#import "OBSSession+_.h"
+#import "OBSSession+.h"
 
-#import "OBSUser+_.h"
+#import "OBSUser+.h"
 
 #import "OBSConnection.h"
 
-@interface OBSSession ()
-{
-    NSString *_token;
-}
-
-@end
-
 @implementation OBSSession
 
-- (NSString *)token
++ (OBSSession *)sessionFromJSON:(NSDictionary *)json withClient:(id<OBSClientProtocol>)client
 {
-    return _token;
-}
+    OBSUser *user = [OBSUser userFromJSON:json withClient:client];
+#warning user ?
 
-- (void)setToken:(NSString *)token
-{
-    _token = token;
-}
+    NSString *sessionToken = json[@"returnToken"];
+    OBSSession *session = [[OBSSession alloc] initWithClient:client];
+    session.token = sessionToken;
+    session.user = user;
 
-- (void)setUser:(OBSUser *)user
-{
-    _user = user;
+    return session;
 }
 
 - (void)saveAsCurrentSession

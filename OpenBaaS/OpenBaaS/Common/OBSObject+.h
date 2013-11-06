@@ -1,5 +1,5 @@
 //
-//  OBSObject+_.h
+//  OBSObject+.h
 //  OpenBaaS
 //
 //  Created by Tiago Rodrigues on 01/11/2013.
@@ -8,7 +8,7 @@
 
 #import "OBSObject.h"
 
-@interface OBSObject (_)
+@interface OBSObject ()
 
 - (id)initWithClient:(id<OBSClientProtocol>)client;
 

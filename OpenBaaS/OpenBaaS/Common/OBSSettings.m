@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Infosistema. All rights reserved.
 //
 
-#import "OBSSettings+_.h"
+#import "OBSSettings+.h"
 
 #define _obs_settings_session_token   @"com.openbaas.session.token"
 #define _obs_settings_session_userId   @"com.openbaas.session.userId"

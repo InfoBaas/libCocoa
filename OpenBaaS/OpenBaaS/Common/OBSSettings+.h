@@ -1,5 +1,5 @@
 //
-//  OBSSettings+_.h
+//  OBSSettings+.h
 //  OpenBaaS
 //
 //  Created by Tiago Rodrigues on 06/11/2013.

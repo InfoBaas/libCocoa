@@ -8,9 +8,9 @@
 
 #import "OBSConnection.h"
 
-#import "OBSAccount+_.h"
-#import "OBSApplication+_.h"
-#import "OBSSession+_.h"
+#import "OBSAccount+.h"
+#import "OBSApplication+.h"
+#import "OBSSession+.h"
 
 @interface OBSConnection ()
 

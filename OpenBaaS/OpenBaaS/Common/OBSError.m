@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Infosistema. All rights reserved.
 //
 
-#import "OBSError+_.h"
+#import "OBSError+.h"
 
 @implementation OBSError @end
 
