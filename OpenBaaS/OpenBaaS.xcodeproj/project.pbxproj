@@ -22,6 +22,9 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		CE3CBBA918295E87000C2F17 /* OBSUser.h in Headers */ = {isa = PBXBuildFile; fileRef = CE3CBBA718295E87000C2F17 /* OBSUser.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CE3CBBAA18295E87000C2F17 /* OBSUser.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3CBBA818295E87000C2F17 /* OBSUser.m */; };
+		CE3CBBAD18295EB1000C2F17 /* OBSUser+_.h in Headers */ = {isa = PBXBuildFile; fileRef = CE3CBBAB18295EB1000C2F17 /* OBSUser+_.h */; };
 		CE62C75A1823D70200460A2D /* OBSClientProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = CE19109C182287CF00342286 /* OBSClientProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CE91C18C182257CB00A82866 /* OBSAccount.h in Headers */ = {isa = PBXBuildFile; fileRef = CE91C18A182257CB00A82866 /* OBSAccount.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CE91C18D182257CB00A82866 /* OBSAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = CE91C18B182257CB00A82866 /* OBSAccount.m */; };
@@ -49,6 +52,9 @@
 
 /* Begin PBXFileReference section */
 		CE19109C182287CF00342286 /* OBSClientProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OBSClientProtocol.h; sourceTree = "<group>"; };
+		CE3CBBA718295E87000C2F17 /* OBSUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSUser.h; sourceTree = "<group>"; };
+		CE3CBBA818295E87000C2F17 /* OBSUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSUser.m; sourceTree = "<group>"; };
+		CE3CBBAB18295EB1000C2F17 /* OBSUser+_.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OBSUser+_.h"; sourceTree = "<group>"; };
 		CE91C1841822547C00A82866 /* OBSApplication+_.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OBSApplication+_.h"; sourceTree = "<group>"; };
 		CE91C185182254A800A82866 /* OBSSession+_.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OBSSession+_.h"; sourceTree = "<group>"; };
 		CE91C1881822553900A82866 /* OBSError+_.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OBSError+_.h"; sourceTree = "<group>"; };
@@ -94,6 +100,7 @@
 				CE91C18A182257CB00A82866 /* OBSAccount.h */,
 				CE95FEB01821380F00D390A3 /* OBSApplication.h */,
 				CE95FEBE182149DC00D390A3 /* OBSSession.h */,
+				CE3CBBA718295E87000C2F17 /* OBSUser.h */,
 			);
 			name = "Public Headers";
 			sourceTree = "<group>";
@@ -173,6 +180,8 @@
 				CE95FEB11821380F00D390A3 /* OBSApplication.m */,
 				CE91C185182254A800A82866 /* OBSSession+_.h */,
 				CE95FEBF182149DC00D390A3 /* OBSSession.m */,
+				CE3CBBAB18295EB1000C2F17 /* OBSUser+_.h */,
+				CE3CBBA818295E87000C2F17 /* OBSUser.m */,
 			);
 			path = Library;
 			sourceTree = "<group>";
@@ -221,8 +230,10 @@
 				CE95FEBC182139BA00D390A3 /* OBSError.h in Headers */,
 				CEB182A2182425D300F7BF87 /* OBSObject.h in Headers */,
 				CE91C18C182257CB00A82866 /* OBSAccount.h in Headers */,
+				CE3CBBAD18295EB1000C2F17 /* OBSUser+_.h in Headers */,
 				CE95FEB21821380F00D390A3 /* OBSApplication.h in Headers */,
 				CEB182B718242D4900F7BF87 /* OBSSession.h in Headers */,
+				CE3CBBA918295E87000C2F17 /* OBSUser.h in Headers */,
 				CEB182B018242D3B00F7BF87 /* OBSEmailValidation+_.h in Headers */,
 				CEB182B118242D3B00F7BF87 /* OBSError+_.h in Headers */,
 				CEB182B218242D3B00F7BF87 /* OBSObject+_.h in Headers */,
@@ -332,6 +343,7 @@
 				CEB182A3182425D300F7BF87 /* OBSObject.m in Sources */,
 				CE91C18D182257CB00A82866 /* OBSAccount.m in Sources */,
 				CE95FEB31821380F00D390A3 /* OBSApplication.m in Sources */,
+				CE3CBBAA18295E87000C2F17 /* OBSUser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

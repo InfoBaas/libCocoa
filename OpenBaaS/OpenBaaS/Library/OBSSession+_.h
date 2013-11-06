@@ -10,6 +10,7 @@
 
 @interface OBSSession (_)
 
-@property (nonatomic, strong, readonly) NSString *token;
+@property (nonatomic, strong) NSString *token;
+@property (nonatomic, strong) OBSUser *user;
 
 @end

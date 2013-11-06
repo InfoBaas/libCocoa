@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+@class OBSUser;
+
 @interface OBSSession : OBSObject
+
+@property (nonatomic, strong, readonly) OBSUser *user;
 
 @end

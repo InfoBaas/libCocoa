@@ -20,11 +20,13 @@
 
 - (IBAction)recoverPassword:(id)sender
 {
+    [self.emailTextField resignFirstResponder];
+
 #warning TODO present a wait screen
     LCAAppDelegate *delegate = (LCAAppDelegate *)[[UIApplication sharedApplication] delegate];
     OBSApplication *application = [OBSApplication applicationWithClient:delegate];
     OBSAccount *account = [application applicationAccount];
-    [account recoverPasswordForEmail:self.emailTextField.text withCompletionHandler:^(OBSAccount *account, OBSError *error, BOOL sent) {
+    [account recoverPasswordForEmail:self.emailTextField.text withCompletionHandler:^(OBSAccount *account, BOOL sent, OBSError *error) {
 #warning TODO dismiss the wait screen
         if (sent) {
 #warning TODO ask to be dismissed

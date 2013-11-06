@@ -11,6 +11,8 @@
 #import "OBSEmailValidation+_.h"
 
 #import "OBSApplication+_.h"
+#import "OBSSession+_.h"
+#import "OBSUser+_.h"
 
 #import "OBSConnection.h"
 
@@ -43,9 +45,44 @@
         if (hasEmail && hasPassword) {
             if (validateEmailFormat(email)) {
                 [OBSConnection post_account:self signUpWithEmail:email password:password userName:userName userFile:userFile completionHandler:^(NSData *data, NSError *error) {
-#warning TODO: create session instance (not here)
-                    NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                    NSLog(@"DATA: %@\nERROR: %@",str,error);
+                    // Called with error?
+                    if (error) {
+                        handler(self, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+                        return;
+                    }
+
+                    // Valid JSON?
+                    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+                    if (error) {
+                        handler(self, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+                        return;
+                    }
+
+                    // Create a User object.
+#warning TODO: process result for user of session
+                    NSString *userId = json[@"userId"];
+                    NSString *userEmail = json[@"email"];
+                    NSString *userName = json[@"userName"];
+                    if ([userName isEqual:[NSNull null]]) {
+                        userName = nil;
+                    }
+                    NSString *userFile = json[@""];
+                    if ([userFile isEqual:[NSNull null]]) {
+                        userFile = nil;
+                    }
+                    OBSUser *user = [[OBSUser alloc] initWithClient:self.client];
+                    user.userId = userId;
+                    user.userEmail = userEmail;
+                    user.userName = userName;
+                    user.userFile = userFile;
+
+                    // Create a Session object.
+                    NSString *sessionToken = json[@"returnToken"];
+                    OBSSession *session = [[OBSSession alloc] initWithClient:self.client];
+                    session.token = sessionToken;
+                    session.user = user;
+
+                    handler(self, session, nil);
                 }];
             } else if (handler) {
                 NSDictionary *userInfo = @{kOBSErrorUserInfoKeyInvalidParameters: @[@"email", kOBSErrorInvalidParameterReasonBadFormat]};
@@ -54,7 +91,7 @@
                                                        code:kOBSLocalErrorCodeInvalidParameters
                                                    userInfo:userInfo];
                 // Action completed with error.
-                handler(self, error, nil);
+                handler(self, nil, error);
             }
         } else if (handler) {
             //// Some or all the required parameters are missing
@@ -70,7 +107,7 @@
                                                    code:kOBSLocalErrorCodeMissingRequiredParameters
                                                userInfo:userInfo];
             // Action completed with error.
-            handler(self, error, nil);
+            handler(self, nil, error);
         }
     });
 }
@@ -83,9 +120,12 @@
         if (hasEmail && hasPassword) {
             if (validateEmailFormat(email)) {
                 [OBSConnection post_account:self signInWithEmail:email password:password completionHandler:^(NSData *data, NSError *error) {
-#warning TODO: create session instance (not here)
-                    NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                    NSLog(@"DATA: %@\nERROR: %@",str,error);
+                    if (error) {
+                        handler(self, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+                        return;
+                    }
+#warning TODO: process result
+                    NSLog(@"DATA: %@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
                 }];
             } else if (handler) {
                 NSDictionary *userInfo = @{kOBSErrorUserInfoKeyInvalidParameters: @[@"email", kOBSErrorInvalidParameterReasonBadFormat]};
@@ -94,7 +134,7 @@
                                                        code:kOBSLocalErrorCodeInvalidParameters
                                                    userInfo:userInfo];
                 // Action completed with error.
-                handler(self, error, nil);
+                handler(self, nil, error);
             }
         } else if (handler) {
             //// Some or all the required parameters are missing
@@ -110,7 +150,7 @@
                                                    code:kOBSLocalErrorCodeMissingRequiredParameters
                                                userInfo:userInfo];
             // Action completed with error.
-            handler(self, error, nil);
+            handler(self, nil, error);
         }
     });
 }
@@ -119,9 +159,12 @@
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [OBSConnection post_accountSignOutWithSession:session all:closeAll completionHandler:^(NSData *data, NSError *error) {
+            if (error) {
+                handler(self, session, NO, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+                return;
+            }
 #warning TODO: process result
-            NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            NSLog(@"DATA: %@\nERROR: %@",str,error);
+            NSLog(@"DATA: %@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
         }];
     });
 }
@@ -133,9 +176,12 @@
         if (hasEmail) {
             if (validateEmailFormat(email)) {
                 [OBSConnection post_account:self recoveryWithEmail:email completionHandler:^(NSData *data, NSError *error) {
+                    if (error) {
+                        handler(self, NO, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+                        return;
+                    }
 #warning TODO: process result
-                    NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                    NSLog(@"DATA: %@\nERROR: %@",str,error);
+                    NSLog(@"DATA: %@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
                 }];
             } else if (handler) {
                 NSDictionary *userInfo = @{kOBSErrorUserInfoKeyInvalidParameters: @[@"email", kOBSErrorInvalidParameterReasonBadFormat]};
@@ -144,7 +190,7 @@
                                                        code:kOBSLocalErrorCodeInvalidParameters
                                                    userInfo:userInfo];
                 // Action completed with error.
-                handler(self, error, NO);
+                handler(self, NO, error);
             }
         } else if (handler) {
             //// Some or all the required parameters are missing
@@ -159,7 +205,7 @@
                                                    code:kOBSLocalErrorCodeMissingRequiredParameters
                                                userInfo:userInfo];
             // Action completed with error.
-            handler(self, error, NO);
+            handler(self, NO, error);
         }
     });
 }

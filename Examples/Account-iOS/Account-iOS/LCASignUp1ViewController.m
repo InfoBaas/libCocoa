@@ -22,18 +22,27 @@
 
 - (IBAction)signUp:(id)sender
 {
+    [self.emailTextField resignFirstResponder];
+    [self.passwordTextField resignFirstResponder];
+    [self.confirmTextField resignFirstResponder];
+
     if (![self.passwordTextField.text isEqualToString:self.confirmTextField.text]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"password ≠ confirmation" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
         [alert show];
         return;
     }
 
-#warning TODO present a wait screen
     LCAAppDelegate *delegate = (LCAAppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    [delegate showWaitScreen];
+
     OBSApplication *application = [OBSApplication applicationWithClient:delegate];
     OBSAccount *account = [application applicationAccount];
-    [account signUpWithEmail:self.emailTextField.text password:self.passwordTextField.text completionHandler:^(OBSAccount *account, OBSError *error, OBSSession *session) {
-#warning TODO dismiss the wait screen and show session or error
+    [account signUpWithEmail:self.emailTextField.text password:self.passwordTextField.text completionHandler:^(OBSAccount *account, OBSSession *session, OBSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [delegate hideWaitScreen];
+#warning TODO show session or error
+        });
     }];
 }
 
