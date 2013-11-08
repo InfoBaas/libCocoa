@@ -12,9 +12,9 @@
 @class OBSApplication;
 @class OBSSession;
 
-typedef void (^OBSAccountSignUpCompletionHandler)(OBSAccount *account, OBSSession *session, OBSError *error);
-typedef void (^OBSAccountSignInCompletionHandler)(OBSAccount *account, OBSSession *session, OBSError *error);
-typedef void (^OBSAccountSignOutCompletionHandler)(OBSAccount *account, OBSSession *session, BOOL signedOut, OBSError *error);
+typedef void (^OBSAccountSignUpCompletionHandler)(OBSAccount *account, BOOL signedUp, OBSSession *session, OBSError *error);
+typedef void (^OBSAccountSignInCompletionHandler)(OBSAccount *account, BOOL signedIn, OBSSession *session, OBSError *error);
+typedef void (^OBSAccountSignOutCompletionHandler)(OBSAccount *account, BOOL signedOut, OBSSession *session, OBSError *error);
 typedef void (^OBSAccountRecoverCompletionHandler)(OBSAccount *account, BOOL sent, OBSError *error);
 
 @interface OBSAccount : OBSObject

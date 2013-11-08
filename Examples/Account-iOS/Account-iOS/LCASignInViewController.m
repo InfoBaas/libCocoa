@@ -39,14 +39,16 @@
 
     OBSApplication *application = [OBSApplication applicationWithClient:delegate];
     OBSAccount *account = [application applicationAccount];
-    [account signInWithEmail:self.emailTextField.text password:self.passwordTextField.text completionHandler:^(OBSAccount *account, OBSSession *session, OBSError *error) {
-        [delegate hideWaitScreen];
-        if (session) {
-            [self performSegueWithIdentifier:@"Segue_2_SessionInfo" sender:session];
-        } else {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[error description] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-            [alert show];
-        }
+    [account signInWithEmail:self.emailTextField.text password:self.passwordTextField.text completionHandler:^(OBSAccount *account, BOOL signedIn, OBSSession *session, OBSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [delegate hideWaitScreen];
+            if (signedIn && session) {
+                [self performSegueWithIdentifier:@"Segue_2_SessionInfo" sender:session];
+            } else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[error description] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+                [alert show];
+            }
+        });
     }];
 }
 

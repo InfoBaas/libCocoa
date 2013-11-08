@@ -13,3 +13,7 @@
 #endif
 
 #define OBS_NotYetImplemented           {NSAssert(NO, @"Not yet Implemented");}
+
+#pragma mark - Config Keys
+
+#define OBSConfigURL            @"com.openbaas.config.url"

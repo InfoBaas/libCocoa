@@ -13,7 +13,13 @@
 + (OBSUser *)userFromJSON:(NSDictionary *)json withClient:(id<OBSClientProtocol>)client
 {
     NSString *userId = json[@"userId"];
+    if (!userId || [userId isEqual:[NSNull null]]) {
+        return nil;
+    }
     NSString *userEmail = json[@"email"];
+    if (!userEmail || [userEmail isEqual:[NSNull null]]) {
+        return nil;
+    }
     NSString *userName = json[@"userName"];
     if ([userName isEqual:[NSNull null]]) {
         userName = nil;

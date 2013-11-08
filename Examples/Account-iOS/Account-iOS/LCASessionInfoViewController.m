@@ -16,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
 @property (weak, nonatomic) IBOutlet UITextView *userFileTextView;
 - (IBAction)signOut:(id)sender;
+- (IBAction)saveSession:(id)sender;
 
 @end
 
@@ -39,7 +40,7 @@
 
     OBSApplication *application = [OBSApplication applicationWithClient:delegate];
     OBSAccount *account = [application applicationAccount];
-    [account signOutFromSession:self.session closingAllOthers:YES withCompletionHandler:^(OBSAccount *account, OBSSession *session, BOOL signedOut, OBSError *error) {
+    [account signOutFromSession:self.session closingAllOthers:YES withCompletionHandler:^(OBSAccount *account, BOOL signedOut, OBSSession *session, OBSError *error) {
         [delegate hideWaitScreen];
         if (signedOut) {
             [self.navigationController popToRootViewControllerAnimated:YES];
@@ -48,6 +49,11 @@
             [alert show];
         }
     }];
+}
+
+- (IBAction)saveSession:(id)sender
+{
+    [self.session saveAsCurrentSession];
 }
 
 @end

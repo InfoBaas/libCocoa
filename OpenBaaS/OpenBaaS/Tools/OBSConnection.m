@@ -30,8 +30,8 @@
     static NSString *address = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        address = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"OpenBaaS.URL"];
-        NSAssert(address, @"\"OpenBaaS.URL\" key not found in bundle's info dictionary.");
+        address = [[NSBundle mainBundle] objectForInfoDictionaryKey:OBSConfigURL];
+        NSAssert(address, @"\"%@\" key not found in bundle's info dictionary.", OBSConfigURL);
     });
     return address;
 }

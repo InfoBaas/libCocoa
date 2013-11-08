@@ -16,10 +16,16 @@
 
 + (OBSSession *)sessionFromJSON:(NSDictionary *)json withClient:(id<OBSClientProtocol>)client
 {
-    OBSUser *user = [OBSUser userFromJSON:json withClient:client];
-#warning user ?
-
     NSString *sessionToken = json[@"returnToken"];
+    if (!sessionToken || [sessionToken isEqual:[NSNull null]]) {
+        return nil;
+    }
+
+    OBSUser *user = [OBSUser userFromJSON:json withClient:client];
+    if (!user) {
+        return nil;
+    }
+
     OBSSession *session = [[OBSSession alloc] initWithClient:client];
     session.token = sessionToken;
     session.user = user;
@@ -29,35 +35,39 @@
 
 - (void)saveAsCurrentSession
 {
-    _obs_settings_session_t *session = [_obs_settings_session_t new];
-    session.token = self.token;
-    session.userId = self.user.userId;
-    session.userEmail = self.user.userEmail;
-    session.userName = self.user.userName;
-    session.userFile = self.user.userFile;
-    _obs_settings_set_session(session);
+    _obs_settings_set_sessionToken(self.token);
 }
 
-+ (OBSSession *)openCurrentSessionWithClient:(id<OBSClientProtocol>)client andCompletionHandler:(OBSSessionOpenCompletionHandler)handler
+- (BOOL)isCurrentSession
 {
-    _obs_settings_session_t *sessionInSettings = _obs_settings_get_session();
-    if (!sessionInSettings) {
-        return nil;
+    return [_obs_settings_get_sessionToken() isEqualToString:self.token];
+}
+
+- (BOOL)forgetIfIsCurrentSession
+{
+    if ([self isCurrentSession]) {
+        _obs_settings_set_sessionToken(nil);
+        return YES;
+    }
+    return NO;
+}
+
++ (BOOL)openCurrentSessionWithClient:(id<OBSClientProtocol>)client andCompletionHandler:(OBSSessionOpenCompletionHandler)handler
+{
+    NSString *sessionToken = _obs_settings_get_sessionToken();
+    if (!sessionToken) {
+        return NO;
     }
 
-    OBSUser *user = [[OBSUser alloc] initWithClient:client];
-    user.userId = sessionInSettings.userId;
-    user.userEmail = sessionInSettings.userEmail;
-    user.userName = sessionInSettings.userName;
-    user.userFile = sessionInSettings.userFile;
-
-    OBSSession *session = [[OBSSession alloc] initWithClient:client];
-    session.token = sessionInSettings.token;
-    session.user = user;
-
 #warning TODO: open session
+    OBS_NotYetImplemented
 
-    return session;
+    return YES;
+}
+
++ (void)forgetCurrentSession
+{
+    _obs_settings_set_sessionToken(nil);
 }
 
 @end

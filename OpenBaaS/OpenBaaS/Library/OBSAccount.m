@@ -47,20 +47,28 @@
                 [OBSConnection post_account:self signUpWithEmail:email password:password userName:userName userFile:userFile completionHandler:^(NSData *data, NSError *error) {
                     // Called with error?
                     if (error) {
-                        handler(self, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+                        handler(self, NO, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
                         return;
+                    }
+
+                    if (![data length]) {
+                        handler(self, YES, nil, nil);
                     }
 
                     // Valid JSON?
                     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
                     if (error) {
-                        handler(self, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+                        handler(self, YES, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
                         return;
                     }
 
                     OBSSession *session = [OBSSession sessionFromJSON:json withClient:self.client];
-#warning session kOBSRemoteErrorCodeResultDataIllFormed ?
-                    handler(self, session, nil);
+                    if (!session) {
+                        handler(self, YES, nil, [OBSError errorWithDomain:kOBSErrorDomainRemote code:kOBSRemoteErrorCodeResultDataIllFormed userInfo:nil]);
+                        return;
+                    }
+
+                    handler(self, YES, session, nil);
                 }];
             } else if (handler) {
                 NSDictionary *userInfo = @{kOBSErrorUserInfoKeyInvalidParameters: @[@"email", kOBSErrorInvalidParameterReasonBadFormat]};
@@ -69,7 +77,7 @@
                                                        code:kOBSLocalErrorCodeInvalidParameters
                                                    userInfo:userInfo];
                 // Action completed with error.
-                handler(self, nil, error);
+                handler(self, NO, nil, error);
             }
         } else if (handler) {
             //// Some or all the required parameters are missing
@@ -85,7 +93,7 @@
                                                    code:kOBSLocalErrorCodeMissingRequiredParameters
                                                userInfo:userInfo];
             // Action completed with error.
-            handler(self, nil, error);
+            handler(self, NO, nil, error);
         }
     });
 }
@@ -100,20 +108,24 @@
                 [OBSConnection post_account:self signInWithEmail:email password:password completionHandler:^(NSData *data, NSError *error) {
                     // Called with error?
                     if (error) {
-                        handler(self, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+                        handler(self, NO, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
                         return;
                     }
 
                     // Valid JSON?
                     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
                     if (error) {
-                        handler(self, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+                        handler(self, YES, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
                         return;
                     }
 
                     OBSSession *session = [OBSSession sessionFromJSON:json withClient:self.client];
-#warning session kOBSRemoteErrorCodeResultDataIllFormed ?
-                    handler(self, session, nil);
+                    if (!session) {
+                        handler(self, YES, nil, [OBSError errorWithDomain:kOBSErrorDomainRemote code:kOBSRemoteErrorCodeResultDataIllFormed userInfo:nil]);
+                        return;
+                    }
+
+                    handler(self, YES, session, nil);
                 }];
             } else if (handler) {
                 NSDictionary *userInfo = @{kOBSErrorUserInfoKeyInvalidParameters: @[@"email", kOBSErrorInvalidParameterReasonBadFormat]};
@@ -122,7 +134,7 @@
                                                        code:kOBSLocalErrorCodeInvalidParameters
                                                    userInfo:userInfo];
                 // Action completed with error.
-                handler(self, nil, error);
+                handler(self, NO, nil, error);
             }
         } else if (handler) {
             //// Some or all the required parameters are missing
@@ -138,7 +150,7 @@
                                                    code:kOBSLocalErrorCodeMissingRequiredParameters
                                                userInfo:userInfo];
             // Action completed with error.
-            handler(self, nil, error);
+            handler(self, NO, nil, error);
         }
     });
 }
@@ -149,11 +161,11 @@
         [OBSConnection post_accountSignOutWithSession:session all:closeAll completionHandler:^(NSData *data, NSError *error) {
             // Called with error?
             if (error) {
-                handler(self, session, NO, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+                handler(self, NO, session, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
                 return;
             }
 
-            handler(self, session, YES, nil);
+            handler(self, YES, session, nil);
         }];
     });
 }

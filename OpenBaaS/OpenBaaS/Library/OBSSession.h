@@ -11,13 +11,16 @@
 @class OBSSession;
 @class OBSUser;
 
-typedef void (^OBSSessionOpenCompletionHandler)(OBSSession *session, BOOL opened, OBSError *error);
+typedef void (^OBSSessionOpenCompletionHandler)(BOOL opened, OBSSession *session, OBSError *error);
 
 @interface OBSSession : OBSObject
 
 @property (nonatomic, strong, readonly) OBSUser *user;
 
 - (void)saveAsCurrentSession;
-+ (OBSSession *)openCurrentSessionWithClient:(id<OBSClientProtocol>)client andCompletionHandler:(OBSSessionOpenCompletionHandler)handler;
+- (BOOL)isCurrentSession;
+- (BOOL)forgetIfIsCurrentSession;
++ (BOOL)openCurrentSessionWithClient:(id<OBSClientProtocol>)client andCompletionHandler:(OBSSessionOpenCompletionHandler)handler;
++ (void)forgetCurrentSession;
 
 @end

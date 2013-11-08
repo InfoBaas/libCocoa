@@ -31,14 +31,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="296" borderStyle="roundedRect" placeholder="app id" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jU7-hj-rUr">
-                                <rect key="frame" x="20" y="84" width="280" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hS2-KI-3Rs">
-                                <rect key="frame" x="20" y="122" width="280" height="30"/>
+                                <rect key="frame" x="20" y="84" width="280" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Sign up (e-mail, password)">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -48,7 +42,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WgH-FZ-fkw">
-                                <rect key="frame" x="20" y="160" width="280" height="30"/>
+                                <rect key="frame" x="20" y="122" width="280" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Sign up (e-mail, password, [name], [file])">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -58,7 +52,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wsl-Sc-fow">
-                                <rect key="frame" x="20" y="198" width="280" height="30"/>
+                                <rect key="frame" x="20" y="160" width="280" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Sign In (e-mail, password)">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -68,7 +62,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZlY-L0-Yk8">
-                                <rect key="frame" x="20" y="236" width="280" height="30"/>
+                                <rect key="frame" x="20" y="198" width="280" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Recover password (e-mail)">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -77,12 +71,34 @@
                                     <segue destination="s3x-9O-WPy" kind="modal" id="iQd-nV-Quo"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fgB-ME-DkI">
+                                <rect key="frame" x="20" y="236" width="280" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Open Previously Saved Session">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="openSavedSession:" destination="hMs-0b-alJ" eventType="touchUpInside" id="7z4-xw-RiQ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="Aie-Hc-tCx"/>
+                    <navigationItem key="navigationItem" id="Aie-Hc-tCx">
+                        <nil key="title"/>
+                        <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="app id" minimumFontSize="17" id="jU7-hj-rUr">
+                            <rect key="frame" x="20" y="7" width="280" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <action selector="appIdEditingDidEnd:" destination="hMs-0b-alJ" eventType="editingDidEnd" id="O3a-Av-GGV"/>
+                            </connections>
+                        </textField>
+                    </navigationItem>
                     <connections>
                         <outlet property="appIdTextField" destination="jU7-hj-rUr" id="dxv-jw-ZpD"/>
+                        <segue destination="hob-em-Mh9" kind="push" identifier="Segue_2_SessionInfo" id="ZBM-pv-iX1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2ON-BQ-SoC" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -256,7 +272,13 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="User Info" id="o7Y-SZ-SGr"/>
+                    <navigationItem key="navigationItem" title="User Info" id="o7Y-SZ-SGr">
+                        <barButtonItem key="rightBarButtonItem" title="Save" id="803-qZ-mSP">
+                            <connections>
+                                <action selector="saveSession:" destination="hob-em-Mh9" id="HYg-AG-z5m"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="userEmailLabel" destination="cSf-LU-dE3" id="C9z-3y-IAL"/>
                         <outlet property="userFileTextView" destination="FCa-ct-JJP" id="cXQ-E1-KR4"/>
@@ -406,6 +428,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="1jv-M7-8hX"/>
+        <segue reference="ZBM-pv-iX1"/>
     </inferredMetricsTieBreakers>
 </document>

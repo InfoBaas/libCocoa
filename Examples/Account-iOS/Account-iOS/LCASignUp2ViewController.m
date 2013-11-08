@@ -58,11 +58,20 @@
 
     OBSApplication *application = [OBSApplication applicationWithClient:delegate];
     OBSAccount *account = [application applicationAccount];
-    [account signUpWithEmail:self.emailTextField.text password:self.passwordTextField.text userName:self.userNameTextField.text userFile:userFile completionHandler:^(OBSAccount *account, OBSSession *session, OBSError *error) {
+    [account signUpWithEmail:self.emailTextField.text password:self.passwordTextField.text userName:self.userNameTextField.text userFile:userFile completionHandler:^(OBSAccount *account, BOOL signedUp, OBSSession *session, OBSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [delegate hideWaitScreen];
-            if (session) {
-                [self performSegueWithIdentifier:@"Segue_2_SessionInfo" sender:session];
+            if (signedUp) {
+                if (session) {
+                    [self performSegueWithIdentifier:@"Segue_2_SessionInfo" sender:session];
+                } else if (error) {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[error description] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+                    [alert show];
+                } else {
+                    [self.navigationController popToRootViewControllerAnimated:YES];
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Check Your Inbox" message:@"You need to confirm your e-mail." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+                    [alert show];
+                }
             } else {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[error description] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
                 [alert show];

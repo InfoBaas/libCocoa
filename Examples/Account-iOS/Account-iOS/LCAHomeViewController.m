@@ -12,16 +12,43 @@
 @interface LCAHomeViewController ()
 
 @property (weak, nonatomic) IBOutlet UITextField *appIdTextField;
+- (IBAction)openSavedSession:(id)sender;
 - (IBAction)backhome:(UIStoryboardSegue *)sender;
 
 @end
 
 @implementation LCAHomeViewController
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    LCAAppDelegate *delegate = (LCAAppDelegate *)[[UIApplication sharedApplication] delegate];
+    self.appIdTextField.text = delegate.appId;
+}
+
+- (IBAction)appIdEditingDidEnd:(id)sender
 {
     LCAAppDelegate *delegate = (LCAAppDelegate *)[[UIApplication sharedApplication] delegate];
     delegate.appId = self.appIdTextField.text;
+}
+
+- (IBAction)openSavedSession:(id)sender
+{
+    LCAAppDelegate *delegate = (LCAAppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    [delegate showWaitScreen];
+
+    [OBSSession openCurrentSessionWithClient:delegate andCompletionHandler:^(BOOL opened, OBSSession *session, OBSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [delegate hideWaitScreen];
+            if (opened && session) {
+                [self performSegueWithIdentifier:@"Segue_2_SessionInfo" sender:session];
+            } else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[error description] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+                [alert show];
+            }
+        });
+    }];
 }
 
 - (void)backhome:(UIStoryboardSegue *)sender

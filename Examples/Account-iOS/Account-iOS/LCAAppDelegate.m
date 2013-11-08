@@ -14,7 +14,25 @@
 
 @end
 
+static NSString *const _appid = @"com.infosistema.openbaas.libcocoa.apps.Account-iOS.appid";
+
 @implementation LCAAppDelegate
+
+- (NSString *)appId
+{
+    return [[NSUserDefaults standardUserDefaults] objectForKey:_appid];
+}
+
+- (void)setAppId:(NSString *)appId
+{
+    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+    if (appId) {
+        [standardUserDefaults setObject:appId forKey:_appid];
+    } else {
+        [standardUserDefaults removeObjectForKey:_appid];
+    }
+    [standardUserDefaults synchronize];
+}
 
 - (void)showWaitScreen
 {
