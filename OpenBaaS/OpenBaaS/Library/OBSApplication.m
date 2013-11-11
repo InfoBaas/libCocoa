@@ -14,7 +14,7 @@
 
 + (OBSApplication *)applicationWithClient:(id<OBSClientProtocol>)client
 {
-    return [[self alloc] initWithClient:client];
+    return client ? [[self alloc] initWithClient:client] : nil;
 }
 
 - (NSString *)applicationId

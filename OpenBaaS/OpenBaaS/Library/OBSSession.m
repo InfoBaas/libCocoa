@@ -33,7 +33,7 @@
     return session;
 }
 
-- (void)saveAsCurrentSession
+- (void)setAsCurrentSession
 {
     _obs_settings_set_sessionToken(self.token);
 }
@@ -41,15 +41,6 @@
 - (BOOL)isCurrentSession
 {
     return [_obs_settings_get_sessionToken() isEqualToString:self.token];
-}
-
-- (BOOL)forgetIfIsCurrentSession
-{
-    if ([self isCurrentSession]) {
-        _obs_settings_set_sessionToken(nil);
-        return YES;
-    }
-    return NO;
 }
 
 + (BOOL)openCurrentSessionWithClient:(id<OBSClientProtocol>)client andCompletionHandler:(void (^)(BOOL, OBSSession *, OBSError *))handler
@@ -68,6 +59,15 @@
 + (void)forgetCurrentSession
 {
     _obs_settings_set_sessionToken(nil);
+}
+
+- (BOOL)forgetIfIsCurrentSession
+{
+    if ([self isCurrentSession]) {
+        _obs_settings_set_sessionToken(nil);
+        return YES;
+    }
+    return NO;
 }
 
 @end
