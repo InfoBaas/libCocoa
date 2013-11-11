@@ -32,12 +32,12 @@
     _application = nil;
 }
 
-- (void)signUpWithEmail:(NSString *)email password:(NSString *)password completionHandler:(OBSAccountSignUpCompletionHandler)handler
+- (void)signUpWithEmail:(NSString *)email password:(NSString *)password completionHandler:(void (^)(OBSAccount *, BOOL, OBSSession *, OBSError *))handler
 {
     [self signUpWithEmail:email password:password userName:nil userFile:nil completionHandler:handler];
 }
 
-- (void)signUpWithEmail:(NSString *)email password:(NSString *)password userName:(NSString *)userName userFile:(NSString *)userFile completionHandler:(OBSAccountSignUpCompletionHandler)handler
+- (void)signUpWithEmail:(NSString *)email password:(NSString *)password userName:(NSString *)userName userFile:(NSString *)userFile completionHandler:(void (^)(OBSAccount *, BOOL, OBSSession *, OBSError *))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         BOOL hasEmail = email && ![email isEqualToString:[NSString string]];
@@ -98,7 +98,7 @@
     });
 }
 
-- (void)signInWithEmail:(NSString *)email password:(NSString *)password completionHandler:(OBSAccountSignInCompletionHandler)handler
+- (void)signInWithEmail:(NSString *)email password:(NSString *)password completionHandler:(void (^)(OBSAccount *, BOOL, OBSSession *, OBSError *))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         BOOL hasEmail = email && ![email isEqualToString:[NSString string]];
@@ -155,7 +155,7 @@
     });
 }
 
-- (void)signOutFromSession:(OBSSession *)session closingAllOthers:(BOOL)closeAll withCompletionHandler:(OBSAccountSignOutCompletionHandler)handler
+- (void)signOutFromSession:(OBSSession *)session closingAllOthers:(BOOL)closeAll withCompletionHandler:(void (^)(OBSAccount *, BOOL, OBSSession *, OBSError *))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [OBSConnection post_accountSignOutWithSession:session all:closeAll completionHandler:^(NSData *data, NSError *error) {
@@ -170,7 +170,7 @@
     });
 }
 
-- (void)recoverPasswordForEmail:(NSString *)email withCompletionHandler:(OBSAccountRecoverCompletionHandler)handler
+- (void)recoverPasswordForEmail:(NSString *)email withCompletionHandler:(void (^)(OBSAccount *, BOOL, OBSError *))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         BOOL hasEmail = email && ![email isEqualToString:[NSString string]];

@@ -52,7 +52,7 @@
     return NO;
 }
 
-+ (BOOL)openCurrentSessionWithClient:(id<OBSClientProtocol>)client andCompletionHandler:(OBSSessionOpenCompletionHandler)handler
++ (BOOL)openCurrentSessionWithClient:(id<OBSClientProtocol>)client andCompletionHandler:(void (^)(BOOL, OBSSession *, OBSError *))handler
 {
     NSString *sessionToken = _obs_settings_get_sessionToken();
     if (!sessionToken) {

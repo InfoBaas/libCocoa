@@ -11,8 +11,6 @@
 @class OBSSession;
 @class OBSUser;
 
-typedef void (^OBSSessionOpenCompletionHandler)(BOOL opened, OBSSession *session, OBSError *error);
-
 @interface OBSSession : OBSObject
 
 @property (nonatomic, strong, readonly) OBSUser *user;
@@ -20,7 +18,7 @@ typedef void (^OBSSessionOpenCompletionHandler)(BOOL opened, OBSSession *session
 - (void)saveAsCurrentSession;
 - (BOOL)isCurrentSession;
 - (BOOL)forgetIfIsCurrentSession;
-+ (BOOL)openCurrentSessionWithClient:(id<OBSClientProtocol>)client andCompletionHandler:(OBSSessionOpenCompletionHandler)handler;
++ (BOOL)openCurrentSessionWithClient:(id<OBSClientProtocol>)client andCompletionHandler:(void(^)(BOOL opened, OBSSession *session, OBSError *error))handler;
 + (void)forgetCurrentSession;
 
 @end
