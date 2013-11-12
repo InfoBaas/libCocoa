@@ -27,7 +27,7 @@
     [super viewDidLoad];
 
     self.userIdLabel.text = [NSString stringWithFormat:@"id: %@", self.session.user.userId];
-    self.userEmailLabel.text = [NSString stringWithFormat:@"e-mail: %@", self.session.user.email];
+    self.userEmailLabel.text = [NSString stringWithFormat:@"e-mail: %@", self.session.user.userEmail];
     self.userNameLabel.text = [NSString stringWithFormat:@"name: %@", self.session.user.userName];
     self.userFileTextView.text = [NSString stringWithFormat:@"%@", self.session.user.userFile];
 }

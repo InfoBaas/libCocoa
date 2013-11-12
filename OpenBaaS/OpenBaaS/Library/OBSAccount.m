@@ -51,6 +51,7 @@
                         return;
                     }
 
+                    // Is data empty?
                     if (![data length]) {
                         handler(self, YES, nil, nil);
                     }
@@ -62,8 +63,10 @@
                         return;
                     }
 
+                    // Create session.
                     OBSSession *session = [OBSSession sessionFromJSON:json withClient:self.client];
                     if (!session) {
+                        // Session wasn't created.
                         handler(self, YES, nil, [OBSError errorWithDomain:kOBSErrorDomainRemote code:kOBSRemoteErrorCodeResultDataIllFormed userInfo:nil]);
                         return;
                     }
@@ -119,8 +122,10 @@
                         return;
                     }
 
+                    // Create session.
                     OBSSession *session = [OBSSession sessionFromJSON:json withClient:self.client];
                     if (!session) {
+                        // Session wasn't created.
                         handler(self, YES, nil, [OBSError errorWithDomain:kOBSErrorDomainRemote code:kOBSRemoteErrorCodeResultDataIllFormed userInfo:nil]);
                         return;
                     }

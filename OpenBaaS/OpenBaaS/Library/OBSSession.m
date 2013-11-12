@@ -14,19 +14,29 @@
 
 @implementation OBSSession
 
+- (void)dealloc
+{
+    _user = nil;
+    _token = nil;
+}
+
 + (OBSSession *)sessionFromJSON:(NSDictionary *)json withClient:(id<OBSClientProtocol>)client
 {
     NSString *sessionToken = json[@"returnToken"];
     if (!sessionToken || [sessionToken isEqual:[NSNull null]]) {
-        return nil;
+        return nil; // JSON does not contain a session token.
     }
 
+    // Create user.
     OBSUser *user = [OBSUser userFromJSON:json withClient:client];
     if (!user) {
+        // User wasn't created.
         return nil;
     }
 
+    // Create and initialise object.
     OBSSession *session = [[OBSSession alloc] initWithClient:client];
+    // Set proprieties.
     session.token = sessionToken;
     session.user = user;
 
@@ -47,7 +57,7 @@
 {
     NSString *sessionToken = _obs_settings_get_sessionToken();
     if (!sessionToken) {
-        return NO;
+        return NO; // No current session.
     }
 
 #warning TODO: open session
