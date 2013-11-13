@@ -44,7 +44,7 @@
         BOOL hasPassword = password && ![password isEqualToString:[NSString string]];
         if (hasEmail && hasPassword) {
             if (obs_validateEmailFormat(email)) {
-                [OBSConnection post_account:self signUpWithEmail:email password:password userName:userName userFile:userFile completionHandler:^(NSData *data, NSError *error) {
+                [OBSConnection post_account:self signUpWithEmail:email password:password userName:userName userFile:userFile completionHandler:^(id result, NSError *error) {
                     // Called with error?
                     if (error) {
                         handler(self, NO, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
@@ -52,19 +52,16 @@
                     }
 
                     // Is data empty?
-                    if (![data length]) {
+                    if ([result isEqual:[NSNull null]]) {
                         handler(self, YES, nil, nil);
-                    }
-
-                    // Valid JSON?
-                    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-                    if (error) {
-                        handler(self, YES, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
                         return;
                     }
 
                     // Create session.
-                    OBSSession *session = [OBSSession sessionFromJSON:json withClient:self.client];
+                    OBSSession *session = nil;
+                    if ([result isKindOfClass:[NSDictionary class]]) {
+                        session = [OBSSession sessionFromDataJSON:result[OBSConnectionResultDataKey] andMetadataJSON:result[OBSConnectionResultMetadataKey] withClient:self.client];
+                    }
                     if (!session) {
                         // Session wasn't created.
                         handler(self, YES, nil, [OBSError errorWithDomain:kOBSErrorDomainRemote code:kOBSRemoteErrorCodeResultDataIllFormed userInfo:nil]);
@@ -108,22 +105,18 @@
         BOOL hasPassword = password && ![password isEqualToString:[NSString string]];
         if (hasEmail && hasPassword) {
             if (obs_validateEmailFormat(email)) {
-                [OBSConnection post_account:self signInWithEmail:email password:password completionHandler:^(NSData *data, NSError *error) {
+                [OBSConnection post_account:self signInWithEmail:email password:password completionHandler:^(id result, NSError *error) {
                     // Called with error?
                     if (error) {
                         handler(self, NO, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
                         return;
                     }
 
-                    // Valid JSON?
-                    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-                    if (error) {
-                        handler(self, YES, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
-                        return;
-                    }
-
                     // Create session.
-                    OBSSession *session = [OBSSession sessionFromJSON:json withClient:self.client];
+                    OBSSession *session = nil;
+                    if ([result isKindOfClass:[NSDictionary class]]) {
+                        session = [OBSSession sessionFromDataJSON:result[OBSConnectionResultDataKey] andMetadataJSON:result[OBSConnectionResultMetadataKey] withClient:self.client];
+                    }
                     if (!session) {
                         // Session wasn't created.
                         handler(self, YES, nil, [OBSError errorWithDomain:kOBSErrorDomainRemote code:kOBSRemoteErrorCodeResultDataIllFormed userInfo:nil]);
@@ -163,7 +156,7 @@
 - (void)signOutFromSession:(OBSSession *)session closingAllOthers:(BOOL)closeAll withCompletionHandler:(void (^)(OBSAccount *, BOOL, OBSSession *, OBSError *))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [OBSConnection post_accountSignOutWithSession:session all:closeAll completionHandler:^(NSData *data, NSError *error) {
+        [OBSConnection post_accountSignOutWithSession:session all:closeAll completionHandler:^(id result, NSError *error) {
             // Called with error?
             if (error) {
                 handler(self, NO, session, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
@@ -181,7 +174,7 @@
         BOOL hasEmail = email && ![email isEqualToString:[NSString string]];
         if (hasEmail) {
             if (obs_validateEmailFormat(email)) {
-                [OBSConnection post_account:self recoveryWithEmail:email completionHandler:^(NSData *data, NSError *error) {
+                [OBSConnection post_account:self recoveryWithEmail:email completionHandler:^(id result, NSError *error) {
                     // Called with error?
                     if (error) {
                         handler(self, NO, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);

@@ -13,6 +13,6 @@
 @property (nonatomic, strong) NSString *token;
 @property (nonatomic, strong) OBSUser *user;
 
-+ (OBSSession *)sessionFromJSON:(NSDictionary *)json withClient:(id<OBSClientProtocol>)client;
++ (OBSSession *)sessionFromDataJSON:(NSDictionary *)data andMetadataJSON:(NSDictionary *)metadata withClient:(id<OBSClientProtocol>)client;
 
 @end

@@ -12,6 +12,9 @@
 @class OBSApplication;
 @class OBSSession;
 
+extern NSString *const OBSConnectionResultDataKey;
+extern NSString *const OBSConnectionResultMetadataKey;
+
 @interface OBSConnection : NSObject
 
 + (NSString *)OpenBaaSAddress;
@@ -26,12 +29,12 @@
 
 #pragma mark apps/<appid>/account
 
-+ (void)post_account:(OBSAccount *)account signUpWithEmail:(NSString *)email password:(NSString *)password userName:(NSString *)userName userFile:(NSString *)userFile completionHandler:(void (^)(NSData *data, NSError *error))handler;
++ (void)post_account:(OBSAccount *)account signUpWithEmail:(NSString *)email password:(NSString *)password userName:(NSString *)userName userFile:(NSString *)userFile completionHandler:(void (^)(id result, NSError *error))handler;
 
-+ (void)post_account:(OBSAccount *)account signInWithEmail:(NSString *)email password:(NSString *)password completionHandler:(void (^)(NSData *data, NSError *error))handler;
++ (void)post_account:(OBSAccount *)account signInWithEmail:(NSString *)email password:(NSString *)password completionHandler:(void (^)(id result, NSError *error))handler;
 
-+ (void)post_accountSignOutWithSession:(OBSSession *)session all:(BOOL)all completionHandler:(void (^)(NSData *data, NSError *error))handler;
++ (void)post_accountSignOutWithSession:(OBSSession *)session all:(BOOL)all completionHandler:(void (^)(id result, NSError *error))handler;
 
-+ (void)post_account:(OBSAccount *)account recoveryWithEmail:(NSString *)email completionHandler:(void (^)(NSData *data, NSError *error))handler;
++ (void)post_account:(OBSAccount *)account recoveryWithEmail:(NSString *)email completionHandler:(void (^)(id result, NSError *error))handler;
 
 @end

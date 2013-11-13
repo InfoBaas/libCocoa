@@ -63,9 +63,9 @@
  *                  - _error_:
  *                     An error, if one occurs. `nil` if no error occurs.
  *
- * @note If the application requires an e-mail confirmation, a session will not
- *       be opened. In such a case, the handler will run with the argument values
- *       `YES`, `nil` and `nil`, in the defined order.
+ *  @note If the application requires an e-mail confirmation, a session will not
+ *        be opened. In such a case, the handler will run with the argument values
+ *        `YES`, `nil` and `nil`, in the defined order.
  *
  *  @see signUpWithEmail:password:completionHandler:
  */

@@ -14,12 +14,15 @@
 #import "OBSApplication+.h"
 #import "OBSSession+.h"
 
+NSString *const OBSConnectionResultDataKey = @"data";
+NSString *const OBSConnectionResultMetadataKey = @"metadata";
+
 @interface OBSConnection ()
 
 + (void)setCommonHeaderFieldsToRequest:(NSMutableURLRequest *)request;
 
 + (NSError *)errorWithResponse:(NSURLResponse *)response andData:(NSData *)data;
-+ (void(^)(NSURLResponse *, NSData *, NSError *))innerHandlerWithOuterHandler:(void(^)(NSData *, NSError *))handler;
++ (void(^)(NSURLResponse *, NSData *, NSError *))innerHandlerWithOuterHandler:(void(^)(id, NSError *))handler;
 
 @end
 
@@ -74,14 +77,21 @@
     return error;
 }
 
-+ (void (^)(NSURLResponse *, NSData *, NSError *))innerHandlerWithOuterHandler:(void (^)(NSData *, NSError *))handler
++ (void (^)(NSURLResponse *, NSData *, NSError *))innerHandlerWithOuterHandler:(void (^)(id, NSError *))handler
 {
     return ^(NSURLResponse *response, NSData *data, NSError *error) {
+        id result = nil;
         if (data) {
             error = [self errorWithResponse:response andData:data];
-            if (error) data = nil;
+            if (!error) {
+                if ([data length]) {
+                    result = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+                } else {
+                    result = [NSNull null];
+                }
+            }
         }
-        handler(data, error);
+        handler(result, error);
     };
 }
 
@@ -99,7 +109,7 @@
     return request;
 }
 
-+ (void)post_account:(OBSAccount *)account signUpWithEmail:(NSString *)email password:(NSString *)password userName:(NSString *)userName userFile:(NSString *)userFile completionHandler:(void (^)(NSData *, NSError *))handler
++ (void)post_account:(OBSAccount *)account signUpWithEmail:(NSString *)email password:(NSString *)password userName:(NSString *)userName userFile:(NSString *)userFile completionHandler:(void (^)(id, NSError *))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/signup", [self OpenBaaSAddress], [[account client] appId]];
@@ -124,7 +134,7 @@
     });
 }
 
-+ (void)post_account:(OBSAccount *)account signInWithEmail:(NSString *)email password:(NSString *)password completionHandler:(void (^)(NSData *, NSError *))handler
++ (void)post_account:(OBSAccount *)account signInWithEmail:(NSString *)email password:(NSString *)password completionHandler:(void (^)(id, NSError *))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/signin", [self OpenBaaSAddress], [[account client] appId]];
@@ -148,7 +158,7 @@
     });
 }
 
-+ (void)post_accountSignOutWithSession:(OBSSession *)session all:(BOOL)all completionHandler:(void (^)(NSData *, NSError *))handler
++ (void)post_accountSignOutWithSession:(OBSSession *)session all:(BOOL)all completionHandler:(void (^)(id, NSError *))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/signout/%@", [self OpenBaaSAddress], [[session client] appId], [session token]];
@@ -171,7 +181,7 @@
     });
 }
 
-+ (void)post_account:(OBSAccount *)account recoveryWithEmail:(NSString *)email completionHandler:(void (^)(NSData *, NSError *))handler
++ (void)post_account:(OBSAccount *)account recoveryWithEmail:(NSString *)email completionHandler:(void (^)(id, NSError *))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/recovery", [self OpenBaaSAddress], [[account client] appId]];

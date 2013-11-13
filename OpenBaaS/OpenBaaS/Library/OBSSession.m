@@ -20,15 +20,15 @@
     _token = nil;
 }
 
-+ (OBSSession *)sessionFromJSON:(NSDictionary *)json withClient:(id<OBSClientProtocol>)client
++ (OBSSession *)sessionFromDataJSON:(NSDictionary *)data andMetadataJSON:(NSDictionary *)metadata withClient:(id<OBSClientProtocol>)client
 {
-    NSString *sessionToken = json[@"returnToken"];
+    NSString *sessionToken = data[@"returnToken"];
     if (!sessionToken || [sessionToken isEqual:[NSNull null]]) {
         return nil; // JSON does not contain a session token.
     }
 
     // Create user.
-    OBSUser *user = [OBSUser userFromJSON:json withClient:client];
+    OBSUser *user = [OBSUser userFromDataJSON:data andMetadataJSON:metadata withClient:client];
     if (!user) {
         // User wasn't created.
         return nil;

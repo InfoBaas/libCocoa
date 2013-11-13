@@ -75,7 +75,6 @@
 			children = (
 				CE93937D1827F94800E601A7 /* Account-iOS */,
 				CE9393761827F94800E601A7 /* Frameworks */,
-				CE9393AC1827F9D300E601A7 /* OpenBaaS.framework */,
 				CE9393751827F94800E601A7 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -95,6 +94,7 @@
 				CE9393771827F94800E601A7 /* Foundation.framework */,
 				CE9393791827F94800E601A7 /* CoreGraphics.framework */,
 				CE93937B1827F94800E601A7 /* UIKit.framework */,
+				CE9393AC1827F9D300E601A7 /* OpenBaaS.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

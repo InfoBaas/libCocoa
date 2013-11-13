@@ -18,21 +18,21 @@
     _userFile = nil;
 }
 
-+ (OBSUser *)userFromJSON:(NSDictionary *)json withClient:(id<OBSClientProtocol>)client
++ (OBSUser *)userFromDataJSON:(NSDictionary *)data andMetadataJSON:(NSDictionary *)metadata withClient:(id<OBSClientProtocol>)client
 {
-    NSString *userId = json[@"userId"];
+    NSString *userId = data[@"userId"];
     if (!userId || [userId isEqual:[NSNull null]]) {
         return nil; // userId is missing from JSON.
     }
-    NSString *userEmail = json[@"email"];
+    NSString *userEmail = data[@"email"];
     if (!userEmail || [userEmail isEqual:[NSNull null]]) {
         return nil; // User's e-mail is missing from JSON.
     }
-    NSString *userName = json[@"userName"];
+    NSString *userName = data[@"userName"];
     if ([userName isEqual:[NSNull null]]) {
         userName = nil; // User has no name.
     }
-    NSString *userFile = json[@""];
+    NSString *userFile = data[@"userFile"];
     if ([userFile isEqual:[NSNull null]]) {
         userFile = nil; // User has no file.
     }

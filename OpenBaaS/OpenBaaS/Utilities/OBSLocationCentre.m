@@ -69,7 +69,7 @@ static NSString *const _didStopWithErrorObservers = @"didStopWithErrorObservers"
                 }
                 [self setCurrentLocation:nil];
             }
-#elif TARGET_OS_MAC
+#else
             if (_running) {
                 [self.locationManager startUpdatingLocation];
             } else {

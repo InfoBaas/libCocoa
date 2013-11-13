@@ -15,6 +15,6 @@
 @property (nonatomic, strong) NSString *userName;
 @property (nonatomic, strong) NSString *userFile;
 
-+ (OBSUser *)userFromJSON:(NSDictionary *)json withClient:(id<OBSClientProtocol>)client;
++ (OBSUser *)userFromDataJSON:(NSDictionary *)data andMetadataJSON:(NSDictionary *)metadata withClient:(id<OBSClientProtocol>)client;
 
 @end
