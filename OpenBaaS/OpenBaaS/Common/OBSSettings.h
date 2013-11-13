@@ -7,3 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
+
+void obs_settings_set_sendLocationUpdates (BOOL send);
+BOOL obs_settings_get_sendLocationUpdates (void);

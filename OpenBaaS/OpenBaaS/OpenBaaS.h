@@ -13,6 +13,7 @@
 #pragma mark - Utilities
 
 #import "OBSEmailValidation.h"
+#import "OBSLocationCentre.h"
 
 #pragma mark - Common
 

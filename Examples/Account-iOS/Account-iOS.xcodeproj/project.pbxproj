@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CE3CBBC1182A6024000C2F17 /* LCASessionInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3CBBC0182A6024000C2F17 /* LCASessionInfoViewController.m */; };
+		CE90AE321833817900D68583 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE90AE311833817900D68583 /* CoreLocation.framework */; };
 		CE9393781827F94800E601A7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE9393771827F94800E601A7 /* Foundation.framework */; };
 		CE93937A1827F94800E601A7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE9393791827F94800E601A7 /* CoreGraphics.framework */; };
 		CE93937C1827F94800E601A7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE93937B1827F94800E601A7 /* UIKit.framework */; };
@@ -27,6 +28,7 @@
 /* Begin PBXFileReference section */
 		CE3CBBBF182A6024000C2F17 /* LCASessionInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LCASessionInfoViewController.h; sourceTree = "<group>"; };
 		CE3CBBC0182A6024000C2F17 /* LCASessionInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LCASessionInfoViewController.m; sourceTree = "<group>"; };
+		CE90AE311833817900D68583 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		CE9393741827F94800E601A7 /* Account-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Account-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE9393771827F94800E601A7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		CE9393791827F94800E601A7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -57,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE90AE321833817900D68583 /* CoreLocation.framework in Frameworks */,
 				CE93937A1827F94800E601A7 /* CoreGraphics.framework in Frameworks */,
 				CE93937C1827F94800E601A7 /* UIKit.framework in Frameworks */,
 				CE9393781827F94800E601A7 /* Foundation.framework in Frameworks */,
@@ -72,6 +75,7 @@
 			children = (
 				CE93937D1827F94800E601A7 /* Account-iOS */,
 				CE9393761827F94800E601A7 /* Frameworks */,
+				CE9393AC1827F9D300E601A7 /* OpenBaaS.framework */,
 				CE9393751827F94800E601A7 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -87,7 +91,7 @@
 		CE9393761827F94800E601A7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CE9393AC1827F9D300E601A7 /* OpenBaaS.framework */,
+				CE90AE311833817900D68583 /* CoreLocation.framework */,
 				CE9393771827F94800E601A7 /* Foundation.framework */,
 				CE9393791827F94800E601A7 /* CoreGraphics.framework */,
 				CE93937B1827F94800E601A7 /* UIKit.framework */,

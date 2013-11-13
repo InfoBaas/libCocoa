@@ -47,9 +47,9 @@
  *
  *  @return A newly created instance of OBSAccount.
  *
- *  @warning An account has a reference to its application. To avoid cycled
- *           references, a new object is created, initialised and returned every
- *           time the application receives an applicationAccount message.
+ *  @note An account has a reference to its application. To avoid cycled
+ *        references, a new object is created, initialised and returned every
+ *        time the application receives an applicationAccount message.
  */
 - (OBSAccount *)applicationAccount;
 

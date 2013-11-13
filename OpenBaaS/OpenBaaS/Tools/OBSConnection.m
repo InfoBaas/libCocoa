@@ -8,6 +8,8 @@
 
 #import "OBSConnection.h"
 
+#import "OBSLocationCentre+.h"
+
 #import "OBSAccount+.h"
 #import "OBSApplication+.h"
 #import "OBSSession+.h"
@@ -45,7 +47,12 @@
         [request setValue:sessionToken forHTTPHeaderField:@"sessionToken"];
     }
 
-#warning Missing Header Field: location=<latitude>:<longitude>
+    CLLocation *location = [OBSLocationCentre currentLocation];
+    if (location) {
+        CLLocationCoordinate2D coordinate = [location coordinate];
+        NSString *value = [NSString stringWithFormat:@"%lf:%lf", coordinate.latitude, coordinate.longitude];
+        [request setValue:value forHTTPHeaderField:@"location"];
+    }
 }
 
 + (NSError *)errorWithResponse:(NSURLResponse *)response andData:(NSData *)data
