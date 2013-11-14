@@ -30,7 +30,7 @@
 /**
  *  Tells the observer that the authorization status for the application changed.
  *
- *  This method is called whenever the application’s ability to use location
+ *  This method is called whenever the application's ability to use location
  *  services changes. Changes can occur because the user allowed or denied the
  *  use of location services for your application or for the system as a whole.
  *
@@ -45,7 +45,7 @@
  *  Tells the observer that the location centre has stopped updating locations
  *  due to the occurrence of an error.
  *
- *  If the user denies your application’s use of the location service, this
+ *  If the user denies your application's use of the location service, this
  *  method reports a kCLErrorDenied error. Upon receiving such an error, you
  *  should stop the location service.
  *

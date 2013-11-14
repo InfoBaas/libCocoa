@@ -60,8 +60,26 @@
         return NO; // No current session.
     }
 
-#warning TODO: open session
-    OBS_NotYetImplemented
+    [OBSConnection get_accountSessionWithToken:sessionToken client:client completionHandler:^(id result, NSError *error) {
+        // Called with error?
+        if (error) {
+            handler(NO, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+            return;
+        }
+
+        // Create session.
+        OBSSession *session = nil;
+        if ([result isKindOfClass:[NSDictionary class]]) {
+            session = [self sessionFromDataJSON:result[OBSConnectionResultDataKey] andMetadataJSON:result[OBSConnectionResultMetadataKey] withClient:client];
+        }
+        if (!session) {
+            // Session wasn't created.
+            handler(YES, nil, [OBSError errorWithDomain:kOBSErrorDomainRemote code:kOBSRemoteErrorCodeResultDataIllFormed userInfo:nil]);
+            return;
+        }
+
+        handler(YES, session, nil);
+    }];
 
     return YES;
 }

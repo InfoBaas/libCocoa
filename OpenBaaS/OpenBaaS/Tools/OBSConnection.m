@@ -19,12 +19,15 @@ NSString *const OBSConnectionResultMetadataKey = @"metadata";
 
 @interface OBSConnection ()
 
-+ (void)setCommonHeaderFieldsToRequest:(NSMutableURLRequest *)request;
++ (void)setCurrentLocationHeaderFieldToRequest:(NSMutableURLRequest *)request;
 
 + (NSError *)errorWithResponse:(NSURLResponse *)response andData:(NSData *)data;
 + (void(^)(NSURLResponse *, NSData *, NSError *))innerHandlerWithOuterHandler:(void(^)(id, NSError *))handler;
 
 @end
+
+static NSString *const _OBSRequestHeaderSessionToken = @"sessionToken";
+static NSString *const _OBSRequestHeaderLocation = @"location";
 
 #pragma mark -
 
@@ -43,18 +46,13 @@ NSString *const OBSConnectionResultMetadataKey = @"metadata";
 
 #pragma mark Extension
 
-+ (void)setCommonHeaderFieldsToRequest:(NSMutableURLRequest *)request
++ (void)setCurrentLocationHeaderFieldToRequest:(NSMutableURLRequest *)request
 {
-    NSString *sessionToken = _obs_settings_get_sessionToken();
-    if (sessionToken) {
-        [request setValue:sessionToken forHTTPHeaderField:@"sessionToken"];
-    }
-
     CLLocation *location = [OBSLocationCentre currentLocation];
     if (location) {
         CLLocationCoordinate2D coordinate = [location coordinate];
         NSString *value = [NSString stringWithFormat:@"%lf:%lf", coordinate.latitude, coordinate.longitude];
-        [request setValue:value forHTTPHeaderField:@"location"];
+        [request setValue:value forHTTPHeaderField:_OBSRequestHeaderLocation];
     }
 }
 
@@ -79,6 +77,8 @@ NSString *const OBSConnectionResultMetadataKey = @"metadata";
 
 + (void (^)(NSURLResponse *, NSData *, NSError *))innerHandlerWithOuterHandler:(void (^)(id, NSError *))handler
 {
+    if (!handler)
+        return nil;
     return ^(NSURLResponse *response, NSData *data, NSError *error) {
         id result = nil;
         if (data) {
@@ -93,6 +93,35 @@ NSString *const OBSConnectionResultMetadataKey = @"metadata";
         }
         handler(result, error);
     };
+}
+
+@end
+
+#pragma mark - GET
+
+@implementation OBSConnection (GET)
+
++ (NSMutableURLRequest *)get_requestForAddress:(NSString *)address
+{
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:address]];
+    [request setHTTPMethod:@"GET"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    return request;
+}
+
+#pragma mark apps/<appid>/account
+
++ (void)get_accountSessionWithToken:(NSString *)sessionToken client:(id<OBSClientProtocol>)client completionHandler:(void (^)(id result, NSError *error))handler
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/session", [self OpenBaaSAddress], [client appId]];
+        NSMutableURLRequest *request = [self get_requestForAddress:address];
+        [self setCurrentLocationHeaderFieldToRequest:request];
+        [request setValue:sessionToken forHTTPHeaderField:_OBSRequestHeaderSessionToken];
+        [NSURLConnection sendAsynchronousRequest:request
+                                           queue:[NSOperationQueue new]
+                               completionHandler:[self innerHandlerWithOuterHandler:handler]];
+    });
 }
 
 @end
@@ -126,7 +155,7 @@ NSString *const OBSConnectionResultMetadataKey = @"metadata";
             return;
         }
 
-        [self setCommonHeaderFieldsToRequest:request];
+        [self setCurrentLocationHeaderFieldToRequest:request];
 
         [NSURLConnection sendAsynchronousRequest:request
                                            queue:[NSOperationQueue new]
@@ -150,7 +179,7 @@ NSString *const OBSConnectionResultMetadataKey = @"metadata";
             return;
         }
 
-        [self setCommonHeaderFieldsToRequest:request];
+        [self setCurrentLocationHeaderFieldToRequest:request];
 
         [NSURLConnection sendAsynchronousRequest:request
                                            queue:[NSOperationQueue new]
@@ -161,7 +190,7 @@ NSString *const OBSConnectionResultMetadataKey = @"metadata";
 + (void)post_accountSignOutWithSession:(OBSSession *)session all:(BOOL)all completionHandler:(void (^)(id, NSError *))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/signout/%@", [self OpenBaaSAddress], [[session client] appId], [session token]];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/signout", [self OpenBaaSAddress], [[session client] appId]];
         NSDictionary *body = @{@"all": [NSNumber numberWithBool:all]};
 
         NSMutableURLRequest *request = [self post_requestForAddress:address];
@@ -173,7 +202,8 @@ NSString *const OBSConnectionResultMetadataKey = @"metadata";
             return;
         }
 
-        [self setCommonHeaderFieldsToRequest:request];
+        [self setCurrentLocationHeaderFieldToRequest:request];
+        [request setValue:[session token] forHTTPHeaderField:_OBSRequestHeaderSessionToken];
 
         [NSURLConnection sendAsynchronousRequest:request
                                            queue:[NSOperationQueue new]
@@ -195,8 +225,6 @@ NSString *const OBSConnectionResultMetadataKey = @"metadata";
             handler(nil, error);
             return;
         }
-
-        [self setCommonHeaderFieldsToRequest:request];
 
         [NSURLConnection sendAsynchronousRequest:request
                                            queue:[NSOperationQueue new]

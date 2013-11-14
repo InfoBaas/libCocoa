@@ -21,6 +21,18 @@ extern NSString *const OBSConnectionResultMetadataKey;
 
 @end
 
+#pragma mark - GET
+
+@interface OBSConnection (GET)
+
++ (NSMutableURLRequest *)get_requestForAddress:(NSString *)address;
+
+#pragma mark apps/<appid>/account
+
++ (void)get_accountSessionWithToken:(NSString *)sessionToken client:(id<OBSClientProtocol>)client completionHandler:(void (^)(id result, NSError *error))handler;
+
+@end
+
 #pragma mark - POST
 
 @interface OBSConnection (POST)
