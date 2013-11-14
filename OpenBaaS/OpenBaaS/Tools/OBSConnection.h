@@ -31,6 +31,12 @@ extern NSString *const OBSConnectionResultMetadataKey;
 
 + (void)get_accountSessionWithToken:(NSString *)sessionToken client:(id<OBSClientProtocol>)client completionHandler:(void (^)(id result, NSError *error))handler;
 
+#pragma mark apps/<appid>/users
+
++ (void)get_usersWithCompletionHandler:(void (^)(id result, NSError *error))handler;
+
++ (void)get_usersUserWithId:(NSString *)userId completionHandler:(void (^)(id result, NSError *error))handler;
+
 @end
 
 #pragma mark - POST
@@ -57,8 +63,8 @@ extern NSString *const OBSConnectionResultMetadataKey;
 
 + (NSMutableURLRequest *)patch_requestForAddress:(NSString *)address;
 
-#pragma mark apps/<appid>/account
+#pragma mark apps/<appid>/account/session
 
-+ (void)patch_accountSessionWithToken:(NSString *)sessionToken client:(id<OBSClientProtocol>)client completionHandler:(void (^)(id result, NSError *error))handler;
++ (void)patch_session:(OBSSession *)session withCompletionHandler:(void (^)(id result, NSError *error))handler;
 
 @end

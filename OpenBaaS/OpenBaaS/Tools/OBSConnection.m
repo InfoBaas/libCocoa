@@ -124,6 +124,20 @@ static NSString *const _OBSRequestHeaderLocation = @"location";
     });
 }
 
+#pragma mark apps/<appid>/users
+
++ (void)get_usersWithCompletionHandler:(void (^)(id result, NSError *error))handler
+{
+#warning Not Yet Implemented
+    OBS_NotYetImplemented
+}
+
++ (void)get_usersUserWithId:(NSString *)userId completionHandler:(void (^)(id result, NSError *error))handler
+{
+#warning Not Yet Implemented
+    OBS_NotYetImplemented
+}
+
 @end
 
 #pragma mark - POST
@@ -248,13 +262,13 @@ static NSString *const _OBSRequestHeaderLocation = @"location";
 
 #pragma mark apps/<appid>/account
 
-+ (void)patch_accountSessionWithToken:(NSString *)sessionToken client:(id<OBSClientProtocol>)client completionHandler:(void (^)(id result, NSError *error))handler
++ (void)patch_session:(OBSSession *)session withCompletionHandler:(void (^)(id result, NSError *error))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/session", [self OpenBaaSAddress], [client appId]];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/session", [self OpenBaaSAddress], [[session client] appId]];
         NSMutableURLRequest *request = [self get_requestForAddress:address];
         [self setCurrentLocationHeaderFieldToRequest:request];
-        [request setValue:sessionToken forHTTPHeaderField:_OBSRequestHeaderSessionToken];
+        [request setValue:[session token] forHTTPHeaderField:_OBSRequestHeaderSessionToken];
         [NSURLConnection sendAsynchronousRequest:request
                                            queue:[NSOperationQueue new]
                                completionHandler:[self innerHandlerWithOuterHandler:handler]];

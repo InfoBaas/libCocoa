@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class OBSAccount;
+@class OBSUser;
 
 @interface OBSApplication : OBSObject
 
@@ -52,5 +53,11 @@
  *        time the application receives an applicationAccount message.
  */
 - (OBSAccount *)applicationAccount;
+
+- (void)getUserIdsWithCompletionHandler:(void(^)(OBSApplication *application, NSArray *userIds, OBSError *error))handler;
+
+- (void)getUserWithId:(NSString *)userId withCompletionHandler:(void(^)(OBSApplication *application, OBSUser *user, OBSError *error))handler;
+
+- (void)getUsersWithCompletionHandler:(void(^)(OBSApplication *application, NSArray *userIds, OBSError *error))handler andElementCompletionHandler:(void(^)(OBSApplication *application, OBSUser *user, OBSError *error))elementHandler;
 
 @end

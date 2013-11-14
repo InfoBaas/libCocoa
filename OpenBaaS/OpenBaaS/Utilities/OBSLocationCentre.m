@@ -155,7 +155,7 @@ static NSString *const _didStopWithErrorObservers = @"didStopWithErrorObservers"
         CLLocationCoordinate2D lastCoordinates = [lastLocation coordinate];
         CLLocationCoordinate2D currentCoordinates = [currentLocation coordinate];
         if (lastCoordinates.latitude != currentCoordinates.latitude || lastCoordinates.longitude != currentCoordinates.longitude) {
-            [OBSConnection patch_accountSessionWithToken:[trackedSession token] client:[trackedSession client] completionHandler:nil];
+            [OBSConnection patch_session:trackedSession withCompletionHandler:nil];
         }
     }
 
