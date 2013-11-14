@@ -187,10 +187,10 @@ static NSString *const _OBSRequestHeaderLocation = @"location";
     });
 }
 
-+ (void)post_accountSignOutWithSession:(OBSSession *)session all:(BOOL)all completionHandler:(void (^)(id, NSError *))handler
++ (void)post_account:(OBSAccount *)account signOutWithSession:(OBSSession *)session all:(BOOL)all completionHandler:(void (^)(id, NSError *))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/signout", [self OpenBaaSAddress], [[session client] appId]];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/signout", [self OpenBaaSAddress], [[account client] appId]];
         NSDictionary *body = @{@"all": [NSNumber numberWithBool:all]};
 
         NSMutableURLRequest *request = [self post_requestForAddress:address];
@@ -203,7 +203,7 @@ static NSString *const _OBSRequestHeaderLocation = @"location";
         }
 
         [self setCurrentLocationHeaderFieldToRequest:request];
-        [request setValue:[session token] forHTTPHeaderField:_OBSRequestHeaderSessionToken];
+        [request setValue:(session ? [session token] : _obs_settings_get_sessionToken()) forHTTPHeaderField:_OBSRequestHeaderSessionToken];
 
         [NSURLConnection sendAsynchronousRequest:request
                                            queue:[NSOperationQueue new]

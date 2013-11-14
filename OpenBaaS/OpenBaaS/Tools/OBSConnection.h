@@ -45,7 +45,7 @@ extern NSString *const OBSConnectionResultMetadataKey;
 
 + (void)post_account:(OBSAccount *)account signInWithEmail:(NSString *)email password:(NSString *)password completionHandler:(void (^)(id result, NSError *error))handler;
 
-+ (void)post_accountSignOutWithSession:(OBSSession *)session all:(BOOL)all completionHandler:(void (^)(id result, NSError *error))handler;
++ (void)post_account:(OBSAccount *)account signOutWithSession:(OBSSession *)session all:(BOOL)all completionHandler:(void (^)(id result, NSError *error))handler;
 
 + (void)post_account:(OBSAccount *)account recoveryWithEmail:(NSString *)email completionHandler:(void (^)(id result, NSError *error))handler;
 

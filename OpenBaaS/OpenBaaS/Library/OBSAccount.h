@@ -101,9 +101,10 @@
 /**
  *  Asynchronous sign out of a user.
  *
- *  This method can be used to force OpenBaaS to expire a session.
+ *  This method can be used to force OpenBaaS to expire a session, or all.
  *
- *  @param session  The session to be closed.
+ *  @param session  The session to be closed, or `nil` to close device's current
+ *                  session.
  *  @param closeAll `YES` to close all session related to the user of the
  *                  specified session. `NO` to close only the specified session.
  *  @param handler  The block to be call after attempting this action.

@@ -156,7 +156,7 @@
 - (void)signOutFromSession:(OBSSession *)session closingAllOthers:(BOOL)closeAll withCompletionHandler:(void (^)(OBSAccount *, BOOL, OBSSession *, OBSError *))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [OBSConnection post_accountSignOutWithSession:session all:closeAll completionHandler:^(id result, NSError *error) {
+        [OBSConnection post_account:self signOutWithSession:session all:closeAll completionHandler:^(id result, NSError *error) {
             // Called with error?
             if (error) {
                 handler(self, NO, session, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
