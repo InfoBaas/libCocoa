@@ -12,6 +12,8 @@
 #import <UIKit/UIKit.h>
 #endif
 
+@class OBSSession;
+
 @interface OBSLocationCentre ()
 <OBSLocationCentreObserver,CLLocationManagerDelegate>
 {
@@ -23,6 +25,8 @@
 
     NSDictionary *_observers;
 }
+
+@property (nonatomic, strong) OBSSession *trackedSession;
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, assign, getter = isRunning) BOOL running;

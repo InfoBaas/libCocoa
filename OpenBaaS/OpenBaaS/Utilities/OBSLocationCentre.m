@@ -8,6 +8,10 @@
 
 #import "OBSLocationCentre+.h"
 
+#import "OBSSession+.h"
+
+#import "OBSConnection.h"
+
 static NSString *const _didUpdateLocationObservers = @"didUpdateLocation";
 static NSString *const _didChangeAuthorizationStatusObservers = @"didChangeAuthorizationStatusObservers";
 static NSString *const _didStopWithErrorObservers = @"didStopWithErrorObservers";
@@ -146,12 +150,12 @@ static NSString *const _didStopWithErrorObservers = @"didStopWithErrorObservers"
     CLLocation *lastLocation = [locations lastObject];
     [self setCurrentLocation:lastLocation];
 
-    if (obs_settings_get_sendLocationUpdates()) {
+    OBSSession *trackedSession = [self trackedSession];
+    if (trackedSession) {
         CLLocationCoordinate2D lastCoordinates = [lastLocation coordinate];
         CLLocationCoordinate2D currentCoordinates = [currentLocation coordinate];
         if (lastCoordinates.latitude != currentCoordinates.latitude || lastCoordinates.longitude != currentCoordinates.longitude) {
-#warning TODO: send location (synch in iOS -- asynch in OS X)
-            OBS_NotYetImplemented
+            [OBSConnection patch_accountSessionWithToken:[trackedSession token] client:[trackedSession client] completionHandler:nil];
         }
     }
 
@@ -308,5 +312,10 @@ static NSString *const _didStopWithErrorObservers = @"didStopWithErrorObservers"
 }
 
 #endif
+
++ (void)setSessionToTrack:(OBSSession *)session
+{
+    [[self locationCentre] setTrackedSession:session];
+}
 
 @end

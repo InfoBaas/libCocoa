@@ -50,3 +50,15 @@ extern NSString *const OBSConnectionResultMetadataKey;
 + (void)post_account:(OBSAccount *)account recoveryWithEmail:(NSString *)email completionHandler:(void (^)(id result, NSError *error))handler;
 
 @end
+
+#pragma mark - PATCH
+
+@interface OBSConnection (PATCH)
+
++ (NSMutableURLRequest *)patch_requestForAddress:(NSString *)address;
+
+#pragma mark apps/<appid>/account
+
++ (void)patch_accountSessionWithToken:(NSString *)sessionToken client:(id<OBSClientProtocol>)client completionHandler:(void (^)(id result, NSError *error))handler;
+
+@end

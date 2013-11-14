@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 
+@class OBSSession;
+
 #pragma mark - OBSLocationCentreObserver
 @protocol OBSLocationCentreObserver <NSObject>
 
@@ -206,5 +208,7 @@
 + (void)setUseLowPowerModeWhenInBackground:(BOOL)useLowPowerMode;
 
 #endif
+
++ (void)setSessionToTrack:(OBSSession *)session;
 
 @end

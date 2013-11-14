@@ -233,3 +233,32 @@ static NSString *const _OBSRequestHeaderLocation = @"location";
 }
 
 @end
+
+#pragma mark - PATCH
+
+@implementation OBSConnection (PATCH)
+
++ (NSMutableURLRequest *)patch_requestForAddress:(NSString *)address
+{
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:address]];
+    [request setHTTPMethod:@"PATCH"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    return request;
+}
+
+#pragma mark apps/<appid>/account
+
++ (void)patch_accountSessionWithToken:(NSString *)sessionToken client:(id<OBSClientProtocol>)client completionHandler:(void (^)(id result, NSError *error))handler
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/session", [self OpenBaaSAddress], [client appId]];
+        NSMutableURLRequest *request = [self get_requestForAddress:address];
+        [self setCurrentLocationHeaderFieldToRequest:request];
+        [request setValue:sessionToken forHTTPHeaderField:_OBSRequestHeaderSessionToken];
+        [NSURLConnection sendAsynchronousRequest:request
+                                           queue:[NSOperationQueue new]
+                               completionHandler:[self innerHandlerWithOuterHandler:handler]];
+    });
+}
+
+@end
