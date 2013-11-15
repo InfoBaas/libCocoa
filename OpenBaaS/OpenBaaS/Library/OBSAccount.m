@@ -45,6 +45,9 @@
         if (hasEmail && hasPassword) {
             if (obs_validateEmailFormat(email)) {
                 [OBSConnection post_account:self signUpWithEmail:email password:password userName:userName userFile:userFile completionHandler:^(id result, NSError *error) {
+                    if (!handler)
+                        return;
+
                     // Called with error?
                     if (error) {
                         handler(self, NO, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
@@ -106,6 +109,9 @@
         if (hasEmail && hasPassword) {
             if (obs_validateEmailFormat(email)) {
                 [OBSConnection post_account:self signInWithEmail:email password:password completionHandler:^(id result, NSError *error) {
+                    if (!handler)
+                        return;
+
                     // Called with error?
                     if (error) {
                         handler(self, NO, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
@@ -157,6 +163,9 @@
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [OBSConnection post_account:self signOutWithSession:session all:closeAll completionHandler:^(id result, NSError *error) {
+            if (!handler)
+                return;
+
             // Called with error?
             if (error) {
                 handler(self, NO, session, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
@@ -175,6 +184,9 @@
         if (hasEmail) {
             if (obs_validateEmailFormat(email)) {
                 [OBSConnection post_account:self recoveryWithEmail:email completionHandler:^(id result, NSError *error) {
+                    if (!handler)
+                        return;
+
                     // Called with error?
                     if (error) {
                         handler(self, NO, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);

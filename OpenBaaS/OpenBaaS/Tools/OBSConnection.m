@@ -128,6 +128,7 @@ static NSString *const _OBSRequestHeaderLocation = @"location";
 
 + (void)get_usersWithCompletionHandler:(void (^)(id result, NSError *error))handler
 {
+    // lat=38.748392&long=-9.233534&radius=10000&pageNumber=1&pageSize=10&orderBy=_id&orderType=desc
 #warning Not Yet Implemented
     OBS_NotYetImplemented
 }

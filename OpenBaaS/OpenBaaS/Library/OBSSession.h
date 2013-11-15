@@ -48,11 +48,6 @@
  *  @param handler The block to be call after attempting this action.
  *
  *  @return `YES` if a current session was found, `NO` otherwise.
- *
- *  @bug This method is yet not fully implemented.
- *
- *       A call to this method that would result in the return of `YES` will
- *       raise an NSInternalInconsistencyException.
  */
 + (BOOL)openCurrentSessionWithClient:(id<OBSClientProtocol>)client andCompletionHandler:(void(^)(BOOL opened, OBSSession *session, OBSError *error))handler;
 
