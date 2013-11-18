@@ -44,7 +44,7 @@
         BOOL hasPassword = password && ![password isEqualToString:[NSString string]];
         if (hasEmail && hasPassword) {
             if (obs_validateEmailFormat(email)) {
-                [OBSConnection post_account:self signUpWithEmail:email password:password userName:userName userFile:userFile completionHandler:^(id result, NSError *error) {
+                [OBSConnection post_account:self signUpWithEmail:email password:password userName:userName userFile:userFile queryDictionary:nil completionHandler:^(id result, NSError *error) {
                     if (!handler)
                         return;
 
@@ -108,7 +108,7 @@
         BOOL hasPassword = password && ![password isEqualToString:[NSString string]];
         if (hasEmail && hasPassword) {
             if (obs_validateEmailFormat(email)) {
-                [OBSConnection post_account:self signInWithEmail:email password:password completionHandler:^(id result, NSError *error) {
+                [OBSConnection post_account:self signInWithEmail:email password:password queryDictionary:nil completionHandler:^(id result, NSError *error) {
                     if (!handler)
                         return;
 
@@ -162,7 +162,7 @@
 - (void)signOutFromSession:(OBSSession *)session closingAllOthers:(BOOL)closeAll withCompletionHandler:(void (^)(OBSAccount *, BOOL, OBSSession *, OBSError *))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [OBSConnection post_account:self signOutWithSession:session all:closeAll completionHandler:^(id result, NSError *error) {
+        [OBSConnection post_account:self signOutWithSession:session all:closeAll queryDictionary:nil completionHandler:^(id result, NSError *error) {
             if (!handler)
                 return;
 
@@ -183,7 +183,7 @@
         BOOL hasEmail = email && ![email isEqualToString:[NSString string]];
         if (hasEmail) {
             if (obs_validateEmailFormat(email)) {
-                [OBSConnection post_account:self recoveryWithEmail:email completionHandler:^(id result, NSError *error) {
+                [OBSConnection post_account:self recoveryWithEmail:email queryDictionary:nil completionHandler:^(id result, NSError *error) {
                     if (!handler)
                         return;
 

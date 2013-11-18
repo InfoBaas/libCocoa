@@ -60,7 +60,7 @@
         return NO; // No current session.
     }
 
-    [OBSConnection get_accountSessionWithToken:sessionToken client:client completionHandler:^(id result, NSError *error) {
+    [OBSConnection get_accountSessionWithToken:sessionToken client:client queryDictionary:nil completionHandler:^(id result, NSError *error) {
         // Called with error?
         if (error) {
             handler(NO, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);

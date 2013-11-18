@@ -33,9 +33,15 @@
 - (void)getUserIdsWithCompletionHandler:(void (^)(OBSApplication *, NSArray *, NSInteger, OBSError *))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [OBSConnection get_usersWithCompletionHandler:^(id result, NSError *error) {
+        [OBSConnection get_application:self usersWithQueryDictionary:nil completionHandler:^(id result, NSError *error) {
             if (!handler)
                 return;
+
+            // Called with error?
+            if (error) {
+                handler(self, nil, NSNotFound, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+                return;
+            }
 
 #warning Not Yet Implemented
             OBS_NotYetImplemented
@@ -46,21 +52,37 @@
 - (void)getUserWithId:(NSString *)userId withCompletionHandler:(void (^)(OBSApplication *, OBSUser *, OBSError *))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        BOOL hasUserId = userId && [userId isKindOfClass:[NSString string]];
+        BOOL hasUserId = userId && [userId isKindOfClass:[NSString class]];
         if (hasUserId) {
-            [OBSConnection get_usersUserWithId:userId completionHandler:^(id result, NSError *error) {
+            [OBSConnection get_application:self userWithId:userId queryDictionary:nil completionHandler:^(id result, NSError *error) {
                 if (!handler)
                     return;
 
-#warning Not Yet Implemented
-                OBS_NotYetImplemented
+                // Called with error?
+                if (error) {
+                    handler(self, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+                    return;
+                }
+
+                // Create user.
+                OBSUser *user = nil;
+                if ([result isKindOfClass:[NSDictionary class]]) {
+                    user = [OBSUser userFromDataJSON:result[OBSConnectionResultDataKey] andMetadataJSON:result[OBSConnectionResultMetadataKey] withClient:self.client];
+                }
+                if (!user) {
+                    // User wasn't created.
+                    handler(self, nil, [OBSError errorWithDomain:kOBSErrorDomainRemote code:kOBSRemoteErrorCodeResultDataIllFormed userInfo:nil]);
+                    return;
+                }
+
+                handler(self, user, nil);
             }];
         } else if (handler) {
             //// Some or all the required parameters are missing
             // Create an array to hold the missing parameters' names.
             NSMutableArray *missingRequiredParameters = [NSMutableArray arrayWithCapacity:3];
             // Add missing parameters to the array.
-            if (!hasEmail) [missingRequiredParameters addObject:@"userId"];
+            if (!hasUserId) [missingRequiredParameters addObject:@"userId"];
             // Create userInfo dictionary.
             NSDictionary *userInfo = @{kOBSErrorUserInfoKeyMissingRequiredParameters: [NSArray arrayWithArray:missingRequiredParameters]};
             // Create an error instace to send to the callback.

@@ -13,13 +13,18 @@
 #import "OBSAccount+.h"
 #import "OBSApplication+.h"
 #import "OBSSession+.h"
+#import "OBSUser+.h"
 
 NSString *const OBSConnectionResultDataKey = @"data";
 NSString *const OBSConnectionResultMetadataKey = @"metadata";
 
 @interface OBSConnection ()
 
++ (NSString *)queryStringFromParametersDictionary:(NSDictionary *)parameters;
++ (NSURL *)urlWithAddress:(NSString *)address andQueryParametersDictionary:(NSDictionary *)queryDictionary;
+
 + (void)setCurrentLocationHeaderFieldToRequest:(NSMutableURLRequest *)request;
++ (void)setCurrentSessionHeaderFieldToRequest:(NSMutableURLRequest *)request;
 
 + (NSError *)errorWithResponse:(NSURLResponse *)response andData:(NSData *)data;
 + (void(^)(NSURLResponse *, NSData *, NSError *))innerHandlerWithOuterHandler:(void(^)(id, NSError *))handler;
@@ -46,6 +51,28 @@ static NSString *const _OBSRequestHeaderLocation = @"location";
 
 #pragma mark Extension
 
++ (NSString *)queryStringFromParametersDictionary:(NSDictionary *)parameters
+{
+    if (!parameters) {
+        return nil;
+    }
+
+    NSMutableArray *query = [NSMutableArray array];
+    for (NSString *param in parameters) {
+        NSString *value = [parameters[param] description];
+        [query addObject:[NSString stringWithFormat:@"%@=%@", param, [value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
+    }
+    return [query componentsJoinedByString:@"&"];
+}
+
++ (NSURL *)urlWithAddress:(NSString *)address andQueryParametersDictionary:(NSDictionary *)queryDictionary
+{
+    if (!address) return nil;
+    NSString *query = [self queryStringFromParametersDictionary:queryDictionary];
+    NSString *url = query ? [NSString stringWithFormat:@"%@?%@", address, query] : address;
+    return [NSURL URLWithString:url];
+}
+
 + (void)setCurrentLocationHeaderFieldToRequest:(NSMutableURLRequest *)request
 {
     CLLocation *location = [OBSLocationCentre currentLocation];
@@ -53,6 +80,14 @@ static NSString *const _OBSRequestHeaderLocation = @"location";
         CLLocationCoordinate2D coordinate = [location coordinate];
         NSString *value = [NSString stringWithFormat:@"%lf:%lf", coordinate.latitude, coordinate.longitude];
         [request setValue:value forHTTPHeaderField:_OBSRequestHeaderLocation];
+    }
+}
+
++ (void)setCurrentSessionHeaderFieldToRequest:(NSMutableURLRequest *)request
+{
+    NSString *session = _obs_settings_get_sessionToken();
+    if (session) {
+        [request setValue:session forKey:_OBSRequestHeaderLocation];
     }
 }
 
@@ -101,9 +136,9 @@ static NSString *const _OBSRequestHeaderLocation = @"location";
 
 @implementation OBSConnection (GET)
 
-+ (NSMutableURLRequest *)get_requestForAddress:(NSString *)address
++ (NSMutableURLRequest *)get_requestForURL:(NSURL *)url
 {
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:address]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"GET"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     return request;
@@ -111,13 +146,21 @@ static NSString *const _OBSRequestHeaderLocation = @"location";
 
 #pragma mark apps/<appid>/account
 
-+ (void)get_accountSessionWithToken:(NSString *)sessionToken client:(id<OBSClientProtocol>)client completionHandler:(void (^)(id result, NSError *error))handler
++ (void)get_accountSessionWithToken:(NSString *)sessionToken client:(id<OBSClientProtocol>)client queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSError *error))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // Address
         NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/session", [self OpenBaaSAddress], [client appId]];
-        NSMutableURLRequest *request = [self get_requestForAddress:address];
+
+        // Request
+        NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
+        NSMutableURLRequest *request = [self get_requestForURL:url];
+
+        // Header
         [self setCurrentLocationHeaderFieldToRequest:request];
         [request setValue:sessionToken forHTTPHeaderField:_OBSRequestHeaderSessionToken];
+
+        // Send
         [NSURLConnection sendAsynchronousRequest:request
                                            queue:[NSOperationQueue new]
                                completionHandler:[self innerHandlerWithOuterHandler:handler]];
@@ -126,17 +169,46 @@ static NSString *const _OBSRequestHeaderLocation = @"location";
 
 #pragma mark apps/<appid>/users
 
-+ (void)get_usersWithCompletionHandler:(void (^)(id result, NSError *error))handler
++ (void)get_application:(OBSApplication *)application usersWithQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSError *error))handler
 {
-    // lat=38.748392&long=-9.233534&radius=10000&pageNumber=1&pageSize=10&orderBy=_id&orderType=desc
-#warning Not Yet Implemented
-    OBS_NotYetImplemented
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // Address
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/users", [self OpenBaaSAddress], [application applicationId]];
+
+        // Request
+        NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
+        NSMutableURLRequest *request = [self get_requestForURL:url];
+
+        // Header
+        [self setCurrentLocationHeaderFieldToRequest:request];
+        [self setCurrentSessionHeaderFieldToRequest:request];
+
+        // Send
+        [NSURLConnection sendAsynchronousRequest:request
+                                           queue:[NSOperationQueue new]
+                               completionHandler:[self innerHandlerWithOuterHandler:handler]];
+    });
 }
 
-+ (void)get_usersUserWithId:(NSString *)userId completionHandler:(void (^)(id result, NSError *error))handler
++ (void)get_application:(OBSApplication *)application userWithId:(NSString *)userId queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSError *error))handler
 {
-#warning Not Yet Implemented
-    OBS_NotYetImplemented
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // Address
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/users/%@", [self OpenBaaSAddress], [application applicationId], userId];
+
+        // Request
+        NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
+        NSMutableURLRequest *request = [self get_requestForURL:url];
+
+        // Header
+        [self setCurrentLocationHeaderFieldToRequest:request];
+        [self setCurrentSessionHeaderFieldToRequest:request];
+
+        // Send
+        [NSURLConnection sendAsynchronousRequest:request
+                                           queue:[NSOperationQueue new]
+                               completionHandler:[self innerHandlerWithOuterHandler:handler]];
+    });
 }
 
 @end
@@ -145,23 +217,28 @@ static NSString *const _OBSRequestHeaderLocation = @"location";
 
 @implementation OBSConnection (POST)
 
-+ (NSMutableURLRequest *)post_requestForAddress:(NSString *)address
++ (NSMutableURLRequest *)post_requestForURL:(NSURL *)url
 {
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:address]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"POST"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     return request;
 }
 
-+ (void)post_account:(OBSAccount *)account signUpWithEmail:(NSString *)email password:(NSString *)password userName:(NSString *)userName userFile:(NSString *)userFile completionHandler:(void (^)(id, NSError *))handler
++ (void)post_account:(OBSAccount *)account signUpWithEmail:(NSString *)email password:(NSString *)password userName:(NSString *)userName userFile:(NSString *)userFile queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id, NSError *))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // Address
         NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/signup", [self OpenBaaSAddress], [[account client] appId]];
+
+        // Body
         NSMutableDictionary *body = [NSMutableDictionary dictionaryWithObjectsAndKeys:email, @"email", password, @"password", nil];
         if (userName) body[@"userName"] = userName;
         if (userFile) body[@"userFile"] = userFile;
 
-        NSMutableURLRequest *request = [self post_requestForAddress:address];
+        // Request
+        NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
+        NSMutableURLRequest *request = [self post_requestForURL:url];
 
         NSError *error = nil;
         [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:body options:kNilOptions error:&error]];
@@ -170,22 +247,29 @@ static NSString *const _OBSRequestHeaderLocation = @"location";
             return;
         }
 
+        // Header
         [self setCurrentLocationHeaderFieldToRequest:request];
 
+        // Send
         [NSURLConnection sendAsynchronousRequest:request
                                            queue:[NSOperationQueue new]
                                completionHandler:[self innerHandlerWithOuterHandler:handler]];
     });
 }
 
-+ (void)post_account:(OBSAccount *)account signInWithEmail:(NSString *)email password:(NSString *)password completionHandler:(void (^)(id, NSError *))handler
++ (void)post_account:(OBSAccount *)account signInWithEmail:(NSString *)email password:(NSString *)password queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id, NSError *))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // Address
         NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/signin", [self OpenBaaSAddress], [[account client] appId]];
+
+        // Body
         NSDictionary *body = @{@"email": email,
                                @"password": password};
 
-        NSMutableURLRequest *request = [self post_requestForAddress:address];
+        // Request
+        NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
+        NSMutableURLRequest *request = [self post_requestForURL:url];
 
         NSError *error = nil;
         [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:body options:kNilOptions error:&error]];
@@ -194,21 +278,28 @@ static NSString *const _OBSRequestHeaderLocation = @"location";
             return;
         }
 
+        // Header
         [self setCurrentLocationHeaderFieldToRequest:request];
 
+        // Send
         [NSURLConnection sendAsynchronousRequest:request
                                            queue:[NSOperationQueue new]
                                completionHandler:[self innerHandlerWithOuterHandler:handler]];
     });
 }
 
-+ (void)post_account:(OBSAccount *)account signOutWithSession:(OBSSession *)session all:(BOOL)all completionHandler:(void (^)(id, NSError *))handler
++ (void)post_account:(OBSAccount *)account signOutWithSession:(OBSSession *)session all:(BOOL)all queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id, NSError *))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // Address
         NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/signout", [self OpenBaaSAddress], [[account client] appId]];
+
+        // Body
         NSDictionary *body = @{@"all": [NSNumber numberWithBool:all]};
 
-        NSMutableURLRequest *request = [self post_requestForAddress:address];
+        // Request
+        NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
+        NSMutableURLRequest *request = [self post_requestForURL:url];
 
         NSError *error = nil;
         [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:body options:kNilOptions error:&error]];
@@ -217,22 +308,33 @@ static NSString *const _OBSRequestHeaderLocation = @"location";
             return;
         }
 
+        // Header
         [self setCurrentLocationHeaderFieldToRequest:request];
-        [request setValue:(session ? [session token] : _obs_settings_get_sessionToken()) forHTTPHeaderField:_OBSRequestHeaderSessionToken];
+        if (session) {
+            [request setValue:[session token] forHTTPHeaderField:_OBSRequestHeaderSessionToken];
+        } else {
+            [self setCurrentSessionHeaderFieldToRequest:request];
+        }
 
+        // Send
         [NSURLConnection sendAsynchronousRequest:request
                                            queue:[NSOperationQueue new]
                                completionHandler:[self innerHandlerWithOuterHandler:handler]];
     });
 }
 
-+ (void)post_account:(OBSAccount *)account recoveryWithEmail:(NSString *)email completionHandler:(void (^)(id, NSError *))handler
++ (void)post_account:(OBSAccount *)account recoveryWithEmail:(NSString *)email queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id, NSError *))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // Address
         NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/recovery", [self OpenBaaSAddress], [[account client] appId]];
+
+        // Body
         NSDictionary *body = @{@"email": email};
 
-        NSMutableURLRequest *request = [self post_requestForAddress:address];
+        // Request
+        NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
+        NSMutableURLRequest *request = [self post_requestForURL:url];
 
         NSError *error = nil;
         [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:body options:kNilOptions error:&error]];
@@ -241,6 +343,7 @@ static NSString *const _OBSRequestHeaderLocation = @"location";
             return;
         }
 
+        // Send
         [NSURLConnection sendAsynchronousRequest:request
                                            queue:[NSOperationQueue new]
                                completionHandler:[self innerHandlerWithOuterHandler:handler]];
@@ -253,9 +356,9 @@ static NSString *const _OBSRequestHeaderLocation = @"location";
 
 @implementation OBSConnection (PATCH)
 
-+ (NSMutableURLRequest *)patch_requestForAddress:(NSString *)address
++ (NSMutableURLRequest *)patch_requestForURL:(NSURL *)url
 {
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:address]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"PATCH"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     return request;
@@ -263,13 +366,21 @@ static NSString *const _OBSRequestHeaderLocation = @"location";
 
 #pragma mark apps/<appid>/account
 
-+ (void)patch_session:(OBSSession *)session withCompletionHandler:(void (^)(id result, NSError *error))handler
++ (void)patch_session:(OBSSession *)session withQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSError *error))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // Address
         NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/session", [self OpenBaaSAddress], [[session client] appId]];
-        NSMutableURLRequest *request = [self get_requestForAddress:address];
+
+        // Request
+        NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
+        NSMutableURLRequest *request = [self get_requestForURL:url];
+
+        // Header
         [self setCurrentLocationHeaderFieldToRequest:request];
         [request setValue:[session token] forHTTPHeaderField:_OBSRequestHeaderSessionToken];
+
+        // Send
         [NSURLConnection sendAsynchronousRequest:request
                                            queue:[NSOperationQueue new]
                                completionHandler:[self innerHandlerWithOuterHandler:handler]];
