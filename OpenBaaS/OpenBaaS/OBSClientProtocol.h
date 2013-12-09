@@ -11,5 +11,6 @@
 @protocol OBSClientProtocol <NSObject>
 
 - (NSString *)appId;
+- (NSString *)appKey;
 
 @end

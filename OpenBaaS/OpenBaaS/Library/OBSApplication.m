@@ -25,28 +25,14 @@
     return [self.client appId];
 }
 
+- (NSString *)applicationKey
+{
+    return [self.client appKey];
+}
+
 - (OBSAccount *)applicationAccount
 {
     return [[OBSAccount alloc] initWithApplication:self];
-}
-
-- (void)getUserIdsWithCompletionHandler:(void (^)(OBSApplication *, NSArray *, NSInteger, OBSError *))handler
-{
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [OBSConnection get_application:self usersWithQueryDictionary:nil completionHandler:^(id result, NSError *error) {
-            if (!handler)
-                return;
-
-            // Called with error?
-            if (error) {
-                handler(self, nil, NSNotFound, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
-                return;
-            }
-
-#warning Not Yet Implemented
-            OBS_NotYetImplemented
-        }];
-    });
 }
 
 - (void)getUserWithId:(NSString *)userId withCompletionHandler:(void (^)(OBSApplication *, OBSUser *, OBSError *))handler
@@ -95,12 +81,43 @@
     });
 }
 
-- (void)getUsersWithCompletionHandler:(void (^)(OBSApplication *, NSArray *, NSInteger, OBSError *))handler andElementCompletionHandler:(void (^)(OBSApplication *, OBSUser *, OBSError *))elementHandler
+- (void)getUserIdsWithQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(OBSApplication *, OBSCollectionPage *, OBSError *))handler
 {
-    [self getUserIdsWithCompletionHandler:^(OBSApplication *application, NSArray *userIds, NSInteger firstElementIndex, OBSError *error) {
-        handler(application, userIds, firstElementIndex, error);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [OBSConnection get_application:self usersWithQueryDictionary:query completionHandler:^(id result, NSError *error) {
+            if (!handler)
+                return;
+
+            // Called with error?
+            if (error) {
+                handler(self, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+                return;
+            }
+
+            // Create collection page.
+            OBSCollectionPage *collectionPage = nil;
+            if ([result isKindOfClass:[NSDictionary class]]) {
+                collectionPage = [OBSCollectionPage collectionPageFromDataJSON:result[OBSConnectionResultDataKey] andMetadataJSON:result[OBSConnectionResultMetadataKey]];
+            }
+            if (!collectionPage) {
+                // User wasn't created.
+                handler(self, nil, [OBSError errorWithDomain:kOBSErrorDomainRemote code:kOBSRemoteErrorCodeResultDataIllFormed userInfo:nil]);
+                return;
+            }
+
+            handler(self, collectionPage, nil);
+        }];
+    });
+}
+
+- (void)getUsersWithQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(OBSApplication *, OBSCollectionPage *, OBSError *))handler elementCompletionHandler:(void (^)(OBSApplication *, OBSUser *, OBSError *))elementHandler
+{
+    [self getUserIdsWithQueryDictionary:query completionHandler:^(OBSApplication *application, OBSCollectionPage *userIds, OBSError *error) {
+        if (handler)
+            handler(application, userIds, error);
+
         if (!error) {
-            for (NSString *userId in userIds) {
+            for (NSString *userId in [userIds elements]) {
                 [self getUserWithId:userId withCompletionHandler:elementHandler];
             }
         }

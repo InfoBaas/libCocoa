@@ -15,6 +15,7 @@
 @end
 
 static NSString *const _appid = @"com.infosistema.openbaas.libcocoa.apps.Account-iOS.appid";
+static NSString *const _appKey = @"com.infosistema.openbaas.libcocoa.apps.Account-iOS.appkey";
 
 @implementation LCAAppDelegate
 
@@ -30,6 +31,22 @@ static NSString *const _appid = @"com.infosistema.openbaas.libcocoa.apps.Account
         [standardUserDefaults setObject:appId forKey:_appid];
     } else {
         [standardUserDefaults removeObjectForKey:_appid];
+    }
+    [standardUserDefaults synchronize];
+}
+
+- (NSString *)appKey
+{
+    return [[NSUserDefaults standardUserDefaults] objectForKey:_appKey];
+}
+
+- (void)setAppKey:(NSString *)appKey
+{
+    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+    if (appKey) {
+        [standardUserDefaults setObject:appKey forKey:_appKey];
+    } else {
+        [standardUserDefaults removeObjectForKey:_appKey];
     }
     [standardUserDefaults synchronize];
 }

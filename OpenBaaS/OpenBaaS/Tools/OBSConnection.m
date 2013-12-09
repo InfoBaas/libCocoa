@@ -23,6 +23,7 @@ NSString *const OBSConnectionResultMetadataKey = @"metadata";
 + (NSString *)queryStringFromParametersDictionary:(NSDictionary *)parameters;
 + (NSURL *)urlWithAddress:(NSString *)address andQueryParametersDictionary:(NSDictionary *)queryDictionary;
 
++ (void)setAppKeyHeaderField:(NSString *)appKey toRequest:(NSMutableURLRequest *)request;
 + (void)setCurrentLocationHeaderFieldToRequest:(NSMutableURLRequest *)request;
 + (void)setCurrentSessionHeaderFieldToRequest:(NSMutableURLRequest *)request;
 
@@ -31,8 +32,9 @@ NSString *const OBSConnectionResultMetadataKey = @"metadata";
 
 @end
 
-static NSString *const _OBSRequestHeaderSessionToken = @"sessionToken";
+static NSString *const _OBSRequestHeaderAppKey = @"appKey";
 static NSString *const _OBSRequestHeaderLocation = @"location";
+static NSString *const _OBSRequestHeaderSessionToken = @"sessionToken";
 
 #pragma mark -
 
@@ -60,7 +62,7 @@ static NSString *const _OBSRequestHeaderLocation = @"location";
     NSMutableArray *query = [NSMutableArray array];
     for (NSString *param in parameters) {
         NSString *value = [parameters[param] description];
-        [query addObject:[NSString stringWithFormat:@"%@=%@", param, [value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
+        [query addObject:[NSString stringWithFormat:@"%@=%@", param, [value obs_stringByAddingPercentEscapes]]];
     }
     return [query componentsJoinedByString:@"&"];
 }
@@ -71,6 +73,13 @@ static NSString *const _OBSRequestHeaderLocation = @"location";
     NSString *query = [self queryStringFromParametersDictionary:queryDictionary];
     NSString *url = query ? [NSString stringWithFormat:@"%@?%@", address, query] : address;
     return [NSURL URLWithString:url];
+}
+
++ (void)setAppKeyHeaderField:(NSString *)appKey toRequest:(NSMutableURLRequest *)request
+{
+    if (appKey) {
+        [request setValue:appKey forHTTPHeaderField:_OBSRequestHeaderAppKey];
+    }
 }
 
 + (void)setCurrentLocationHeaderFieldToRequest:(NSMutableURLRequest *)request
@@ -157,6 +166,7 @@ static NSString *const _OBSRequestHeaderLocation = @"location";
         NSMutableURLRequest *request = [self get_requestForURL:url];
 
         // Header
+        [self setAppKeyHeaderField:[client appKey] toRequest:request];
         [self setCurrentLocationHeaderFieldToRequest:request];
         [request setValue:sessionToken forHTTPHeaderField:_OBSRequestHeaderSessionToken];
 
@@ -180,6 +190,7 @@ static NSString *const _OBSRequestHeaderLocation = @"location";
         NSMutableURLRequest *request = [self get_requestForURL:url];
 
         // Header
+        [self setAppKeyHeaderField:[application applicationKey] toRequest:request];
         [self setCurrentLocationHeaderFieldToRequest:request];
         [self setCurrentSessionHeaderFieldToRequest:request];
 
@@ -201,6 +212,7 @@ static NSString *const _OBSRequestHeaderLocation = @"location";
         NSMutableURLRequest *request = [self get_requestForURL:url];
 
         // Header
+        [self setAppKeyHeaderField:[application applicationKey] toRequest:request];
         [self setCurrentLocationHeaderFieldToRequest:request];
         [self setCurrentSessionHeaderFieldToRequest:request];
 
@@ -248,6 +260,7 @@ static NSString *const _OBSRequestHeaderLocation = @"location";
         }
 
         // Header
+        [self setAppKeyHeaderField:[[account client] appKey] toRequest:request];
         [self setCurrentLocationHeaderFieldToRequest:request];
 
         // Send
@@ -279,6 +292,7 @@ static NSString *const _OBSRequestHeaderLocation = @"location";
         }
 
         // Header
+        [self setAppKeyHeaderField:[[account client] appKey] toRequest:request];
         [self setCurrentLocationHeaderFieldToRequest:request];
 
         // Send
@@ -309,6 +323,7 @@ static NSString *const _OBSRequestHeaderLocation = @"location";
         }
 
         // Header
+        [self setAppKeyHeaderField:[[account client] appKey] toRequest:request];
         [self setCurrentLocationHeaderFieldToRequest:request];
         if (session) {
             [request setValue:[session token] forHTTPHeaderField:_OBSRequestHeaderSessionToken];
@@ -342,6 +357,9 @@ static NSString *const _OBSRequestHeaderLocation = @"location";
             handler(nil, error);
             return;
         }
+
+        // Header
+        [self setAppKeyHeaderField:[[account client] appKey] toRequest:request];
 
         // Send
         [NSURLConnection sendAsynchronousRequest:request
@@ -377,6 +395,7 @@ static NSString *const _OBSRequestHeaderLocation = @"location";
         NSMutableURLRequest *request = [self get_requestForURL:url];
 
         // Header
+        [self setAppKeyHeaderField:[[session client] appKey] toRequest:request];
         [self setCurrentLocationHeaderFieldToRequest:request];
         [request setValue:[session token] forHTTPHeaderField:_OBSRequestHeaderSessionToken];
 

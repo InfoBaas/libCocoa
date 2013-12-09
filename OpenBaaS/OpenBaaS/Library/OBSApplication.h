@@ -11,6 +11,8 @@
 @class OBSAccount;
 @class OBSUser;
 
+@class OBSCollectionPage;
+
 @interface OBSApplication : OBSObject
 
 /**
@@ -41,6 +43,17 @@
 - (NSString *)applicationId;
 
 /**
+ *  Method used to retrieve the application's appKey.
+ *
+ *  This method relies on the client provided during initialisation.
+ *
+ *  @return An OpenBaaS appKey.
+ *
+ *  @see [OBSClientProtocol appKey]
+ */
+- (NSString *)applicationKey;
+
+/**
  *  Returns a newly created instance of OBSAccount.
  *
  *  The created OBSAccount object will be initialise with the same client used
@@ -54,10 +67,10 @@
  */
 - (OBSAccount *)applicationAccount;
 
-- (void)getUserIdsWithCompletionHandler:(void(^)(OBSApplication *application, NSArray *userIds, NSInteger firstElementIndex, OBSError *error))handler;
-
 - (void)getUserWithId:(NSString *)userId withCompletionHandler:(void(^)(OBSApplication *application, OBSUser *user, OBSError *error))handler;
 
-- (void)getUsersWithCompletionHandler:(void(^)(OBSApplication *application, NSArray *userIds, NSInteger firstElementIndex, OBSError *error))handler andElementCompletionHandler:(void(^)(OBSApplication *application, OBSUser *user, OBSError *error))elementHandler;
+- (void)getUserIdsWithQueryDictionary:(NSDictionary *)query completionHandler:(void(^)(OBSApplication *application, OBSCollectionPage *userIds, OBSError *error))handler;
+
+- (void)getUsersWithQueryDictionary:(NSDictionary *)query completionHandler:(void(^)(OBSApplication *application, OBSCollectionPage *userIds, OBSError *error))handler elementCompletionHandler:(void(^)(OBSApplication *application, OBSUser *user, OBSError *error))elementHandler;
 
 @end

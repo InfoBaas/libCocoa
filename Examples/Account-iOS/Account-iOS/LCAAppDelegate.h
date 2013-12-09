@@ -15,5 +15,6 @@
 - (void)hideWaitScreen;
 
 @property (strong, nonatomic) NSString *appId;
+@property (strong, nonatomic) NSString *appKey;
 
 @end

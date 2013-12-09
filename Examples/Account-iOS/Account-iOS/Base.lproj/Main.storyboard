@@ -86,18 +86,32 @@
                     </view>
                     <navigationItem key="navigationItem" id="Aie-Hc-tCx">
                         <nil key="title"/>
-                        <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="app id" minimumFontSize="17" id="jU7-hj-rUr">
-                            <rect key="frame" x="20" y="7" width="280" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <textInputTraits key="textInputTraits"/>
-                            <connections>
-                                <action selector="appIdEditingDidEnd:" destination="hMs-0b-alJ" eventType="editingDidEnd" id="O3a-Av-GGV"/>
-                            </connections>
-                        </textField>
+                        <barButtonItem key="leftBarButtonItem" style="plain" id="y5Z-GV-56e">
+                            <textField key="customView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="app id" minimumFontSize="17" id="jU7-hj-rUr">
+                                <rect key="frame" x="16" y="7" width="140" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="appIdEditingDidEnd:" destination="hMs-0b-alJ" eventType="editingDidEnd" id="O3a-Av-GGV"/>
+                                </connections>
+                            </textField>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="fK5-Kg-fJE">
+                            <textField key="customView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="app key" minimumFontSize="17" id="leG-H9-muN">
+                                <rect key="frame" x="164" y="7" width="140" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="appKeyEditingDidEnd:" destination="hMs-0b-alJ" eventType="editingDidEnd" id="Hci-E9-LN5"/>
+                                </connections>
+                            </textField>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="appIdTextField" destination="jU7-hj-rUr" id="dxv-jw-ZpD"/>
+                        <outlet property="appKeyTextField" destination="leG-H9-muN" id="Qtw-tg-fyt"/>
                         <segue destination="hob-em-Mh9" kind="push" identifier="Segue_2_SessionInfo" id="ZBM-pv-iX1"/>
                     </connections>
                 </viewController>

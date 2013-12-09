@@ -12,11 +12,13 @@
 
 #pragma mark - Utilities
 
+#import "NSString+OpenBaaS.h"
 #import "OBSEmailValidation.h"
 #import "OBSLocationCentre.h"
 
 #pragma mark - Common
 
+#import "OBSCollectionPage.h"
 #import "OBSError.h"
 #import "OBSObject.h"
 #import "OBSSettings.h"

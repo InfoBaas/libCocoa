@@ -12,6 +12,11 @@
 @interface LCAHomeViewController ()
 
 @property (weak, nonatomic) IBOutlet UITextField *appIdTextField;
+@property (weak, nonatomic) IBOutlet UITextField *appKeyTextField;
+
+- (IBAction)appIdEditingDidEnd:(id)sender;
+- (IBAction)appKeyEditingDidEnd:(id)sender;
+
 - (IBAction)openSavedSession:(id)sender;
 - (IBAction)backhome:(UIStoryboardSegue *)sender;
 
@@ -24,12 +29,19 @@
     [super viewDidLoad];
     LCAAppDelegate *delegate = (LCAAppDelegate *)[[UIApplication sharedApplication] delegate];
     self.appIdTextField.text = delegate.appId;
+    self.appKeyTextField.text = delegate.appKey;
 }
 
 - (IBAction)appIdEditingDidEnd:(id)sender
 {
     LCAAppDelegate *delegate = (LCAAppDelegate *)[[UIApplication sharedApplication] delegate];
     delegate.appId = self.appIdTextField.text;
+}
+
+- (IBAction)appKeyEditingDidEnd:(id)sender
+{
+    LCAAppDelegate *delegate = (LCAAppDelegate *)[[UIApplication sharedApplication] delegate];
+    delegate.appKey = self.appKeyTextField.text;
 }
 
 - (IBAction)openSavedSession:(id)sender
