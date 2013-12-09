@@ -20,6 +20,8 @@
 		CEF3E1F718560719001F999C /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF3E1F618560719001F999C /* CoreLocation.framework */; };
 		CEF3E1F918560877001F999C /* OpenBaaS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF3E1F818560877001F999C /* OpenBaaS.framework */; };
 		CEF3E1FC185612C4001F999C /* fb.png in Resources */ = {isa = PBXBuildFile; fileRef = CEF3E1FB185612C4001F999C /* fb.png */; };
+		CEF3E2001856276D001F999C /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF3E1FF1856276D001F999C /* Accounts.framework */; };
+		CEF3E20418562AEF001F999C /* LCAActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF3E20318562AEF001F999C /* LCAActionSheet.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +44,10 @@
 		CEF3E1F618560719001F999C /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		CEF3E1F818560877001F999C /* OpenBaaS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenBaaS.framework; path = ../../OpenBaaS/OpenBaaS.framework; sourceTree = "<group>"; };
 		CEF3E1FB185612C4001F999C /* fb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fb.png; sourceTree = "<group>"; };
+		CEF3E1FD185625F1001F999C /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		CEF3E1FF1856276D001F999C /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		CEF3E20218562AEF001F999C /* LCAActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LCAActionSheet.h; sourceTree = "<group>"; };
+		CEF3E20318562AEF001F999C /* LCAActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LCAActionSheet.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEF3E2001856276D001F999C /* Accounts.framework in Frameworks */,
 				CEF3E1F718560719001F999C /* CoreLocation.framework in Frameworks */,
 				CEF3E1F918560877001F999C /* OpenBaaS.framework in Frameworks */,
 				CEF3E1C11856063E001F999C /* CoreGraphics.framework in Frameworks */,
@@ -80,6 +87,8 @@
 		CEF3E1BD1856063E001F999C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CEF3E1FF1856276D001F999C /* Accounts.framework */,
+				CEF3E1FD185625F1001F999C /* Social.framework */,
 				CEF3E1F618560719001F999C /* CoreLocation.framework */,
 				CEF3E1BE1856063E001F999C /* Foundation.framework */,
 				CEF3E1C01856063E001F999C /* CoreGraphics.framework */,
@@ -99,6 +108,8 @@
 				CEF3E1D41856063E001F999C /* LCAMasterViewController.m */,
 				CEF3E1D61856063E001F999C /* LCADetailViewController.h */,
 				CEF3E1D71856063E001F999C /* LCADetailViewController.m */,
+				CEF3E20218562AEF001F999C /* LCAActionSheet.h */,
+				CEF3E20318562AEF001F999C /* LCAActionSheet.m */,
 				CEF3E1D91856063E001F999C /* Images.xcassets */,
 				CEF3E1C51856063E001F999C /* Supporting Files */,
 				CEF3E1FA185612A2001F999C /* Logos */,
@@ -193,6 +204,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEF3E1D51856063E001F999C /* LCAMasterViewController.m in Sources */,
+				CEF3E20418562AEF001F999C /* LCAActionSheet.m in Sources */,
 				CEF3E1CB1856063E001F999C /* main.m in Sources */,
 				CEF3E1D81856063E001F999C /* LCADetailViewController.m in Sources */,
 				CEF3E1CF1856063E001F999C /* LCAAppDelegate.m in Sources */,

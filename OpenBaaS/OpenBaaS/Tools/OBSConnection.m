@@ -28,7 +28,7 @@ NSString *const OBSConnectionResultMetadataKey = @"metadata";
 + (void)setCurrentSessionHeaderFieldToRequest:(NSMutableURLRequest *)request;
 
 + (NSError *)errorWithResponse:(NSURLResponse *)response andData:(NSData *)data;
-+ (void(^)(NSURLResponse *, NSData *, NSError *))innerHandlerWithOuterHandler:(void(^)(id, NSError *))handler;
++ (void(^)(NSURLResponse *, NSData *, NSError *))innerHandlerWithOuterHandler:(void(^)(id, NSInteger statusCode, NSError *))handler;
 
 @end
 
@@ -119,7 +119,7 @@ static NSString *const _OBSRequestHeaderSessionToken = @"sessionToken";
     return error;
 }
 
-+ (void (^)(NSURLResponse *, NSData *, NSError *))innerHandlerWithOuterHandler:(void (^)(id, NSError *))handler
++ (void (^)(NSURLResponse *, NSData *, NSError *))innerHandlerWithOuterHandler:(void (^)(id, NSInteger statusCode, NSError *))handler
 {
     if (!handler)
         return nil;
@@ -135,7 +135,7 @@ static NSString *const _OBSRequestHeaderSessionToken = @"sessionToken";
                 }
             }
         }
-        handler(result, error);
+        handler(result, [((NSHTTPURLResponse*)response) statusCode], error);
     };
 }
 
@@ -155,7 +155,7 @@ static NSString *const _OBSRequestHeaderSessionToken = @"sessionToken";
 
 #pragma mark apps/<appid>/account
 
-+ (void)get_accountSessionWithToken:(NSString *)sessionToken client:(id<OBSClientProtocol>)client queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSError *error))handler
++ (void)get_accountSessionWithToken:(NSString *)sessionToken client:(id<OBSClientProtocol>)client queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
@@ -179,7 +179,7 @@ static NSString *const _OBSRequestHeaderSessionToken = @"sessionToken";
 
 #pragma mark apps/<appid>/users
 
-+ (void)get_application:(OBSApplication *)application usersWithQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSError *error))handler
++ (void)get_application:(OBSApplication *)application usersWithQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
@@ -201,7 +201,7 @@ static NSString *const _OBSRequestHeaderSessionToken = @"sessionToken";
     });
 }
 
-+ (void)get_application:(OBSApplication *)application userWithId:(NSString *)userId queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSError *error))handler
++ (void)get_application:(OBSApplication *)application userWithId:(NSString *)userId queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
@@ -237,7 +237,7 @@ static NSString *const _OBSRequestHeaderSessionToken = @"sessionToken";
     return request;
 }
 
-+ (void)post_account:(OBSAccount *)account signUpWithEmail:(NSString *)email password:(NSString *)password userName:(NSString *)userName userFile:(NSString *)userFile queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id, NSError *))handler
++ (void)post_account:(OBSAccount *)account signUpWithEmail:(NSString *)email password:(NSString *)password userName:(NSString *)userName userFile:(NSString *)userFile queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id, NSInteger statusCode, NSError *))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
@@ -255,7 +255,7 @@ static NSString *const _OBSRequestHeaderSessionToken = @"sessionToken";
         NSError *error = nil;
         [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:body options:kNilOptions error:&error]];
         if (error) {
-            handler(nil, error);
+            handler(nil, 0, error);
             return;
         }
 
@@ -270,7 +270,7 @@ static NSString *const _OBSRequestHeaderSessionToken = @"sessionToken";
     });
 }
 
-+ (void)post_account:(OBSAccount *)account signInWithEmail:(NSString *)email password:(NSString *)password queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id, NSError *))handler
++ (void)post_account:(OBSAccount *)account signInWithEmail:(NSString *)email password:(NSString *)password queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id, NSInteger statusCode, NSError *))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
@@ -287,7 +287,7 @@ static NSString *const _OBSRequestHeaderSessionToken = @"sessionToken";
         NSError *error = nil;
         [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:body options:kNilOptions error:&error]];
         if (error) {
-            handler(nil, error);
+            handler(nil, 0, error);
             return;
         }
 
@@ -302,7 +302,7 @@ static NSString *const _OBSRequestHeaderSessionToken = @"sessionToken";
     });
 }
 
-+ (void)post_account:(OBSAccount *)account signOutWithSession:(OBSSession *)session all:(BOOL)all queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id, NSError *))handler
++ (void)post_account:(OBSAccount *)account signOutWithSession:(OBSSession *)session all:(BOOL)all queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id, NSInteger statusCode, NSError *))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
@@ -318,7 +318,7 @@ static NSString *const _OBSRequestHeaderSessionToken = @"sessionToken";
         NSError *error = nil;
         [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:body options:kNilOptions error:&error]];
         if (error) {
-            handler(nil, error);
+            handler(nil, 0, error);
             return;
         }
 
@@ -338,7 +338,7 @@ static NSString *const _OBSRequestHeaderSessionToken = @"sessionToken";
     });
 }
 
-+ (void)post_account:(OBSAccount *)account recoveryWithEmail:(NSString *)email queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id, NSError *))handler
++ (void)post_account:(OBSAccount *)account recoveryWithEmail:(NSString *)email queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id, NSInteger statusCode, NSError *))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
@@ -354,12 +354,43 @@ static NSString *const _OBSRequestHeaderSessionToken = @"sessionToken";
         NSError *error = nil;
         [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:body options:kNilOptions error:&error]];
         if (error) {
-            handler(nil, error);
+            handler(nil, 0, error);
             return;
         }
 
         // Header
         [self setAppKeyHeaderField:[[account client] appKey] toRequest:request];
+
+        // Send
+        [NSURLConnection sendAsynchronousRequest:request
+                                           queue:[NSOperationQueue new]
+                               completionHandler:[self innerHandlerWithOuterHandler:handler]];
+    });
+}
+
++ (void)post_account:(OBSAccount *)account integrationFacebookWithOAuthToken:(NSString *)oauthToken queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // Address
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/integration/facebook", [self OpenBaaSAddress], [[account client] appId]];
+
+        // Body
+        NSDictionary *body = @{@"fbToken": oauthToken};
+
+        // Request
+        NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
+        NSMutableURLRequest *request = [self post_requestForURL:url];
+
+        NSError *error = nil;
+        [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:body options:kNilOptions error:&error]];
+        if (error) {
+            handler(nil, 0, error);
+            return;
+        }
+
+        // Header
+        [self setAppKeyHeaderField:[[account client] appKey] toRequest:request];
+        [self setCurrentLocationHeaderFieldToRequest:request];
 
         // Send
         [NSURLConnection sendAsynchronousRequest:request
@@ -384,7 +415,7 @@ static NSString *const _OBSRequestHeaderSessionToken = @"sessionToken";
 
 #pragma mark apps/<appid>/account
 
-+ (void)patch_session:(OBSSession *)session withQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSError *error))handler
++ (void)patch_session:(OBSSession *)session withQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address

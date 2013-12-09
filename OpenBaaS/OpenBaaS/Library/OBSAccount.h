@@ -98,6 +98,8 @@
  */
 - (void)signInWithEmail:(NSString *)email password:(NSString *)password completionHandler:(void(^)(OBSAccount *account, BOOL signedIn, OBSSession *session, OBSError *error))handler;
 
+- (void)signInWithFacebookOAuthToken:(NSString *)oauthToken completionHandler:(void(^)(OBSAccount *account, BOOL signedUp, BOOL signedIn, OBSSession *session, OBSError *error))handler;
+
 /**
  *  Asynchronous sign out of a user.
  *

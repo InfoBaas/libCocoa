@@ -44,19 +44,19 @@
         BOOL hasPassword = password && ![password isEqualToString:[NSString string]];
         if (hasEmail && hasPassword) {
             if (obs_validateEmailFormat(email)) {
-                [OBSConnection post_account:self signUpWithEmail:email password:password userName:userName userFile:userFile queryDictionary:nil completionHandler:^(id result, NSError *error) {
+                [OBSConnection post_account:self signUpWithEmail:email password:password userName:userName userFile:userFile queryDictionary:nil completionHandler:^(id result, NSInteger statusCode, NSError *error) {
                     if (!handler)
                         return;
 
                     // Called with error?
                     if (error) {
-                        handler(self, NO, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+                        handler(self, statusCode == 201, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
                         return;
                     }
 
                     // Is data empty?
                     if ([result isEqual:[NSNull null]]) {
-                        handler(self, YES, nil, nil);
+                        handler(self, statusCode == 201, nil, nil);
                         return;
                     }
 
@@ -67,11 +67,11 @@
                     }
                     if (!session) {
                         // Session wasn't created.
-                        handler(self, YES, nil, [OBSError errorWithDomain:kOBSErrorDomainRemote code:kOBSRemoteErrorCodeResultDataIllFormed userInfo:nil]);
+                        handler(self, statusCode == 201, nil, [OBSError errorWithDomain:kOBSErrorDomainRemote code:kOBSRemoteErrorCodeResultDataIllFormed userInfo:nil]);
                         return;
                     }
 
-                    handler(self, YES, session, nil);
+                    handler(self, statusCode == 201, session, nil);
                 }];
             } else if (handler) {
                 NSDictionary *userInfo = @{kOBSErrorUserInfoKeyInvalidParameters: @[@"email", kOBSErrorInvalidParameterReasonBadFormat]};
@@ -108,13 +108,13 @@
         BOOL hasPassword = password && ![password isEqualToString:[NSString string]];
         if (hasEmail && hasPassword) {
             if (obs_validateEmailFormat(email)) {
-                [OBSConnection post_account:self signInWithEmail:email password:password queryDictionary:nil completionHandler:^(id result, NSError *error) {
+                [OBSConnection post_account:self signInWithEmail:email password:password queryDictionary:nil completionHandler:^(id result, NSInteger statusCode, NSError *error) {
                     if (!handler)
                         return;
 
                     // Called with error?
                     if (error) {
-                        handler(self, NO, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+                        handler(self, statusCode == 200, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
                         return;
                     }
 
@@ -125,11 +125,11 @@
                     }
                     if (!session) {
                         // Session wasn't created.
-                        handler(self, YES, nil, [OBSError errorWithDomain:kOBSErrorDomainRemote code:kOBSRemoteErrorCodeResultDataIllFormed userInfo:nil]);
+                        handler(self, statusCode == 200, nil, [OBSError errorWithDomain:kOBSErrorDomainRemote code:kOBSRemoteErrorCodeResultDataIllFormed userInfo:nil]);
                         return;
                     }
 
-                    handler(self, YES, session, nil);
+                    handler(self, statusCode == 200, session, nil);
                 }];
             } else if (handler) {
                 NSDictionary *userInfo = @{kOBSErrorUserInfoKeyInvalidParameters: @[@"email", kOBSErrorInvalidParameterReasonBadFormat]};
@@ -159,20 +159,66 @@
     });
 }
 
+- (void)signInWithFacebookOAuthToken:(NSString *)oauthToken completionHandler:(void (^)(OBSAccount *, BOOL, BOOL, OBSSession *, OBSError *))handler
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        BOOL hasToken = oauthToken && ![oauthToken isEqualToString:[NSString string]];
+        if (hasToken) {
+            [OBSConnection post_account:self integrationFacebookWithOAuthToken:oauthToken queryDictionary:nil completionHandler:^(id result, NSInteger statusCode, NSError *error) {
+                if (!handler)
+                    return;
+
+                // Called with error?
+                if (error) {
+                    handler(self, statusCode == 201, statusCode == 200, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+                    return;
+                }
+
+                // Create session.
+                OBSSession *session = nil;
+                if ([result isKindOfClass:[NSDictionary class]]) {
+                    session = [OBSSession sessionFromDataJSON:result[OBSConnectionResultDataKey] andMetadataJSON:result[OBSConnectionResultMetadataKey] withClient:self.client];
+                }
+                if (!session) {
+                    // Session wasn't created.
+                    handler(self, statusCode == 201, statusCode == 200, nil, [OBSError errorWithDomain:kOBSErrorDomainRemote code:kOBSRemoteErrorCodeResultDataIllFormed userInfo:nil]);
+                    return;
+                }
+
+                handler(self, statusCode == 201, statusCode == 200, session, nil);
+            }];
+        } else if (handler) {
+            //// Some or all the required parameters are missing
+            // Create an array to hold the missing parameters' names.
+            NSMutableArray *missingRequiredParameters = [NSMutableArray arrayWithCapacity:3];
+            // Add missing parameters to the array.
+            if (!hasToken) [missingRequiredParameters addObject:@"token"];
+            // Create userInfo dictionary.
+            NSDictionary *userInfo = @{kOBSErrorUserInfoKeyMissingRequiredParameters: [NSArray arrayWithArray:missingRequiredParameters]};
+            // Create an error instace to send to the callback.
+            OBSError *error = [OBSError errorWithDomain:kOBSErrorDomainLocal
+                                                   code:kOBSLocalErrorCodeMissingRequiredParameters
+                                               userInfo:userInfo];
+            // Action completed with error.
+            handler(self, NO, NO, nil, error);
+        }
+    });
+}
+
 - (void)signOutFromSession:(OBSSession *)session closingAllOthers:(BOOL)closeAll withCompletionHandler:(void (^)(OBSAccount *, BOOL, OBSSession *, OBSError *))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [OBSConnection post_account:self signOutWithSession:session all:closeAll queryDictionary:nil completionHandler:^(id result, NSError *error) {
+        [OBSConnection post_account:self signOutWithSession:session all:closeAll queryDictionary:nil completionHandler:^(id result, NSInteger statusCode, NSError *error) {
             if (!handler)
                 return;
 
             // Called with error?
             if (error) {
-                handler(self, NO, session, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+                handler(self, statusCode == 200, session, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
                 return;
             }
 
-            handler(self, YES, session, nil);
+            handler(self, statusCode == 200, session, nil);
         }];
     });
 }
@@ -183,17 +229,17 @@
         BOOL hasEmail = email && ![email isEqualToString:[NSString string]];
         if (hasEmail) {
             if (obs_validateEmailFormat(email)) {
-                [OBSConnection post_account:self recoveryWithEmail:email queryDictionary:nil completionHandler:^(id result, NSError *error) {
+                [OBSConnection post_account:self recoveryWithEmail:email queryDictionary:nil completionHandler:^(id result, NSInteger statusCode, NSError *error) {
                     if (!handler)
                         return;
 
                     // Called with error?
                     if (error) {
-                        handler(self, NO, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+                        handler(self, statusCode == 200, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
                         return;
                     }
 
-                    handler(self, YES, nil);
+                    handler(self, statusCode == 200, nil);
                 }];
             } else if (handler) {
                 NSDictionary *userInfo = @{kOBSErrorUserInfoKeyInvalidParameters: @[@"email", kOBSErrorInvalidParameterReasonBadFormat]};

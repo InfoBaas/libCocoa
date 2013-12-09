@@ -40,7 +40,7 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         BOOL hasUserId = userId && [userId isKindOfClass:[NSString class]];
         if (hasUserId) {
-            [OBSConnection get_application:self userWithId:userId queryDictionary:nil completionHandler:^(id result, NSError *error) {
+            [OBSConnection get_application:self userWithId:userId queryDictionary:nil completionHandler:^(id result, NSInteger statusCode, NSError *error) {
                 if (!handler)
                     return;
 
@@ -84,7 +84,7 @@
 - (void)getUserIdsWithQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(OBSApplication *, OBSCollectionPage *, OBSError *))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [OBSConnection get_application:self usersWithQueryDictionary:query completionHandler:^(id result, NSError *error) {
+        [OBSConnection get_application:self usersWithQueryDictionary:query completionHandler:^(id result, NSInteger statusCode, NSError *error) {
             if (!handler)
                 return;
 
