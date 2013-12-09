@@ -1,15 +1,17 @@
 //
-//  LCAHomeViewController.m
-//  Account-iOS
+//  LCAMasterViewController.m
+//  Integration
 //
-//  Created by Tiago Rodrigues on 04/11/2013.
+//  Created by Tiago Rodrigues on 09/12/2013.
 //  Copyright (c) 2013 Infosistema. All rights reserved.
 //
 
-#import "LCAHomeViewController.h"
+#import "LCAMasterViewController.h"
 #import "LCAAppDelegate.h"
 
-@interface LCAHomeViewController ()
+#import "LCADetailViewController.h"
+
+@interface LCAMasterViewController ()
 
 @property (weak, nonatomic) IBOutlet UITextField *appIdTextField;
 @property (weak, nonatomic) IBOutlet UITextField *appKeyTextField;
@@ -22,7 +24,20 @@
 
 @end
 
-@implementation LCAHomeViewController
+static NSString *_networkName = @"network";
+static NSString *_networkImage = @"logo";
+static NSArray *_networks (void)
+{
+    static NSArray *networks = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        UIImage *facebook = [UIImage imageNamed:@"fb"];
+        networks = @[@{_networkName: @"Facebook", _networkImage: facebook}];
+    });
+    return networks;
+}
+
+@implementation LCAMasterViewController
 
 - (void)viewDidLoad
 {
@@ -69,5 +84,32 @@
 
 - (void)backhome:(UIStoryboardSegue *)sender
 {}
+
+#pragma mark - Table View
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [_networks() count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+
+    NSDictionary *network = _networks()[indexPath.row];
+    cell.textLabel.text = network[_networkName];
+    cell.imageView.image = network[_networkImage];
+
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+}
 
 @end
