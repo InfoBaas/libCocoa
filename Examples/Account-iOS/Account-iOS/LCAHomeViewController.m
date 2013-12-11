@@ -8,6 +8,7 @@
 
 #import "LCAHomeViewController.h"
 #import "LCAAppDelegate.h"
+#import "LCASessionInfoViewController.h"
 
 @interface LCAHomeViewController ()
 
@@ -31,6 +32,17 @@
     self.appIdTextField.text = delegate.appId;
     self.appKeyTextField.text = delegate.appKey;
 }
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([[segue identifier] isEqualToString:@"Segue_2_SessionInfo"]) {
+        LCASessionInfoViewController *controller = [segue destinationViewController];
+        controller.session = sender;
+    }
+}
+
+- (void)backhome:(UIStoryboardSegue *)sender
+{}
 
 - (IBAction)appIdEditingDidEnd:(id)sender
 {
@@ -66,8 +78,5 @@
         [alert show];
     }
 }
-
-- (void)backhome:(UIStoryboardSegue *)sender
-{}
 
 @end

@@ -18,7 +18,7 @@
 NSString *const OBSConnectionResultDataKey = @"data";
 NSString *const OBSConnectionResultMetadataKey = @"metadata";
 
-@interface OBSConnection ()
+@interface OBSConnection () <NSURLConnectionDelegate, NSURLConnectionDataDelegate>
 
 + (NSString *)queryStringFromParametersDictionary:(NSDictionary *)parameters;
 + (NSURL *)urlWithAddress:(NSString *)address andQueryParametersDictionary:(NSDictionary *)queryDictionary;
@@ -30,11 +30,31 @@ NSString *const OBSConnectionResultMetadataKey = @"metadata";
 + (NSError *)errorWithResponse:(NSURLResponse *)response andData:(NSData *)data;
 + (void(^)(NSURLResponse *, NSData *, NSError *))innerHandlerWithOuterHandler:(void(^)(id, NSInteger statusCode, NSError *))handler;
 
+#pragma mark NSURLConnection Delegation
+
+@property (nonatomic, strong) NSURLRequest *request;
+@property (nonatomic, strong) NSOperationQueue *queue;
+@property (nonatomic, strong) void(^handler)(NSURLResponse*,NSData*,NSError*);
+@property (nonatomic, strong) NSURLConnection *connection;
+@property (nonatomic, strong) NSURLResponse *response;
+@property (nonatomic, strong) NSMutableData *data;
+@property (nonatomic, strong) NSError *error;
+
 @end
 
 static NSString *const _OBSRequestHeaderAppKey = @"appKey";
 static NSString *const _OBSRequestHeaderLocation = @"location";
 static NSString *const _OBSRequestHeaderSessionToken = @"sessionToken";
+
+static NSMutableSet *_OBSOpenConnections (void)
+{
+    static NSMutableSet *set = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        set = [NSMutableSet set];
+    });
+    return set;
+}
 
 #pragma mark -
 
@@ -49,6 +69,63 @@ static NSString *const _OBSRequestHeaderSessionToken = @"sessionToken";
         NSAssert(address, @"\"%@\" key not found in bundle's info dictionary.", OBSConfigURL);
     });
     return address;
+}
+
++ (void)sendAsynchronousRequest:(NSURLRequest *)request
+                          queue:(NSOperationQueue *)queue
+              completionHandler:(void (^)(NSURLResponse *, NSData *, NSError *))handler
+{
+    OBSConnection *connection = [self new];
+
+    connection.request = request;
+    connection.queue = queue;
+    connection.handler = handler;
+
+    connection.data = [NSMutableData data];
+
+    NSMutableSet *set = _OBSOpenConnections();
+    @synchronized (set) {
+        [set addObject:connection];
+    }
+
+    connection.connection = [[NSURLConnection alloc] initWithRequest:request delegate:connection startImmediately:NO];
+    [connection.connection scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
+    [connection.connection start];
+}
+
+#pragma mark NSURLConnection Delegation
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+    if (connection == self.connection) {
+        [self.queue addOperationWithBlock:^{
+            self.handler(nil,nil,error);
+        }];
+        NSMutableSet *set = _OBSOpenConnections();
+        @synchronized (set) {
+            [set removeObject:self];
+        }
+    }
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{
+    if (connection == self.connection) {
+        [self.data appendData:data];
+    }
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+    if (connection == self.connection) {
+        [self.queue addOperationWithBlock:^{
+            self.handler(response,[NSData dataWithData:self.data],nil);
+        }];
+        NSMutableSet *set = _OBSOpenConnections();
+        @synchronized (set) {
+            [set removeObject:self];
+        }
+    }
 }
 
 #pragma mark Extension
@@ -159,7 +236,7 @@ static NSString *const _OBSRequestHeaderSessionToken = @"sessionToken";
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/session", [self OpenBaaSAddress], [client appId]];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/sessions", [self OpenBaaSAddress], [client appId]];
 
         // Request
         NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
@@ -171,9 +248,9 @@ static NSString *const _OBSRequestHeaderSessionToken = @"sessionToken";
         [request setValue:sessionToken forHTTPHeaderField:_OBSRequestHeaderSessionToken];
 
         // Send
-        [NSURLConnection sendAsynchronousRequest:request
-                                           queue:[NSOperationQueue new]
-                               completionHandler:[self innerHandlerWithOuterHandler:handler]];
+        [self sendAsynchronousRequest:request
+                                queue:[NSOperationQueue new]
+                    completionHandler:[self innerHandlerWithOuterHandler:handler]];
     });
 }
 
@@ -195,9 +272,9 @@ static NSString *const _OBSRequestHeaderSessionToken = @"sessionToken";
         [self setCurrentSessionHeaderFieldToRequest:request];
 
         // Send
-        [NSURLConnection sendAsynchronousRequest:request
-                                           queue:[NSOperationQueue new]
-                               completionHandler:[self innerHandlerWithOuterHandler:handler]];
+        [self sendAsynchronousRequest:request
+                                queue:[NSOperationQueue new]
+                    completionHandler:[self innerHandlerWithOuterHandler:handler]];
     });
 }
 
@@ -217,9 +294,9 @@ static NSString *const _OBSRequestHeaderSessionToken = @"sessionToken";
         [self setCurrentSessionHeaderFieldToRequest:request];
 
         // Send
-        [NSURLConnection sendAsynchronousRequest:request
-                                           queue:[NSOperationQueue new]
-                               completionHandler:[self innerHandlerWithOuterHandler:handler]];
+        [self sendAsynchronousRequest:request
+                                queue:[NSOperationQueue new]
+                    completionHandler:[self innerHandlerWithOuterHandler:handler]];
     });
 }
 
@@ -264,9 +341,9 @@ static NSString *const _OBSRequestHeaderSessionToken = @"sessionToken";
         [self setCurrentLocationHeaderFieldToRequest:request];
 
         // Send
-        [NSURLConnection sendAsynchronousRequest:request
-                                           queue:[NSOperationQueue new]
-                               completionHandler:[self innerHandlerWithOuterHandler:handler]];
+        [self sendAsynchronousRequest:request
+                                queue:[NSOperationQueue new]
+                    completionHandler:[self innerHandlerWithOuterHandler:handler]];
     });
 }
 
@@ -296,9 +373,9 @@ static NSString *const _OBSRequestHeaderSessionToken = @"sessionToken";
         [self setCurrentLocationHeaderFieldToRequest:request];
 
         // Send
-        [NSURLConnection sendAsynchronousRequest:request
-                                           queue:[NSOperationQueue new]
-                               completionHandler:[self innerHandlerWithOuterHandler:handler]];
+        [self sendAsynchronousRequest:request
+                                queue:[NSOperationQueue new]
+                    completionHandler:[self innerHandlerWithOuterHandler:handler]];
     });
 }
 
@@ -332,9 +409,9 @@ static NSString *const _OBSRequestHeaderSessionToken = @"sessionToken";
         }
 
         // Send
-        [NSURLConnection sendAsynchronousRequest:request
-                                           queue:[NSOperationQueue new]
-                               completionHandler:[self innerHandlerWithOuterHandler:handler]];
+        [self sendAsynchronousRequest:request
+                                queue:[NSOperationQueue new]
+                    completionHandler:[self innerHandlerWithOuterHandler:handler]];
     });
 }
 
@@ -362,9 +439,9 @@ static NSString *const _OBSRequestHeaderSessionToken = @"sessionToken";
         [self setAppKeyHeaderField:[[account client] appKey] toRequest:request];
 
         // Send
-        [NSURLConnection sendAsynchronousRequest:request
-                                           queue:[NSOperationQueue new]
-                               completionHandler:[self innerHandlerWithOuterHandler:handler]];
+        [self sendAsynchronousRequest:request
+                                queue:[NSOperationQueue new]
+                    completionHandler:[self innerHandlerWithOuterHandler:handler]];
     });
 }
 
@@ -393,9 +470,9 @@ static NSString *const _OBSRequestHeaderSessionToken = @"sessionToken";
         [self setCurrentLocationHeaderFieldToRequest:request];
 
         // Send
-        [NSURLConnection sendAsynchronousRequest:request
-                                           queue:[NSOperationQueue new]
-                               completionHandler:[self innerHandlerWithOuterHandler:handler]];
+        [self sendAsynchronousRequest:request
+                                queue:[NSOperationQueue new]
+                    completionHandler:[self innerHandlerWithOuterHandler:handler]];
     });
 }
 
@@ -431,9 +508,9 @@ static NSString *const _OBSRequestHeaderSessionToken = @"sessionToken";
         [request setValue:[session token] forHTTPHeaderField:_OBSRequestHeaderSessionToken];
 
         // Send
-        [NSURLConnection sendAsynchronousRequest:request
-                                           queue:[NSOperationQueue new]
-                               completionHandler:[self innerHandlerWithOuterHandler:handler]];
+        [self sendAsynchronousRequest:request
+                                queue:[NSOperationQueue new]
+                    completionHandler:[self innerHandlerWithOuterHandler:handler]];
     });
 }
 

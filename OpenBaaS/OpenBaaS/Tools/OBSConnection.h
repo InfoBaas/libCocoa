@@ -22,6 +22,10 @@ extern NSString *const OBSConnectionResultMetadataKey;
 
 + (NSString *)OpenBaaSAddress;
 
++ (void)sendAsynchronousRequest:(NSURLRequest*) request
+                          queue:(NSOperationQueue*) queue
+              completionHandler:(void (^)(NSURLResponse* response, NSData* data, NSError* connectionError))handler;
+
 @end
 
 #pragma mark - GET
