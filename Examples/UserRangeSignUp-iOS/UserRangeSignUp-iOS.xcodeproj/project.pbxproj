@@ -1,0 +1,335 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CE94CD221859C34C008DE93C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE94CD211859C34C008DE93C /* Foundation.framework */; };
+		CE94CD241859C34C008DE93C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE94CD231859C34C008DE93C /* CoreGraphics.framework */; };
+		CE94CD261859C34C008DE93C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE94CD251859C34C008DE93C /* UIKit.framework */; };
+		CE94CD2C1859C34C008DE93C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CE94CD2A1859C34C008DE93C /* InfoPlist.strings */; };
+		CE94CD2E1859C34C008DE93C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CE94CD2D1859C34C008DE93C /* main.m */; };
+		CE94CD321859C34C008DE93C /* LCAAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CE94CD311859C34C008DE93C /* LCAAppDelegate.m */; };
+		CE94CD351859C34C008DE93C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE94CD331859C34C008DE93C /* Main.storyboard */; };
+		CE94CD381859C34C008DE93C /* LCAViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE94CD371859C34C008DE93C /* LCAViewController.m */; };
+		CE94CD3A1859C34C008DE93C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE94CD391859C34C008DE93C /* Images.xcassets */; };
+		CE94CD571859C37D008DE93C /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE94CD561859C37D008DE93C /* CoreLocation.framework */; };
+		CE94CD591859C3AD008DE93C /* OpenBaaS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE94CD581859C3AD008DE93C /* OpenBaaS.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		CE94CD1E1859C34C008DE93C /* UserRangeSignUp-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "UserRangeSignUp-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE94CD211859C34C008DE93C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		CE94CD231859C34C008DE93C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		CE94CD251859C34C008DE93C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		CE94CD291859C34C008DE93C /* UserRangeSignUp-iOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "UserRangeSignUp-iOS-Info.plist"; sourceTree = "<group>"; };
+		CE94CD2B1859C34C008DE93C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		CE94CD2D1859C34C008DE93C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		CE94CD2F1859C34C008DE93C /* UserRangeSignUp-iOS-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UserRangeSignUp-iOS-Prefix.pch"; sourceTree = "<group>"; };
+		CE94CD301859C34C008DE93C /* LCAAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LCAAppDelegate.h; sourceTree = "<group>"; };
+		CE94CD311859C34C008DE93C /* LCAAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LCAAppDelegate.m; sourceTree = "<group>"; };
+		CE94CD341859C34C008DE93C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		CE94CD361859C34C008DE93C /* LCAViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LCAViewController.h; sourceTree = "<group>"; };
+		CE94CD371859C34C008DE93C /* LCAViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LCAViewController.m; sourceTree = "<group>"; };
+		CE94CD391859C34C008DE93C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		CE94CD561859C37D008DE93C /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		CE94CD581859C3AD008DE93C /* OpenBaaS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenBaaS.framework; path = ../../OpenBaaS/OpenBaaS.framework; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CE94CD1B1859C34C008DE93C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE94CD571859C37D008DE93C /* CoreLocation.framework in Frameworks */,
+				CE94CD591859C3AD008DE93C /* OpenBaaS.framework in Frameworks */,
+				CE94CD241859C34C008DE93C /* CoreGraphics.framework in Frameworks */,
+				CE94CD261859C34C008DE93C /* UIKit.framework in Frameworks */,
+				CE94CD221859C34C008DE93C /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CE94CD151859C34C008DE93C = {
+			isa = PBXGroup;
+			children = (
+				CE94CD271859C34C008DE93C /* UserRangeSignUp-iOS */,
+				CE94CD201859C34C008DE93C /* Frameworks */,
+				CE94CD1F1859C34C008DE93C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CE94CD1F1859C34C008DE93C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CE94CD1E1859C34C008DE93C /* UserRangeSignUp-iOS.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CE94CD201859C34C008DE93C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CE94CD561859C37D008DE93C /* CoreLocation.framework */,
+				CE94CD211859C34C008DE93C /* Foundation.framework */,
+				CE94CD231859C34C008DE93C /* CoreGraphics.framework */,
+				CE94CD251859C34C008DE93C /* UIKit.framework */,
+				CE94CD581859C3AD008DE93C /* OpenBaaS.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CE94CD271859C34C008DE93C /* UserRangeSignUp-iOS */ = {
+			isa = PBXGroup;
+			children = (
+				CE94CD301859C34C008DE93C /* LCAAppDelegate.h */,
+				CE94CD311859C34C008DE93C /* LCAAppDelegate.m */,
+				CE94CD331859C34C008DE93C /* Main.storyboard */,
+				CE94CD361859C34C008DE93C /* LCAViewController.h */,
+				CE94CD371859C34C008DE93C /* LCAViewController.m */,
+				CE94CD391859C34C008DE93C /* Images.xcassets */,
+				CE94CD281859C34C008DE93C /* Supporting Files */,
+			);
+			path = "UserRangeSignUp-iOS";
+			sourceTree = "<group>";
+		};
+		CE94CD281859C34C008DE93C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CE94CD291859C34C008DE93C /* UserRangeSignUp-iOS-Info.plist */,
+				CE94CD2A1859C34C008DE93C /* InfoPlist.strings */,
+				CE94CD2D1859C34C008DE93C /* main.m */,
+				CE94CD2F1859C34C008DE93C /* UserRangeSignUp-iOS-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CE94CD1D1859C34C008DE93C /* UserRangeSignUp-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CE94CD501859C34C008DE93C /* Build configuration list for PBXNativeTarget "UserRangeSignUp-iOS" */;
+			buildPhases = (
+				CE94CD1A1859C34C008DE93C /* Sources */,
+				CE94CD1B1859C34C008DE93C /* Frameworks */,
+				CE94CD1C1859C34C008DE93C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "UserRangeSignUp-iOS";
+			productName = "UserRangeSignUp-iOS";
+			productReference = CE94CD1E1859C34C008DE93C /* UserRangeSignUp-iOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CE94CD161859C34C008DE93C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = LCA;
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = Infosistema;
+			};
+			buildConfigurationList = CE94CD191859C34C008DE93C /* Build configuration list for PBXProject "UserRangeSignUp-iOS" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CE94CD151859C34C008DE93C;
+			productRefGroup = CE94CD1F1859C34C008DE93C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CE94CD1D1859C34C008DE93C /* UserRangeSignUp-iOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CE94CD1C1859C34C008DE93C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE94CD3A1859C34C008DE93C /* Images.xcassets in Resources */,
+				CE94CD2C1859C34C008DE93C /* InfoPlist.strings in Resources */,
+				CE94CD351859C34C008DE93C /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CE94CD1A1859C34C008DE93C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE94CD381859C34C008DE93C /* LCAViewController.m in Sources */,
+				CE94CD2E1859C34C008DE93C /* main.m in Sources */,
+				CE94CD321859C34C008DE93C /* LCAAppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		CE94CD2A1859C34C008DE93C /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CE94CD2B1859C34C008DE93C /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		CE94CD331859C34C008DE93C /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CE94CD341859C34C008DE93C /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		CE94CD4E1859C34C008DE93C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		CE94CD4F1859C34C008DE93C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CE94CD511859C34C008DE93C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/User/Documents/Git/OpenBaaS/libCocoa/OpenBaaS,
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "UserRangeSignUp-iOS/UserRangeSignUp-iOS-Prefix.pch";
+				INFOPLIST_FILE = "UserRangeSignUp-iOS/UserRangeSignUp-iOS-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		CE94CD521859C34C008DE93C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/User/Documents/Git/OpenBaaS/libCocoa/OpenBaaS,
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "UserRangeSignUp-iOS/UserRangeSignUp-iOS-Prefix.pch";
+				INFOPLIST_FILE = "UserRangeSignUp-iOS/UserRangeSignUp-iOS-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CE94CD191859C34C008DE93C /* Build configuration list for PBXProject "UserRangeSignUp-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE94CD4E1859C34C008DE93C /* Debug */,
+				CE94CD4F1859C34C008DE93C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CE94CD501859C34C008DE93C /* Build configuration list for PBXNativeTarget "UserRangeSignUp-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE94CD511859C34C008DE93C /* Debug */,
+				CE94CD521859C34C008DE93C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CE94CD161859C34C008DE93C /* Project object */;
+}

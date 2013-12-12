@@ -10,4 +10,7 @@
    <FileRef
       location = "group:Examples/Integration/Integration.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:Examples/UserRangeSignUp-iOS/UserRangeSignUp-iOS.xcodeproj">
+   </FileRef>
 </Workspace>
