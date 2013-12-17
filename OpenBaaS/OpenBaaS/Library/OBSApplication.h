@@ -71,6 +71,6 @@
 
 - (void)getUserIdsWithQueryDictionary:(NSDictionary *)query completionHandler:(void(^)(OBSApplication *application, OBSCollectionPage *userIds, OBSError *error))handler;
 
-- (void)getUsersWithQueryDictionary:(NSDictionary *)query completionHandler:(void(^)(OBSApplication *application, OBSCollectionPage *userIds, OBSError *error))handler elementCompletionHandler:(void(^)(OBSApplication *application, OBSUser *user, OBSError *error))elementHandler;
+- (void)getUsersWithQueryDictionary:(NSDictionary *)query completionHandler:(void(^)(OBSApplication *application, OBSCollectionPage *userIds, OBSError *error))handler elementCompletionHandler:(void(^)(OBSApplication *application, NSString *userId, OBSUser *user, OBSError *error))elementHandler;
 
 @end

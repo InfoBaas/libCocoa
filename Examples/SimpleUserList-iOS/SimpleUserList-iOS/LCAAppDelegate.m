@@ -1,6 +1,6 @@
 //
 //  LCAAppDelegate.m
-//  UserRangeSignUp-iOS
+//  SimpleUserList-iOS
 //
 //  Created by Tiago Rodrigues on 12/12/2013.
 //  Copyright (c) 2013 Infosistema. All rights reserved.
@@ -14,8 +14,8 @@
 
 @end
 
-static NSString *const _appid = @"com.infosistema.openbaas.libcocoa.apps.UserRangeSignUp-iOS.appid";
-static NSString *const _appKey = @"com.infosistema.openbaas.libcocoa.apps.UserRangeSignUp-iOS.appkey";
+static NSString *const _appid = @"com.infosistema.openbaas.libcocoa.apps.SimpleUserList-iOS.appid";
+static NSString *const _appKey = @"com.infosistema.openbaas.libcocoa.apps.SimpleUserList-iOS.appkey";
 
 @implementation LCAAppDelegate
 
@@ -63,6 +63,8 @@ static NSString *const _appKey = @"com.infosistema.openbaas.libcocoa.apps.UserRa
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [OBSSession forgetCurrentSession];
+
     UIView *waitscreen = [[UIView alloc] initWithFrame:self.window.bounds];
     [waitscreen setBackgroundColor:[UIColor colorWithWhite:.0 alpha:.5]];
     UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];

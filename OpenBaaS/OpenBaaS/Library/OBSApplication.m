@@ -97,7 +97,7 @@
             // Create collection page.
             OBSCollectionPage *collectionPage = nil;
             if ([result isKindOfClass:[NSDictionary class]]) {
-                collectionPage = [OBSCollectionPage collectionPageFromDataJSON:result[OBSConnectionResultDataKey] andMetadataJSON:result[OBSConnectionResultMetadataKey]];
+                collectionPage = [OBSCollectionPage collectionPageFromDataJSON:result andMetadataJSON:nil];
             }
             if (!collectionPage) {
                 // User wasn't created.
@@ -110,7 +110,7 @@
     });
 }
 
-- (void)getUsersWithQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(OBSApplication *, OBSCollectionPage *, OBSError *))handler elementCompletionHandler:(void (^)(OBSApplication *, OBSUser *, OBSError *))elementHandler
+- (void)getUsersWithQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(OBSApplication *, OBSCollectionPage *, OBSError *))handler elementCompletionHandler:(void (^)(OBSApplication *, NSString *, OBSUser *, OBSError *))elementHandler
 {
     [self getUserIdsWithQueryDictionary:query completionHandler:^(OBSApplication *application, OBSCollectionPage *userIds, OBSError *error) {
         if (handler)
@@ -118,7 +118,10 @@
 
         if (!error) {
             for (NSString *userId in [userIds elements]) {
-                [self getUserWithId:userId withCompletionHandler:elementHandler];
+                [self getUserWithId:userId withCompletionHandler:^(OBSApplication *application, OBSUser *user, OBSError *error) {
+                    if (application == self)
+                        elementHandler(application, userId, user, error);
+                }];
             }
         }
     }];

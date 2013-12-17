@@ -15,6 +15,7 @@
 #import "NSString+OpenBaaS.h"
 #import "OBSEmailValidation.h"
 #import "OBSLocationCentre.h"
+#import "OBSQuery.h"
 
 #pragma mark - Common
 

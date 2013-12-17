@@ -173,7 +173,7 @@ static NSMutableSet *_OBSOpenConnections (void)
 {
     NSString *session = _obs_settings_get_sessionToken();
     if (session) {
-        [request setValue:session forKey:_OBSRequestHeaderLocation];
+        [request setValue:session forHTTPHeaderField:_OBSRequestHeaderSessionToken];
     }
 }
 

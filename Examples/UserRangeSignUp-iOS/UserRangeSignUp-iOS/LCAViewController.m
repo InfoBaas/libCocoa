@@ -122,8 +122,7 @@
         NSString *name = [NSString stringWithFormat:@"J. %u Doe", i];
         [account signUpWithEmail:email password:self.passwordTextField.text userName:name userFile:nil completionHandler:^(OBSAccount *account, BOOL signedUp, OBSSession *session, OBSError *error) {
             @synchronized (set) {
-                NSDictionary *status = @{@"email": email, @"sign up": @(signedUp)};
-                [set addObject:status];
+                [set addObject:@{@"email": email, @"sign up": @(signedUp)}];
                 if (signedUp)
                     ok++;
                 else
