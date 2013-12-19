@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:OpenBaaS/OpenBaaS.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:Examples/Account-iOS/Account-iOS.xcodeproj">
    </FileRef>
    <FileRef
@@ -15,5 +12,11 @@
    </FileRef>
    <FileRef
       location = "group:Examples/SimpleUserList-iOS/SimpleUserList-iOS.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Examples/SimpleImageGallery-iOS/SimpleImageGallery-iOS.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:OpenBaaS/OpenBaaS.xcodeproj">
    </FileRef>
 </Workspace>

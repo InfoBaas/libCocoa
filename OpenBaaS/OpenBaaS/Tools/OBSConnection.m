@@ -81,7 +81,8 @@ static NSMutableSet *_OBSOpenConnections (void)
     connection.queue = queue;
     connection.handler = handler;
 
-    connection.data = [NSMutableData data];
+    connection.data = nil;
+    connection.response = nil;
 
     NSMutableSet *set = _OBSOpenConnections();
     @synchronized (set) {
@@ -108,6 +109,14 @@ static NSMutableSet *_OBSOpenConnections (void)
     }
 }
 
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+    if (connection == self.connection) {
+        self.data = [NSMutableData data];
+        self.response = response;
+    }
+}
+
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
     if (connection == self.connection) {
@@ -115,11 +124,11 @@ static NSMutableSet *_OBSOpenConnections (void)
     }
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     if (connection == self.connection) {
         [self.queue addOperationWithBlock:^{
-            self.handler(response,[NSData dataWithData:self.data],nil);
+            self.handler(self.response,[NSData dataWithData:self.data],nil);
         }];
         NSMutableSet *set = _OBSOpenConnections();
         @synchronized (set) {
@@ -297,6 +306,87 @@ static NSMutableSet *_OBSOpenConnections (void)
         [self sendAsynchronousRequest:request
                                 queue:[NSOperationQueue new]
                     completionHandler:[self innerHandlerWithOuterHandler:handler]];
+    });
+}
+
+#pragma mark apps/<appid>/media/images
+
++ (void)get_media:(OBSMedia *)media imageFilesWithQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // Address
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/media/images", [self OpenBaaSAddress], [[media client] appId]];
+
+        // Request
+        NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
+        NSMutableURLRequest *request = [self get_requestForURL:url];
+
+        // Header
+        [self setAppKeyHeaderField:[[media client] appKey] toRequest:request];
+        [self setCurrentLocationHeaderFieldToRequest:request];
+        [self setCurrentSessionHeaderFieldToRequest:request];
+
+        // Send
+        [self sendAsynchronousRequest:request
+                                queue:[NSOperationQueue new]
+                    completionHandler:[self innerHandlerWithOuterHandler:handler]];
+    });
+}
+
++ (void)get_media:(OBSMedia *)media imageFileWithId:(NSString *)imageFileId queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // Address
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/media/images/%@", [self OpenBaaSAddress], [[media client] appId], imageFileId];
+
+        // Request
+        NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
+        NSMutableURLRequest *request = [self get_requestForURL:url];
+
+        // Header
+        [self setAppKeyHeaderField:[[media client] appKey] toRequest:request];
+        [self setCurrentLocationHeaderFieldToRequest:request];
+        [self setCurrentSessionHeaderFieldToRequest:request];
+
+        // Send
+        [self sendAsynchronousRequest:request
+                                queue:[NSOperationQueue new]
+                    completionHandler:[self innerHandlerWithOuterHandler:handler]];
+    });
+}
+
++ (void)get_imageFile:(OBSImageFile *)imageFile imageSize:(NSString *)imageSize queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // Address
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/media/images/%@/%@/download", [self OpenBaaSAddress], [[imageFile client] appId], imageFile.mediaId, imageSize];
+
+        // Request
+        NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
+        NSMutableURLRequest *request = [self get_requestForURL:url];
+
+        // Header
+        [self setAppKeyHeaderField:[[imageFile client] appKey] toRequest:request];
+        [self setCurrentLocationHeaderFieldToRequest:request];
+        [self setCurrentSessionHeaderFieldToRequest:request];
+
+        // Send
+        [self sendAsynchronousRequest:request
+                                queue:[NSOperationQueue new]
+                    completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                        id result = nil;
+                        if (data) {
+                            error = [self errorWithResponse:response andData:data];
+                            if (!error) {
+                                if ([data length]) {
+                                    result = data;
+                                } else {
+                                    result = [NSNull null];
+                                }
+                            }
+                        }
+                        handler(result, [((NSHTTPURLResponse*)response) statusCode], error);
+                    }];
     });
 }
 

@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class OBSAccount;
+@class OBSMedia;
 @class OBSUser;
 
 @class OBSCollectionPage;
@@ -67,7 +68,9 @@
  */
 - (OBSAccount *)applicationAccount;
 
-- (void)getUserWithId:(NSString *)userId withCompletionHandler:(void(^)(OBSApplication *application, OBSUser *user, OBSError *error))handler;
+- (OBSMedia *)applicationMedia;
+
+- (void)getUserWithId:(NSString *)userId withCompletionHandler:(void(^)(OBSApplication *application, NSString *userId, OBSUser *user, OBSError *error))handler;
 
 - (void)getUserIdsWithQueryDictionary:(NSDictionary *)query completionHandler:(void(^)(OBSApplication *application, OBSCollectionPage *userIds, OBSError *error))handler;
 

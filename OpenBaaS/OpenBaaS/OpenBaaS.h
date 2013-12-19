@@ -28,5 +28,7 @@
 
 #import "OBSAccount.h"
 #import "OBSApplication.h"
+#import "OBSImageFile.h"
+#import "OBSMedia.h"
 #import "OBSSession.h"
 #import "OBSUser.h"

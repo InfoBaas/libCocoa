@@ -9,6 +9,7 @@
 #import "OBSApplication+.h"
 
 #import "OBSAccount+.h"
+#import "OBSMedia+.h"
 #import "OBSUser+.h"
 
 #import "OBSConnection.h"
@@ -35,7 +36,12 @@
     return [[OBSAccount alloc] initWithApplication:self];
 }
 
-- (void)getUserWithId:(NSString *)userId withCompletionHandler:(void (^)(OBSApplication *, OBSUser *, OBSError *))handler
+- (OBSMedia *)applicationMedia
+{
+    return [[OBSMedia alloc] initWithApplication:self];
+}
+
+- (void)getUserWithId:(NSString *)userId withCompletionHandler:(void (^)(OBSApplication *, NSString *, OBSUser *, OBSError *))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         BOOL hasUserId = userId && [userId isKindOfClass:[NSString class]];
@@ -46,7 +52,7 @@
 
                 // Called with error?
                 if (error) {
-                    handler(self, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+                    handler(self, userId, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
                     return;
                 }
 
@@ -57,11 +63,11 @@
                 }
                 if (!user) {
                     // User wasn't created.
-                    handler(self, nil, [OBSError errorWithDomain:kOBSErrorDomainRemote code:kOBSRemoteErrorCodeResultDataIllFormed userInfo:nil]);
+                    handler(self, userId, nil, [OBSError errorWithDomain:kOBSErrorDomainRemote code:kOBSRemoteErrorCodeResultDataIllFormed userInfo:nil]);
                     return;
                 }
 
-                handler(self, user, nil);
+                handler(self, userId, user, nil);
             }];
         } else if (handler) {
             //// Some or all the required parameters are missing
@@ -76,7 +82,7 @@
                                                    code:kOBSLocalErrorCodeMissingRequiredParameters
                                                userInfo:userInfo];
             // Action completed with error.
-            handler(self, nil, error);
+            handler(self, userId, nil, error);
         }
     });
 }
@@ -100,7 +106,7 @@
                 collectionPage = [OBSCollectionPage collectionPageFromDataJSON:result andMetadataJSON:nil];
             }
             if (!collectionPage) {
-                // User wasn't created.
+                // Collection page wasn't created.
                 handler(self, nil, [OBSError errorWithDomain:kOBSErrorDomainRemote code:kOBSRemoteErrorCodeResultDataIllFormed userInfo:nil]);
                 return;
             }
@@ -118,10 +124,7 @@
 
         if (!error) {
             for (NSString *userId in [userIds elements]) {
-                [self getUserWithId:userId withCompletionHandler:^(OBSApplication *application, OBSUser *user, OBSError *error) {
-                    if (application == self)
-                        elementHandler(application, userId, user, error);
-                }];
+                [self getUserWithId:userId withCompletionHandler:elementHandler];
             }
         }
     }];
