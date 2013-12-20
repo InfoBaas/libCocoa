@@ -566,6 +566,49 @@ static NSMutableSet *_OBSOpenConnections (void)
     });
 }
 
+#pragma mark apps/<appid>/media/images
+
+#if TARGET_OS_IPHONE
++ (void)post_media:(OBSMedia *)media image:(UIImage *)image withFileName:(NSString *)fileName queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler
+#endif
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // Address
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/media/images", [self OpenBaaSAddress], [[media client] appId]];
+
+        // Auxiliaries
+        NSString *boundary = @"---p37mbyk1q2m164obqcjj-OpenBaaS-libCocoa-";
+        NSString *contentType = [NSString stringWithFormat:
+                                 @"multipart/form-data; boundary=%@",boundary];
+
+        // Body
+        NSMutableData *body = [NSMutableData data];
+        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"file\"; filename=\"%@.png\"\r\nContent-Type: application/octet-stream\r\n\r\n", fileName] dataUsingEncoding:NSUTF8StringEncoding]];
+#if TARGET_OS_IPHONE
+        [body appendData:UIImagePNGRepresentation(image)];
+#endif
+        [body appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+
+        // Request
+        NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+        [request setHTTPMethod:@"POST"];
+        [request addValue:contentType forHTTPHeaderField:@"Content-Type"];
+        [request setHTTPBody:[NSData dataWithData:body]];
+
+        // Header
+        [self setAppKeyHeaderField:[[media client] appKey] toRequest:request];
+        [self setCurrentLocationHeaderFieldToRequest:request];
+        [self setCurrentSessionHeaderFieldToRequest:request];
+
+        // Send
+        [self sendAsynchronousRequest:request
+                                queue:[NSOperationQueue new]
+                    completionHandler:[self innerHandlerWithOuterHandler:handler]];
+    });
+}
+
 @end
 
 #pragma mark - PATCH

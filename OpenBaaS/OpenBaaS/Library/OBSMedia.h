@@ -8,6 +8,10 @@
 
 #import <OpenBaaS/OpenBaaS.h>
 
+#if TARGET_OS_IPHONE
+#import <UIKit/UIKit.h>
+#endif
+
 @class OBSImageFile;
 
 @interface OBSMedia : OBSObject
@@ -21,5 +25,9 @@
 - (void)getImageFileIdsWithQueryDictionary:(NSDictionary *)query completionHandler:(void(^)(OBSMedia *media, OBSCollectionPage *imageFileIds, OBSError *error))handler;
 
 - (void)getImageFilesWithQueryDictionary:(NSDictionary *)query completionHandler:(void(^)(OBSMedia *media, OBSCollectionPage *imageFileIds, OBSError *error))handler elementCompletionHandler:(void(^)(OBSMedia *media, NSString *imageFileId, OBSImageFile *imageFile, OBSError *error))elementHandler;
+
+#if TARGET_OS_IPHONE
+- (void)uploadImage:(UIImage *)image withFileName:(NSString *)fileName completionHandler:(void(^)(OBSMedia *media, OBSImageFile *imageFiles, OBSError *error))handler;
+#endif
 
 @end

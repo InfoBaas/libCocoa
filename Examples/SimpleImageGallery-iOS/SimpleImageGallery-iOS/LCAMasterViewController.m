@@ -11,6 +11,7 @@
 #import "LCADetailViewController.h"
 
 @interface LCAMasterViewController ()
+<UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic, assign) NSInteger nextPageToLoad;
 @property (nonatomic, strong) NSMutableArray *imageFiles;
@@ -34,7 +35,20 @@
 
 - (void)insertNewImage:(id)sender
 {
-#warning TODO
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+
+    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    {
+        [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+    }
+    else
+    {
+        [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+    }
+
+    [imagePicker setDelegate:self];
+
+    [self presentViewController:imagePicker animated:YES completion:nil];
 }
 
 - (IBAction)loadMoreImageFiles:(id)sender
@@ -72,7 +86,7 @@
                               }
                        elementCompletionHandler:^(OBSMedia *media, NSString *imageFileId, OBSImageFile *imageFile, OBSError *error) {
                            if (error) {
-                               NSLog(@"\nError loading user %@: %@", imageFileId, [error description]);
+                               NSLog(@"\nError loading image %@: %@", imageFileId, [error description]);
                            } else {
                                NSLog(@"(ID,%@ ; EXTENSION,%@ ; NAME,%@", imageFile.mediaId, imageFile.fileExtension, imageFile.fileName);
                                @synchronized (imageFiles) {
@@ -110,6 +124,49 @@
                            }
                        }];
     }
+}
+
+#pragma mark - Image picker controller delegate
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    NSString *fileName = [NSString stringWithFormat:@"timg.%ld", (long)[[NSDate date] timeIntervalSince1970]];
+
+    // replace add button with an activity indicator
+    UIBarButtonItem *addButton = [self.navigationItem rightBarButtonItem];
+    UIActivityIndicatorView * activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    [activityView sizeToFit];
+    [activityView setAutoresizingMask:(UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin)];
+    [activityView setColor:[addButton tintColor]];
+    UIBarButtonItem *loadingView = [[UIBarButtonItem alloc] initWithCustomView:activityView];
+    [self.navigationItem setRightBarButtonItem:loadingView];
+
+    // upload image
+    LCAAppDelegate *delegate = (LCAAppDelegate *)[[UIApplication sharedApplication] delegate];
+    OBSApplication *application = [OBSApplication applicationWithClient:delegate];
+    OBSMedia *media = [application applicationMedia];
+    [media uploadImage:image withFileName:fileName completionHandler:^(OBSMedia *media, OBSImageFile *imageFiles, OBSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // replace activity indicator with the add button
+            [self.navigationItem setRightBarButtonItem:addButton];
+            // handle upload
+            if (error) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[error description] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+                [alert show];
+            } else {
+#warning YOU ARE HERE
+                NSAssert(NO, @"Not yet Implemented");
+            }
+        });
+    }];
+
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Table view data source

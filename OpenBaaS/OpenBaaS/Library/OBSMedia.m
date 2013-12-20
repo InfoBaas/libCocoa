@@ -116,9 +116,60 @@
             for (NSString *imageFileId in [imageFileIds elements]) {
                 [self getImageFileWithId:imageFileId withCompletionHandler:elementHandler];
             }
-//            [self getImageFileWithId:[[imageFileIds elements] lastObject] withCompletionHandler:elementHandler];
         }
     }];
+}
+
+#if TARGET_OS_IPHONE
+- (void)uploadImage:(UIImage *)image withFileName:(NSString *)fileName completionHandler:(void(^)(OBSMedia *media, OBSImageFile *imageFiles, OBSError *error))handler
+#endif
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+#if TARGET_OS_IPHONE
+        BOOL hasImage = image && [image isKindOfClass:[UIImage class]];
+#endif
+        BOOL hasFileName = fileName && [fileName isKindOfClass:[NSString class]];
+        if (hasImage && hasFileName) {
+            [OBSConnection post_media:self image:image withFileName:fileName queryDictionary:nil completionHandler:^(id result, NSInteger statusCode, NSError *error) {
+                if (!handler)
+                    return;
+
+                // Called with error?
+                if (error) {
+                    handler(self, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+                    return;
+                }
+
+                // Create image file.
+                OBSImageFile *imageFile = nil;
+                if ([result isKindOfClass:[NSDictionary class]]) {
+                    imageFile = [OBSImageFile imageFileFromDataJSON:result[OBSConnectionResultDataKey] andMetadataJSON:result[OBSConnectionResultMetadataKey] withClient:self.client];
+                }
+                if (!imageFile) {
+                    // Image file wasn't created.
+                    handler(self, nil, [OBSError errorWithDomain:kOBSErrorDomainRemote code:kOBSRemoteErrorCodeResultDataIllFormed userInfo:nil]);
+                    return;
+                }
+
+                handler(self, imageFile, nil);
+            }];
+        } else if (handler) {
+            //// Some or all the required parameters are missing
+            // Create an array to hold the missing parameters' names.
+            NSMutableArray *missingRequiredParameters = [NSMutableArray arrayWithCapacity:3];
+            // Add missing parameters to the array.
+            if (!hasImage) [missingRequiredParameters addObject:@"image"];
+            if (!hasFileName) [missingRequiredParameters addObject:@"fileName"];
+            // Create userInfo dictionary.
+            NSDictionary *userInfo = @{kOBSErrorUserInfoKeyMissingRequiredParameters: [NSArray arrayWithArray:missingRequiredParameters]};
+            // Create an error instace to send to the callback.
+            OBSError *error = [OBSError errorWithDomain:kOBSErrorDomainLocal
+                                                   code:kOBSLocalErrorCodeMissingRequiredParameters
+                                               userInfo:userInfo];
+            // Action completed with error.
+            handler(self, nil, error);
+        }
+    });
 }
 
 @end

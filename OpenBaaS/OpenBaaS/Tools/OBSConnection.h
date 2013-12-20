@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+#if TARGET_OS_IPHONE
+#import <UIKit/UIKit.h>
+#endif
+
 @class OBSAccount;
 @class OBSApplication;
 @class OBSImageFile;
@@ -75,6 +79,12 @@ extern NSString *const OBSConnectionResultMetadataKey;
 #pragma mark apps/<appid>/account/integration
 
 + (void)post_account:(OBSAccount *)account integrationFacebookWithOAuthToken:(NSString *)oauthToken queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler;
+
+#pragma mark apps/<appid>/media/images
+
+#if TARGET_OS_IPHONE
++ (void)post_media:(OBSMedia *)media image:(UIImage *)image withFileName:(NSString *)fileName queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler;
+#endif
 
 @end
 
