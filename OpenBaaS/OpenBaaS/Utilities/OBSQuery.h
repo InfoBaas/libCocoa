@@ -9,3 +9,4 @@
 #import <Foundation/Foundation.h>
 
 extern NSString *const OBSQueryParamCollectionPage;
+extern NSString *const OBSQueryParamCollectionPageSize;

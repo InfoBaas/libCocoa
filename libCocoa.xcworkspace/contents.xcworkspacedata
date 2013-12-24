@@ -17,6 +17,9 @@
       location = "group:Examples/SimpleImageGallery-iOS/SimpleImageGallery-iOS.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:Examples/SimpleDataTest-iOS/SimpleDataTest-iOS.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:OpenBaaS/OpenBaaS.xcodeproj">
    </FileRef>
 </Workspace>

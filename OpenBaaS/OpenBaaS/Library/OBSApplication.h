@@ -76,4 +76,14 @@
 
 - (void)getUsersWithQueryDictionary:(NSDictionary *)query completionHandler:(void(^)(OBSApplication *application, OBSCollectionPage *userIds, OBSError *error))handler elementCompletionHandler:(void(^)(OBSApplication *application, NSString *userId, OBSUser *user, OBSError *error))elementHandler;
 
+#pragma mark Data
+
+- (void)readPath:(NSString *)path withQueryDictionary:(NSDictionary *)query completionHandler:(void(^)(OBSApplication *application, NSString *path, id data, id metadata, OBSError *error))handler;
+
+- (void)insertObject:(NSDictionary *)object atPath:(NSString *)path withCompletionHandler:(void(^)(OBSApplication *application, NSString *path, NSDictionary *object, BOOL inserted, OBSError *error))handler;
+
+- (void)updatePath:(NSString *)path withObject:(NSDictionary *)object completionHandler:(void(^)(OBSApplication *application, NSString *path, NSDictionary *object, BOOL updated, OBSError *error))handler;
+
+- (void)removePath:(NSString *)path withCompletionHandler:(void(^)(OBSApplication *application, NSString *path, BOOL deleted, OBSError *error))handler;
+
 @end

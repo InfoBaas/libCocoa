@@ -9,3 +9,4 @@
 #import "OBSQuery+.h"
 
 NSString *const OBSQueryParamCollectionPage = @"pageNumber";
+NSString *const OBSQueryParamCollectionPageSize = @"pageSize";

@@ -35,6 +35,6 @@
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
 	<key>com.openbaas.config.url</key>
-	<string>http://10.0.3.82:8080/Openbaas</string>
+	<string>http://10.5.0.100/Openbaas</string>
 </dict>
 </plist>

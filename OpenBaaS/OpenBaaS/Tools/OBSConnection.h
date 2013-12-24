@@ -58,6 +58,14 @@ extern NSString *const OBSConnectionResultMetadataKey;
 
 + (void)get_imageFile:(OBSImageFile *)imageFile imageSize:(NSString *)imageSize queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler;
 
+#pragma mark apps/<appid>/data
+
++ (void)get_application:(OBSApplication *)application dataPath:(NSString *)path withQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler;
+
+#pragma mark apps/<appid>/users/<userid>/data
+
++ (void)get_user:(OBSUser *)user dataPath:(NSString *)path withQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler;
+
 @end
 
 #pragma mark - POST
@@ -88,6 +96,22 @@ extern NSString *const OBSConnectionResultMetadataKey;
 
 @end
 
+#pragma mark - PUT
+
+@interface OBSConnection (PUT)
+
++ (NSMutableURLRequest *)put_requestForURL:(NSURL *)url;
+
+#pragma mark apps/<appid>/data
+
++ (void)put_application:(OBSApplication *)application dataPath:(NSString *)path withQueryDictionary:(NSDictionary *)query object:(NSDictionary *)object completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler;
+
+#pragma mark apps/<appid>/users/<userid>/data
+
++ (void)put_user:(OBSUser *)user dataPath:(NSString *)path withQueryDictionary:(NSDictionary *)query object:(NSDictionary *)object completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler;
+
+@end
+
 #pragma mark - PATCH
 
 @interface OBSConnection (PATCH)
@@ -97,5 +121,29 @@ extern NSString *const OBSConnectionResultMetadataKey;
 #pragma mark apps/<appid>/account/session
 
 + (void)patch_session:(OBSSession *)session withQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler;
+
+#pragma mark apps/<appid>/data
+
++ (void)patch_application:(OBSApplication *)application dataPath:(NSString *)path withQueryDictionary:(NSDictionary *)query object:(NSDictionary *)object completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler;
+
+#pragma mark apps/<appid>/users/<userid>/data
+
++ (void)patch_user:(OBSUser *)user dataPath:(NSString *)path withQueryDictionary:(NSDictionary *)query object:(NSDictionary *)object completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler;
+
+@end
+
+#pragma mark - DELETE
+
+@interface OBSConnection (DELETE)
+
++ (NSMutableURLRequest *)delete_requestForURL:(NSURL *)url;
+
+#pragma mark apps/<appid>/data
+
++ (void)delete_application:(OBSApplication *)application dataPath:(NSString *)path withQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler;
+
+#pragma mark apps/<appid>/users/<userid>/data
+
++ (void)delete_user:(OBSUser *)user dataPath:(NSString *)path withQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler;
 
 @end

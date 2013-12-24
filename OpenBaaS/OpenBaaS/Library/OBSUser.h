@@ -15,4 +15,14 @@
 @property (nonatomic, strong, readonly) NSString *userName;
 @property (nonatomic, strong, readonly) NSString *userFile;
 
+#pragma mark Data
+
+- (void)readPath:(NSString *)path withQueryDictionary:(NSDictionary *)query completionHandler:(void(^)(OBSUser *user, NSString *path, id data, id metadata, OBSError *error))handler;
+
+- (void)insertObject:(NSDictionary *)object atPath:(NSString *)path withCompletionHandler:(void(^)(OBSUser *user, NSString *path, NSDictionary *object, BOOL inserted, OBSError *error))handler;
+
+- (void)updatePath:(NSString *)path withObject:(NSDictionary *)object completionHandler:(void(^)(OBSUser *user, NSString *path, NSDictionary *object, BOOL updated, OBSError *error))handler;
+
+- (void)removePath:(NSString *)path withCompletionHandler:(void(^)(OBSUser *user, NSString *path, BOOL deleted, OBSError *error))handler;
+
 @end

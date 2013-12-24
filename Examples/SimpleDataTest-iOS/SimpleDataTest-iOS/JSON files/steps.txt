@@ -1,0 +1,9 @@
+1 put    /a/b/c
+2 patch  /a/b
+3 delete /a/b/c/e/f
+4 delete /a/b/c/e
+5 put    /a/b/c/d
+6 patch  /a/b/c
+7 put    /a/b/i
+8 put    /a
+9 delete /
