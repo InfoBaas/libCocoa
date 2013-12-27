@@ -99,9 +99,10 @@ static NSMutableSet *_OBSOpenConnections (void)
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
     if (connection == self.connection) {
-        [self.queue addOperationWithBlock:^{
-            self.handler(nil,nil,error);
-        }];
+        if (self.handler)
+            [self.queue addOperationWithBlock:^{
+                self.handler(nil,nil,error);
+            }];
         NSMutableSet *set = _OBSOpenConnections();
         @synchronized (set) {
             [set removeObject:self];
@@ -127,9 +128,10 @@ static NSMutableSet *_OBSOpenConnections (void)
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     if (connection == self.connection) {
-        [self.queue addOperationWithBlock:^{
-            self.handler(self.response,[NSData dataWithData:self.data],nil);
-        }];
+        if (self.handler)
+            [self.queue addOperationWithBlock:^{
+                self.handler(self.response,[NSData dataWithData:self.data],nil);
+            }];
         NSMutableSet *set = _OBSOpenConnections();
         @synchronized (set) {
             [set removeObject:self];
@@ -759,7 +761,7 @@ static NSMutableSet *_OBSOpenConnections (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/session", [self OpenBaaSAddress], [[session client] appId]];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/sessions", [self OpenBaaSAddress], [[session client] appId]];
 
         // Request
         NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];

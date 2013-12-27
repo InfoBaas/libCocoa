@@ -50,6 +50,29 @@
     return user;
 }
 
+#pragma mark -
+
+- (void)updateUserWithCompletionHandler:(void(^)(OBSUser *user, OBSError *error))handler
+{
+    OBSApplication *application = [OBSApplication applicationWithClient:self.client];
+    [application getUserWithId:self.userId withCompletionHandler:^(OBSApplication *application, NSString *userId, OBSUser *user, OBSError *error) {
+        if (!handler)
+            return;
+
+        if (error) {
+            handler(self, error);
+        } else if ([userId isEqualToString:self.userId]) {
+
+            self.userId = user.userId;
+            self.userEmail = user.userEmail;
+            self.userName = user.userName;
+            self.userFile = user.userFile;
+
+            handler(self, nil);
+        }
+    }];
+}
+
 #pragma mark Data
 
 - (void)readPath:(NSString *)path withQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(OBSUser *, NSString *, id, id, OBSError *))handler

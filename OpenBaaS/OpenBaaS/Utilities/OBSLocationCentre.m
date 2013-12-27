@@ -26,12 +26,6 @@ static NSString *const _didStopWithErrorObservers = @"didStopWithErrorObservers"
                        _didChangeAuthorizationStatusObservers: [NSMutableSet set],
                        _didStopWithErrorObservers: [NSMutableSet set]};
 
-        CLLocationManager *locationManager = [[CLLocationManager alloc] init];
-        [locationManager setDesiredAccuracy:kCLLocationAccuracyNearestTenMeters];
-        [locationManager setDistanceFilter:kCLDistanceFilterNone];
-        [locationManager setDelegate:self];
-        _locationManager = locationManager;
-
         _currentLocation = nil;
 
         _running = NO;
@@ -39,6 +33,14 @@ static NSString *const _didStopWithErrorObservers = @"didStopWithErrorObservers"
         _bgTask = UIBackgroundTaskInvalid;
         _usingLowPower = NO;
 #endif
+
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            CLLocationManager *locationManager = [[CLLocationManager alloc] init];
+            [locationManager setDesiredAccuracy:kCLLocationAccuracyNearestTenMeters];
+            [locationManager setDistanceFilter:kCLDistanceFilterNone];
+            [locationManager setDelegate:self];
+            _locationManager = locationManager;
+        });
     }
     return self;
 }

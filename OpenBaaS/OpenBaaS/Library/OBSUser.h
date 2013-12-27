@@ -15,6 +15,8 @@
 @property (nonatomic, strong, readonly) NSString *userName;
 @property (nonatomic, strong, readonly) NSString *userFile;
 
+- (void)updateUserWithCompletionHandler:(void(^)(OBSUser *user, OBSError *error))handler;
+
 #pragma mark Data
 
 - (void)readPath:(NSString *)path withQueryDictionary:(NSDictionary *)query completionHandler:(void(^)(OBSUser *user, NSString *path, id data, id metadata, OBSError *error))handler;
