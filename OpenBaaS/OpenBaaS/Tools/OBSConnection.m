@@ -405,7 +405,7 @@ static NSMutableSet *_OBSOpenConnections (void)
         NSMutableURLRequest *request = [self get_requestForURL:url];
 
         // Header
-        [self setAppKeyHeaderField:[application applicationId] toRequest:request];
+        [self setAppKeyHeaderField:[application applicationKey] toRequest:request];
         [self setCurrentLocationHeaderFieldToRequest:request];
         [self setCurrentSessionHeaderFieldToRequest:request];
 
@@ -429,7 +429,7 @@ static NSMutableSet *_OBSOpenConnections (void)
         NSMutableURLRequest *request = [self get_requestForURL:url];
 
         // Header
-        [self setAppKeyHeaderField:[[user client] appId] toRequest:request];
+        [self setAppKeyHeaderField:[[user client] appKey] toRequest:request];
         [self setCurrentLocationHeaderFieldToRequest:request];
         [self setCurrentSessionHeaderFieldToRequest:request];
 
@@ -689,7 +689,7 @@ static NSMutableSet *_OBSOpenConnections (void)
         NSMutableURLRequest *request = [self put_requestForURL:url];
 
         // Header
-        [self setAppKeyHeaderField:[application applicationId] toRequest:request];
+        [self setAppKeyHeaderField:[application applicationKey] toRequest:request];
         [self setCurrentLocationHeaderFieldToRequest:request];
         [self setCurrentSessionHeaderFieldToRequest:request];
 
@@ -723,7 +723,7 @@ static NSMutableSet *_OBSOpenConnections (void)
         NSMutableURLRequest *request = [self put_requestForURL:url];
 
         // Header
-        [self setAppKeyHeaderField:[[user client] appId] toRequest:request];
+        [self setAppKeyHeaderField:[[user client] appKey] toRequest:request];
         [self setCurrentLocationHeaderFieldToRequest:request];
         [self setCurrentSessionHeaderFieldToRequest:request];
 
@@ -761,16 +761,50 @@ static NSMutableSet *_OBSOpenConnections (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/sessions", [self OpenBaaSAddress], [[session client] appId]];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/sessions/%@", [self OpenBaaSAddress], [[session client] appId], [session token]];
 
         // Request
         NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
-        NSMutableURLRequest *request = [self get_requestForURL:url];
+        NSMutableURLRequest *request = [self patch_requestForURL:url];
 
         // Header
         [self setAppKeyHeaderField:[[session client] appKey] toRequest:request];
         [self setCurrentLocationHeaderFieldToRequest:request];
         [request setValue:[session token] forHTTPHeaderField:_OBSRequestHeaderSessionToken];
+
+        // Send
+        [self sendAsynchronousRequest:request
+                                queue:[NSOperationQueue new]
+                    completionHandler:[self innerHandlerWithOuterHandler:handler]];
+    });
+}
+
+#pragma mark apps/<appid>/users/<userid>
+
++ (void)patch_user:(OBSUser *)user data:(NSDictionary *)data withQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(id, NSInteger, NSError *))handler
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // Address
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/users/%@", [self OpenBaaSAddress], [[user client] appId], [user userId]];
+
+        // Body
+        NSDictionary *body = [NSDictionary dictionaryWithDictionary:data];
+
+        // Request
+        NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
+        NSMutableURLRequest *request = [self patch_requestForURL:url];
+
+        // Header
+        [self setAppKeyHeaderField:[[user client] appKey] toRequest:request];
+        [self setCurrentLocationHeaderFieldToRequest:request];
+        [self setCurrentSessionHeaderFieldToRequest:request];
+
+        NSError *error = nil;
+        [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:body options:kNilOptions error:&error]];
+        if (error) {
+            handler(nil, 0, error);
+            return;
+        }
 
         // Send
         [self sendAsynchronousRequest:request
@@ -795,7 +829,7 @@ static NSMutableSet *_OBSOpenConnections (void)
         NSMutableURLRequest *request = [self patch_requestForURL:url];
 
         // Header
-        [self setAppKeyHeaderField:[application applicationId] toRequest:request];
+        [self setAppKeyHeaderField:[application applicationKey] toRequest:request];
         [self setCurrentLocationHeaderFieldToRequest:request];
         [self setCurrentSessionHeaderFieldToRequest:request];
 
@@ -829,7 +863,7 @@ static NSMutableSet *_OBSOpenConnections (void)
         NSMutableURLRequest *request = [self patch_requestForURL:url];
 
         // Header
-        [self setAppKeyHeaderField:[[user client] appId] toRequest:request];
+        [self setAppKeyHeaderField:[[user client] appKey] toRequest:request];
         [self setCurrentLocationHeaderFieldToRequest:request];
         [self setCurrentSessionHeaderFieldToRequest:request];
 
@@ -874,7 +908,7 @@ static NSMutableSet *_OBSOpenConnections (void)
         NSMutableURLRequest *request = [self delete_requestForURL:url];
 
         // Header
-        [self setAppKeyHeaderField:[application applicationId] toRequest:request];
+        [self setAppKeyHeaderField:[application applicationKey] toRequest:request];
         [self setCurrentLocationHeaderFieldToRequest:request];
         [self setCurrentSessionHeaderFieldToRequest:request];
 
@@ -898,7 +932,7 @@ static NSMutableSet *_OBSOpenConnections (void)
         NSMutableURLRequest *request = [self delete_requestForURL:url];
 
         // Header
-        [self setAppKeyHeaderField:[[user client] appId] toRequest:request];
+        [self setAppKeyHeaderField:[[user client] appKey] toRequest:request];
         [self setCurrentLocationHeaderFieldToRequest:request];
         [self setCurrentSessionHeaderFieldToRequest:request];
 

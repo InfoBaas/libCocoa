@@ -15,6 +15,10 @@
 @property (nonatomic, strong) NSString *userName;
 @property (nonatomic, strong) NSString *userFile;
 
+@property (nonatomic, strong) CLLocation *userLastLocation;
+@property (nonatomic, strong) CLLocation *userBaseLocation;
+@property (nonatomic, assign) BOOL usesBaseLocation;
+
 + (OBSUser *)userFromDataJSON:(NSDictionary *)data andMetadataJSON:(NSDictionary *)metadata withClient:(id<OBSClientProtocol>)client;
 
 @end

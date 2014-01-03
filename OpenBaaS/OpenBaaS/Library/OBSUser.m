@@ -39,6 +39,48 @@
         userFile = nil; // User has no file.
     }
 
+    CLLocation *userLastLocation = nil;
+    NSString *lastLocationStr = data[@"lastLocation"];
+    if ([lastLocationStr isEqual:[NSNull null]]) {
+        lastLocationStr = nil;
+    }
+    if (lastLocationStr) {
+        @try {
+            NSArray *components = [lastLocationStr componentsSeparatedByString:@":"];
+            NSString *latitudeStr = components[0];
+            NSString *longitudeStr = components[1];
+            CLLocationDegrees latitude = [latitudeStr doubleValue];
+            CLLocationDegrees longitude = [longitudeStr doubleValue];
+            userLastLocation = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
+        }
+        @catch (NSException *exception) {
+            return nil;
+        }
+    }
+    CLLocation *userBaseLocation = nil;
+    NSString *baseLocationStr = data[@"baseLocation"];
+    if ([baseLocationStr isEqual:[NSNull null]]) {
+        baseLocationStr = nil;
+    }
+    if (baseLocationStr) {
+        @try {
+            NSArray *components = [baseLocationStr componentsSeparatedByString:@":"];
+            NSString *latitudeStr = components[0];
+            NSString *longitudeStr = components[1];
+            CLLocationDegrees latitude = [latitudeStr doubleValue];
+            CLLocationDegrees longitude = [longitudeStr doubleValue];
+            userBaseLocation = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
+        }
+        @catch (NSException *exception) {
+            return nil;
+        }
+    }
+    NSNumber *baseLocationOption = data[@"baseLocationOption"];
+    if ([baseLocationOption isEqual:[NSNull null]]) {
+        baseLocationOption = nil;
+    }
+    BOOL usesBaseLocation = [baseLocationOption boolValue];
+
     // Create and initialise object.
     OBSUser *user = [[OBSUser alloc] initWithClient:client];
     // Set proprieties.
@@ -46,6 +88,9 @@
     user.userEmail = userEmail;
     user.userName = userName;
     user.userFile = userFile;
+    user.userLastLocation = userLastLocation;
+    user.userBaseLocation = userBaseLocation;
+    user.usesBaseLocation = usesBaseLocation;
 
     return user;
 }
@@ -67,10 +112,66 @@
             self.userEmail = user.userEmail;
             self.userName = user.userName;
             self.userFile = user.userFile;
+            self.userLastLocation = user.userLastLocation;
+            self.userBaseLocation = user.userBaseLocation;
+            self.usesBaseLocation = user.usesBaseLocation;
 
             handler(self, nil);
         }
     }];
+}
+
+- (void)setBaseLocation:(CLLocation *)location withCompletionHandler:(void (^)(OBSUser *, CLLocation *, OBSError *))handler
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSDictionary *patchData = nil;
+        if (location) {
+            CLLocationCoordinate2D coordinate = [location coordinate];
+            NSString *baseLocation = [NSString stringWithFormat:@"%lf:%lf", coordinate.latitude, coordinate.longitude];
+            patchData = @{@"baseLocation": baseLocation};
+        } else {
+            patchData = @{@"baseLocation": [NSNull null]};
+        }
+        [OBSConnection patch_user:self data:patchData withQueryDictionary:nil completionHandler:^(id result, NSInteger statusCode, NSError *error) {
+            if (error) {
+                if (handler) {
+                    handler(self, location, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+                }
+                return;
+            }
+
+            if (location) {
+                self.userBaseLocation = [[CLLocation alloc] initWithLatitude:location.coordinate.latitude longitude:location.coordinate.longitude];
+            } else {
+                self.userBaseLocation = nil;
+            }
+
+            if (handler) {
+                handler(self, location, nil);
+            }
+        }];
+    });
+}
+
+- (void)useBaseLocation:(BOOL)useBaseLocation withCompletionHandler:(void (^)(OBSUser *, BOOL, OBSError *))handler
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSDictionary *patchData = @{@"baseLocationOption": [NSNumber numberWithBool:useBaseLocation]};
+        [OBSConnection patch_user:self data:patchData withQueryDictionary:nil completionHandler:^(id result, NSInteger statusCode, NSError *error) {
+            if (error) {
+                if (handler) {
+                    handler(self, useBaseLocation, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+                }
+                return;
+            }
+
+            self.usesBaseLocation = useBaseLocation;
+
+            if (handler) {
+                handler(self, useBaseLocation, nil);
+            }
+        }];
+    });
 }
 
 #pragma mark Data

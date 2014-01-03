@@ -11,6 +11,14 @@
 @interface LCATrackSessionViewController ()
 <OBSLocationCentreObserver>
 
+@property (weak, nonatomic) IBOutlet UILabel *locationLabel;
+@property (weak, nonatomic) IBOutlet UILabel *baseLabel;
+@property (weak, nonatomic) IBOutlet UISwitch *useBaseSwitch;
+
+- (IBAction)useCurrentAsBase:(id)sender;
+- (IBAction)forgetBase:(id)sender;
+- (IBAction)useBase:(id)sender;
+
 @property (strong, nonatomic) NSCondition *condition;
 @property (assign, nonatomic) BOOL run;
 
@@ -49,6 +57,10 @@
                         [alert show];
                         return;
                     }
+
+                    self.locationLabel.text = self.session.user.userLastLocation.description;
+                    self.baseLabel.text = self.session.user.userBaseLocation.description;
+                    self.useBaseSwitch.on = self.session.user.usesBaseLocation;
 
                     NSLog(@"2");
                     [condition lock];
@@ -97,6 +109,45 @@
     NSLog(@"\n**********************"
           "\n*** didUpdateLocation:"
           "\n%@", location);
+}
+
+- (IBAction)useCurrentAsBase:(id)sender
+{
+    [self.session.user setBaseLocation:[OBSLocationCentre currentLocation] withCompletionHandler:^(OBSUser *user, CLLocation *location, OBSError *error) {
+        if (error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[error description] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+                [alert show];
+                return;
+            });
+        }
+    }];
+}
+
+- (IBAction)forgetBase:(id)sender
+{
+    [self.session.user setBaseLocation:nil withCompletionHandler:^(OBSUser *user, CLLocation *location, OBSError *error) {
+        if (error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[error description] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+                [alert show];
+                return;
+            });
+        }
+    }];
+}
+
+- (IBAction)useBase:(id)sender
+{
+    [self.session.user useBaseLocation:self.useBaseSwitch.on withCompletionHandler:^(OBSUser *user, BOOL useBaseLocation, OBSError *error) {
+        if (error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[error description] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+                [alert show];
+                return;
+            });
+        }
+    }];
 }
 
 @end
