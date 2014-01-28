@@ -23,6 +23,9 @@
       location = "group:Examples/UserTrackPulling-iOS/UserTrackPulling-iOS.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:Examples/SimpleDataSearch-iOS/SimpleDataSearch-iOS.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:OpenBaaS/OpenBaaS.xcodeproj">
    </FileRef>
 </Workspace>
