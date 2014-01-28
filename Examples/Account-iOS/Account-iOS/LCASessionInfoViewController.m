@@ -41,13 +41,15 @@
     OBSApplication *application = [OBSApplication applicationWithClient:delegate];
     OBSAccount *account = [application applicationAccount];
     [account signOutFromSession:self.session closingAllOthers:YES withCompletionHandler:^(OBSAccount *account, BOOL signedOut, OBSSession *session, OBSError *error) {
-        [delegate hideWaitScreen];
-        if (signedOut) {
-            [self.navigationController popToRootViewControllerAnimated:YES];
-        } else {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[error description] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-            [alert show];
-        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [delegate hideWaitScreen];
+            if (signedOut) {
+                [self.navigationController popToRootViewControllerAnimated:YES];
+            } else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[error description] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+                [alert show];
+            }
+        });
     }];
 }
 
