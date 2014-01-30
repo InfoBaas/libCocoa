@@ -132,6 +132,53 @@
 
 #pragma mark Data
 
+- (void)searchPath:(NSString *)path withQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(OBSApplication *, NSString *, OBSCollectionPage *, OBSError *))handler
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        BOOL hasPath = path && [path isKindOfClass:[NSString class]];
+        if (hasPath) {
+            [OBSConnection get_application:self dataPath:path withQueryDictionary:query completionHandler:^(id result, NSInteger statusCode, NSError *error) {
+                if (!handler)
+                    return;
+                
+                // Called with error?
+                if (error) {
+                    handler(self, path, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+                    return;
+                }
+                
+                // Create collection page.
+                OBSCollectionPage *collectionPage = nil;
+                if ([result isKindOfClass:[NSDictionary class]]) {
+                    collectionPage = [OBSCollectionPage collectionPageFromDataJSON:result andMetadataJSON:nil];
+                }
+                if (collectionPage) {
+                    // Result is valid.
+                    handler(self, path, collectionPage, nil);
+                    return;
+                }
+                
+                // Result is not valid.
+                handler(self, path, nil, [OBSError errorWithDomain:kOBSErrorDomainRemote code:kOBSRemoteErrorCodeResultDataIllFormed userInfo:nil]);
+            }];
+        } else if (handler) {
+            //// Some or all the required parameters are missing
+            // Create an array to hold the missing parameters' names.
+            NSMutableArray *missingRequiredParameters = [NSMutableArray arrayWithCapacity:3];
+            // Add missing parameters to the array.
+            if (!hasPath) [missingRequiredParameters addObject:@"path"];
+            // Create userInfo dictionary.
+            NSDictionary *userInfo = @{kOBSErrorUserInfoKeyMissingRequiredParameters: [NSArray arrayWithArray:missingRequiredParameters]};
+            // Create an error instace to send to the callback.
+            OBSError *error = [OBSError errorWithDomain:kOBSErrorDomainLocal
+                                                   code:kOBSLocalErrorCodeMissingRequiredParameters
+                                               userInfo:userInfo];
+            // Action completed with error.
+            handler(self, path, nil, error);
+        }
+    });
+}
+
 - (void)readPath:(NSString *)path withQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(OBSApplication *, NSString *, id, id, OBSError *))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{

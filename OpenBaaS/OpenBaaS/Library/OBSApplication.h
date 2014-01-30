@@ -78,6 +78,8 @@
 
 #pragma mark Data
 
+- (void)searchPath:(NSString *)path withQueryDictionary:(NSDictionary *)query completionHandler:(void(^)(OBSApplication *application, NSString *path, OBSCollectionPage *paths, OBSError *error))handler;
+
 - (void)readPath:(NSString *)path withQueryDictionary:(NSDictionary *)query completionHandler:(void(^)(OBSApplication *application, NSString *path, id data, id metadata, OBSError *error))handler;
 
 - (void)insertObject:(NSDictionary *)object atPath:(NSString *)path withCompletionHandler:(void(^)(OBSApplication *application, NSString *path, NSDictionary *object, BOOL inserted, OBSError *error))handler;

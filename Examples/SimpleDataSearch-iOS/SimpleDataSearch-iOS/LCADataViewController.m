@@ -37,14 +37,15 @@
     OBSApplication *application = [OBSApplication applicationWithClient:delegate];
     [application insertObject:data atPath:@"" withCompletionHandler:^(OBSApplication *application, NSString *path, NSDictionary *object, BOOL inserted, OBSError *error) {
         NSDictionary *query = [OBSQuery operationValueAtPath:@"1" isEqualTo:@1];
-        [application readPath:@"" withQueryDictionary:@{OBSQueryParamCollectionPage:@1,OBSQueryParamCollectionDataQuery:query} completionHandler:^(OBSApplication *application, NSString *path, id data, id metadata, OBSError *error) {
+        [application searchPath:@"" withQueryDictionary:@{OBSQueryParamCollectionPage:@1,OBSQueryParamCollectionDataQuery:query} completionHandler:^(OBSApplication *application, NSString *path, OBSCollectionPage *paths, OBSError *error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [delegate hideWaitScreen];
                 if (error) {
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[error description] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
                     [alert show];
                 } else {
-                    NSLog(@"%@", data);
+                    [self.data addObjectsFromArray:paths.elements];
+                    [self.tableView reloadData];
                 }
             });
         }];
