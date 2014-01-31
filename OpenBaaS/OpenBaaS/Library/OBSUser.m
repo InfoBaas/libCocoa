@@ -218,7 +218,7 @@
                                                    code:kOBSLocalErrorCodeMissingRequiredParameters
                                                userInfo:userInfo];
             // Action completed with error.
-            handler(self, path, nil, nil, error);
+            handler(self, path, nil, error);
         }
     });
 }
