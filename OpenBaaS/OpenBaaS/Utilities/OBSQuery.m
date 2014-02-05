@@ -11,6 +11,10 @@
 NSString *const OBSQueryParamCollectionPage = @"pageNumber";
 NSString *const OBSQueryParamCollectionPageSize = @"pageSize";
 NSString *const OBSQueryParamCollectionDataQuery = @"query";
+NSString *const OBSQueryParamCollectionOrderBy = @"orderBy";
+NSString *const OBSQueryParamCollectionOrderType = @"orderType";
+NSString *const OBSQueryParamCollectionOrderTypeAscendent = @"asc";
+NSString *const OBSQueryParamCollectionOrderTypeDescendent = @"desc";
 
 static NSString *const _kQueryOperationKey = @"oper";
 static NSString *const _kQueryLeftOperationKey = @"op1";
