@@ -142,6 +142,10 @@ extern NSString *const OBSConnectionResultMetadataKey;
 
 + (NSMutableURLRequest *)delete_requestForURL:(NSURL *)url;
 
+#pragma mark apps/<appid>/media/images
+
++ (void)delete_media:(OBSMedia *)media imageFileWithId:(NSString *)imageFileId queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler;
+
 #pragma mark apps/<appid>/data
 
 + (void)delete_application:(OBSApplication *)application dataPath:(NSString *)path withQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler;

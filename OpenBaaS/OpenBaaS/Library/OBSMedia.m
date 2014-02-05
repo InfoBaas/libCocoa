@@ -31,6 +31,41 @@
 
 #pragma mark Images
 
+- (void)deleteImageFileWithId:(NSString *)imageFileId withCompletionHandler:(void (^)(OBSMedia *, NSString *, BOOL, OBSError *))handler
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        BOOL hasImageFileId = imageFileId && [imageFileId isKindOfClass:[NSString class]];
+        if (hasImageFileId) {
+            [OBSConnection delete_media:self imageFileWithId:imageFileId queryDictionary:nil completionHandler:^(id result, NSInteger statusCode, NSError *error) {
+                if (!handler)
+                    return;
+                
+                // Called with error?
+                if (error) {
+                    handler(self, imageFileId, NO, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+                    return;
+                }
+                
+                handler(self, imageFileId, YES, nil);
+            }];
+        } else if (handler) {
+            //// Some or all the required parameters are missing
+            // Create an array to hold the missing parameters' names.
+            NSMutableArray *missingRequiredParameters = [NSMutableArray arrayWithCapacity:3];
+            // Add missing parameters to the array.
+            if (!hasImageFileId) [missingRequiredParameters addObject:@"imageFileId"];
+            // Create userInfo dictionary.
+            NSDictionary *userInfo = @{kOBSErrorUserInfoKeyMissingRequiredParameters: [NSArray arrayWithArray:missingRequiredParameters]};
+            // Create an error instace to send to the callback.
+            OBSError *error = [OBSError errorWithDomain:kOBSErrorDomainLocal
+                                                   code:kOBSLocalErrorCodeMissingRequiredParameters
+                                               userInfo:userInfo];
+            // Action completed with error.
+            handler(self, imageFileId, nil, error);
+        }
+    });
+}
+
 - (void)getImageFileWithId:(NSString *)imageFileId withCompletionHandler:(void(^)(OBSMedia *media, NSString *imageFileId, OBSImageFile *imageFile, OBSError *error))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{

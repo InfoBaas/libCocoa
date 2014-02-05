@@ -895,6 +895,30 @@ static NSMutableSet *_OBSOpenConnections (void)
     return request;
 }
 
+#pragma mark apps/<appid>/media/images
+
++ (void)delete_media:(OBSMedia *)media imageFileWithId:(NSString *)imageFileId queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id, NSInteger, NSError *))handler
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // Address
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/media/images/%@", [self OpenBaaSAddress], [[media client] appId], imageFileId];
+        
+        // Request
+        NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
+        NSMutableURLRequest *request = [self delete_requestForURL:url];
+        
+        // Header
+        [self setAppKeyHeaderField:[[media client] appKey] toRequest:request];
+        [self setCurrentLocationHeaderFieldToRequest:request];
+        [self setCurrentSessionHeaderFieldToRequest:request];
+        
+        // Send
+        [self sendAsynchronousRequest:request
+                                queue:[NSOperationQueue new]
+                    completionHandler:[self innerHandlerWithOuterHandler:handler]];
+    });
+}
+
 #pragma mark apps/<appid>/data
 
 + (void)delete_application:(OBSApplication *)application dataPath:(NSString *)path withQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(id, NSInteger, NSError *))handler
