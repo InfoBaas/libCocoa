@@ -22,6 +22,8 @@
 
 - (void)updateUserWithCompletionHandler:(void(^)(OBSUser *user, OBSError *error))handler;
 
+- (void)setUserName:(NSString *)userName andFile:(NSString *)userFile withCompletionHandler:(void(^)(OBSUser *user, OBSError *error))handler;
+
 - (void)setBaseLocation:(CLLocation *)location withCompletionHandler:(void(^)(OBSUser *user, CLLocation *location, OBSError *error))handler;
 
 - (void)useBaseLocation:(BOOL)useBaseLocation withCompletionHandler:(void(^)(OBSUser *user, BOOL useBaseLocation, OBSError *error))handler;

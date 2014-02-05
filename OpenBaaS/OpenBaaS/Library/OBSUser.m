@@ -121,6 +121,24 @@
     }];
 }
 
+- (void)setUserName:(NSString *)userName andFile:(NSString *)userFile withCompletionHandler:(void(^)(OBSUser *user, OBSError *error))handler
+{
+    NSDictionary *data = @{@"userName": userName ? userName : [NSNull null],
+                           @"userFile": userFile ? userFile : [NSNull null]};
+    [OBSConnection patch_user:self data:data withQueryDictionary:nil completionHandler:^(id result, NSInteger statusCode, NSError *error) {
+        if (error) {
+            if (handler) {
+                handler(self, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+            }
+            return;
+        }
+        
+        self.userName = userName;
+        self.userFile = userFile;
+        handler(self, nil);
+    }];
+}
+
 - (void)setBaseLocation:(CLLocation *)location withCompletionHandler:(void (^)(OBSUser *, CLLocation *, OBSError *))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
