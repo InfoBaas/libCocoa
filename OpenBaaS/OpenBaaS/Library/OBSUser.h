@@ -16,6 +16,8 @@
 @property (nonatomic, strong, readonly) NSString *userName;
 @property (nonatomic, strong, readonly) NSString *userFile;
 
+@property (nonatomic, assign, readonly) BOOL online;
+
 @property (nonatomic, strong, readonly) CLLocation *userLastLocation;
 @property (nonatomic, strong, readonly) CLLocation *userBaseLocation;
 @property (nonatomic, assign, readonly) BOOL usesBaseLocation;

@@ -38,6 +38,8 @@
     if ([userFile isEqual:[NSNull null]]) {
         userFile = nil; // User has no file.
     }
+    
+    BOOL online = [data[@"online"] boolValue];
 
     CLLocation *userLastLocation = nil;
     NSString *lastLocationStr = data[@"lastLocation"];
@@ -94,6 +96,7 @@
     user.userEmail = userEmail;
     user.userName = userName;
     user.userFile = userFile;
+    user.online = online;
     user.userLastLocation = userLastLocation;
     user.userBaseLocation = userBaseLocation;
     user.usesBaseLocation = usesBaseLocation;
