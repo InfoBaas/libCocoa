@@ -608,6 +608,8 @@ static NSMutableSet *_OBSOpenConnections (void)
         
         // Header
         [self setAppKeyHeaderField:[[account client] appKey] toRequest:request];
+        [self setCurrentLocationHeaderFieldToRequest:request];
+        [self setCurrentSessionHeaderFieldToRequest:request];
         
         // Send
         [self sendAsynchronousRequest:request
