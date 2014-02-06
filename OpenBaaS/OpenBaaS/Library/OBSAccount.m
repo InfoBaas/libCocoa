@@ -268,4 +268,41 @@
     });
 }
 
+- (void)changePasswordFrom:(NSString *)oldPassword to:(NSString *)newPassword withCompletionHandler:(void (^)(OBSAccount *, BOOL, OBSError *))handler
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        BOOL hasOld = oldPassword && ![oldPassword isEqualToString:[NSString string]];
+        BOOL hasNew = newPassword && ![newPassword isEqualToString:[NSString string]];
+        if (hasOld && hasNew) {
+            [OBSConnection post_account:self changeFromPassword:oldPassword toPassword:newPassword queryDictionary:nil completionHandler:^(id result, NSInteger statusCode, NSError *error) {
+                if (!handler)
+                    return;
+                
+                // Called with error?
+                if (error) {
+                    handler(self, statusCode == 200, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+                    return;
+                }
+                
+                handler(self, statusCode == 200, nil);
+            }];
+        } else if (handler) {
+            //// Some or all the required parameters are missing
+            // Create an array to hold the missing parameters' names.
+            NSMutableArray *missingRequiredParameters = [NSMutableArray arrayWithCapacity:3];
+            // Add missing parameters to the array.
+            if (!hasOld) [missingRequiredParameters addObject:@"oldPassword"];
+            if (!hasNew) [missingRequiredParameters addObject:@"newPassword"];
+            // Create userInfo dictionary.
+            NSDictionary *userInfo = @{kOBSErrorUserInfoKeyMissingRequiredParameters: [NSArray arrayWithArray:missingRequiredParameters]};
+            // Create an error instace to send to the callback.
+            OBSError *error = [OBSError errorWithDomain:kOBSErrorDomainLocal
+                                                   code:kOBSLocalErrorCodeMissingRequiredParameters
+                                               userInfo:userInfo];
+            // Action completed with error.
+            handler(self, NO, error);
+        }
+    });
+}
+
 @end

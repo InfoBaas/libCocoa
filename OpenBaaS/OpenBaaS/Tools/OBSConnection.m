@@ -585,6 +585,37 @@ static NSMutableSet *_OBSOpenConnections (void)
     });
 }
 
++ (void)post_account:(OBSAccount *)account changeFromPassword:(NSString *)oldPassword toPassword:(NSString *)newPassword queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id, NSInteger, NSError *))handler
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // Address
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/changepassword", [self OpenBaaSAddress], [[account client] appId]];
+        
+        // Body
+        NSDictionary *body = @{@"oldPassword": oldPassword,
+                               @"newPassword": newPassword};
+        
+        // Request
+        NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
+        NSMutableURLRequest *request = [self post_requestForURL:url];
+        
+        NSError *error = nil;
+        [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:body options:kNilOptions error:&error]];
+        if (error) {
+            handler(nil, 0, error);
+            return;
+        }
+        
+        // Header
+        [self setAppKeyHeaderField:[[account client] appKey] toRequest:request];
+        
+        // Send
+        [self sendAsynchronousRequest:request
+                                queue:[NSOperationQueue new]
+                    completionHandler:[self innerHandlerWithOuterHandler:handler]];
+    });
+}
+
 + (void)post_account:(OBSAccount *)account integrationFacebookWithOAuthToken:(NSString *)oauthToken queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{

@@ -144,4 +144,6 @@
  */
 - (void)recoverPasswordForEmail:(NSString *)email withCompletionHandler:(void(^)(OBSAccount *account, BOOL sent, OBSError *error))handler;
 
+- (void)changePasswordFrom:(NSString *)oldPassword to:(NSString *)newPassword withCompletionHandler:(void(^)(OBSAccount *account, BOOL changed, OBSError *error))handler;
+
 @end
