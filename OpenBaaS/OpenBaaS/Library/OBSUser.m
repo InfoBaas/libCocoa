@@ -123,8 +123,9 @@
 
 - (void)setUserName:(NSString *)userName andFile:(NSString *)userFile withCompletionHandler:(void(^)(OBSUser *user, OBSError *error))handler
 {
-    NSDictionary *data = @{@"userName": userName ? userName : [NSNull null],
-                           @"userFile": userFile ? userFile : [NSNull null]};
+    NSString *string = [NSString string];
+    NSDictionary *data = @{@"userName": userName ? userName : string,
+                           @"userFile": userFile ? userFile : string};
     [OBSConnection patch_user:self data:data withQueryDictionary:nil completionHandler:^(id result, NSInteger statusCode, NSError *error) {
         if (error) {
             if (handler) {
