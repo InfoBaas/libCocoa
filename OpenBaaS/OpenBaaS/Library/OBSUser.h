@@ -20,6 +20,8 @@
 @property (nonatomic, strong, readonly) CLLocation *userBaseLocation;
 @property (nonatomic, assign, readonly) BOOL usesBaseLocation;
 
+@property (nonatomic, strong, readonly) NSDate *lastUpdatedAt;
+
 - (void)updateUserWithCompletionHandler:(void(^)(OBSUser *user, OBSError *error))handler;
 
 - (void)setUserName:(NSString *)userName andFile:(NSString *)userFile withCompletionHandler:(void(^)(OBSUser *user, OBSError *error))handler;

@@ -80,6 +80,12 @@
         baseLocationOption = nil;
     }
     BOOL usesBaseLocation = [baseLocationOption boolValue];
+    
+    NSDate *lastUpdateDate = nil;
+    NSNumber *seconds = metadata[@"lastUpdateDate"];
+    if (seconds && ![baseLocationStr isEqual:[NSNull null]]) {
+        lastUpdateDate = [NSDate dateWithTimeIntervalSince1970:[seconds doubleValue]];
+    }
 
     // Create and initialise object.
     OBSUser *user = [[OBSUser alloc] initWithClient:client];
@@ -91,6 +97,7 @@
     user.userLastLocation = userLastLocation;
     user.userBaseLocation = userBaseLocation;
     user.usesBaseLocation = usesBaseLocation;
+    user.lastUpdatedAt = lastUpdateDate;
 
     return user;
 }

@@ -11,6 +11,7 @@
 #import "OBSAccount+.h"
 #import "OBSMedia+.h"
 #import "OBSUser+.h"
+#import "OBSUserState+.h"
 
 #import "OBSConnection.h"
 
@@ -128,6 +129,67 @@
             }
         }
     }];
+}
+
+- (void)getUsersStatesOfUsersWithIds:(NSArray *)userIds includeMisses:(BOOL)includeMisses withQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(OBSApplication *, NSArray *, NSArray *, OBSError *))handler
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        BOOL hasUserIds = userIds && [userIds isKindOfClass:[NSArray class]];
+        if (hasUserIds) {
+            if ([userIds count]) {
+                [OBSConnection post_application:self usersStateWithIds:userIds includeMisses:includeMisses queryDictionary:query completionHandler:^(id result, NSInteger statusCode, NSError *error) {
+                    if (!handler)
+                        return;
+                    
+                    // Called with error?
+                    if (error) {
+                        handler(self, userIds, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+                        return;
+                    }
+                    
+                    // Check result.
+                    NSArray *array = result;
+                    if (![array isKindOfClass:[NSArray class]]) {
+                        // Result is not valid.
+                        handler(self, userIds, nil, [OBSError errorWithDomain:kOBSErrorDomainRemote code:kOBSRemoteErrorCodeResultDataIllFormed userInfo:nil]);
+                        return;
+                    }
+                    
+                    // Result is valid.
+                    NSMutableArray *mutableArray = [NSMutableArray arrayWithCapacity:[array count]];
+                    for (NSDictionary *element in array) {
+                        if ([element isEqual:[NSNull null]]) {
+                            [mutableArray addObject:[NSNull null]];
+                        } else {
+                            OBSUserState *state = [OBSUserState userStateFromJSONObject:element];
+                            if (state) {
+                                [mutableArray addObject:state];
+                            } else if (includeMisses) {
+                                [mutableArray addObject:[NSNull null]];
+                            }
+                        }
+                    }
+                    handler(self, userIds, [NSArray arrayWithArray:mutableArray], nil);
+                }];
+            } else {
+                handler(self, userIds, @[], nil);
+            }
+        } else if (handler) {
+            //// Some or all the required parameters are missing
+            // Create an array to hold the missing parameters' names.
+            NSMutableArray *missingRequiredParameters = [NSMutableArray arrayWithCapacity:3];
+            // Add missing parameters to the array.
+            if (!hasUserIds) [missingRequiredParameters addObject:@"userIds"];
+            // Create userInfo dictionary.
+            NSDictionary *userInfo = @{kOBSErrorUserInfoKeyMissingRequiredParameters: [NSArray arrayWithArray:missingRequiredParameters]};
+            // Create an error instace to send to the callback.
+            OBSError *error = [OBSError errorWithDomain:kOBSErrorDomainLocal
+                                                   code:kOBSLocalErrorCodeMissingRequiredParameters
+                                               userInfo:userInfo];
+            // Action completed with error.
+            handler(self, userIds, nil, error);
+        }
+    });
 }
 
 #pragma mark Data

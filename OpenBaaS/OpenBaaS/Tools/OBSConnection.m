@@ -454,6 +454,8 @@ static NSMutableSet *_OBSOpenConnections (void)
     return request;
 }
 
+#pragma mark apps/<appid>/account
+
 + (void)post_account:(OBSAccount *)account signUpWithEmail:(NSString *)email password:(NSString *)password userName:(NSString *)userName userFile:(NSString *)userFile queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id, NSInteger statusCode, NSError *))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -618,6 +620,8 @@ static NSMutableSet *_OBSOpenConnections (void)
     });
 }
 
+#pragma mark apps/<appid>/account/integration
+
 + (void)post_account:(OBSAccount *)account integrationFacebookWithOAuthToken:(NSString *)oauthToken queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -642,6 +646,41 @@ static NSMutableSet *_OBSOpenConnections (void)
         [self setAppKeyHeaderField:[[account client] appKey] toRequest:request];
         [self setCurrentLocationHeaderFieldToRequest:request];
 
+        // Send
+        [self sendAsynchronousRequest:request
+                                queue:[NSOperationQueue new]
+                    completionHandler:[self innerHandlerWithOuterHandler:handler]];
+    });
+}
+
+#pragma mark apps/<appid>/usersstate
+
++ (void)post_application:(OBSApplication *)application usersStateWithIds:(NSArray *)userIds includeMisses:(BOOL)includeMisses queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id, NSInteger, NSError *))handler
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // Address
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/usersstate", [self OpenBaaSAddress], [application applicationId]];
+        
+        // Body
+        NSDictionary *body = @{@"users": userIds,
+                               @"includeMisses": @(includeMisses)};
+        
+        // Request
+        NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
+        NSMutableURLRequest *request = [self post_requestForURL:url];
+        
+        NSError *error = nil;
+        [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:body options:kNilOptions error:&error]];
+        if (error) {
+            handler(nil, 0, error);
+            return;
+        }
+        
+        // Header
+        [self setAppKeyHeaderField:[application applicationKey] toRequest:request];
+        [self setCurrentLocationHeaderFieldToRequest:request];
+        [self setCurrentSessionHeaderFieldToRequest:request];
+        
         // Send
         [self sendAsynchronousRequest:request
                                 queue:[NSOperationQueue new]

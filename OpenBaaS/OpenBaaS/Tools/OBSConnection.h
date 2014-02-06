@@ -90,6 +90,10 @@ extern NSString *const OBSConnectionResultMetadataKey;
 
 + (void)post_account:(OBSAccount *)account integrationFacebookWithOAuthToken:(NSString *)oauthToken queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler;
 
+#pragma mark apps/<appid>/usersstate
+
++ (void)post_application:(OBSApplication *)application usersStateWithIds:(NSArray *)userIds includeMisses:(BOOL)includeMisses queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler;
+
 #pragma mark apps/<appid>/media/images
 
 #if TARGET_OS_IPHONE

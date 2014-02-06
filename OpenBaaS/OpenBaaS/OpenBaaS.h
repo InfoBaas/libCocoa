@@ -32,3 +32,4 @@
 #import "OBSMedia.h"
 #import "OBSSession.h"
 #import "OBSUser.h"
+#import "OBSUserState.h"

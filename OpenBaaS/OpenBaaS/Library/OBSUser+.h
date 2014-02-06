@@ -19,6 +19,8 @@
 @property (nonatomic, strong) CLLocation *userBaseLocation;
 @property (nonatomic, assign) BOOL usesBaseLocation;
 
+@property (nonatomic, strong) NSDate *lastUpdatedAt;
+
 + (OBSUser *)userFromDataJSON:(NSDictionary *)data andMetadataJSON:(NSDictionary *)metadata withClient:(id<OBSClientProtocol>)client;
 
 @end
