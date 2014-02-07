@@ -12,9 +12,13 @@ NSString *const OBSQueryParamCollectionPage = @"pageNumber";
 NSString *const OBSQueryParamCollectionPageSize = @"pageSize";
 NSString *const OBSQueryParamCollectionDataQuery = @"query";
 NSString *const OBSQueryParamCollectionOrderBy = @"orderBy";
+NSString *const OBSQueryParamCollectionOrderByDistance = @"_dist";
 NSString *const OBSQueryParamCollectionOrderType = @"orderType";
 NSString *const OBSQueryParamCollectionOrderTypeAscendent = @"asc";
 NSString *const OBSQueryParamCollectionOrderTypeDescendent = @"desc";
+NSString *const OBSQueryParamCollectionLatitude = @"lat";
+NSString *const OBSQueryParamCollectionLongitude = @"long";
+NSString *const OBSQueryParamCollectionRadius = @"radius";
 
 static NSString *const _kQueryOperationKey = @"oper";
 static NSString *const _kQueryLeftOperationKey = @"op1";

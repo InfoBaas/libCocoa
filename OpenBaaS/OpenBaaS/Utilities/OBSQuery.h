@@ -12,9 +12,13 @@ extern NSString *const OBSQueryParamCollectionPage;
 extern NSString *const OBSQueryParamCollectionPageSize;
 extern NSString *const OBSQueryParamCollectionDataQuery;
 extern NSString *const OBSQueryParamCollectionOrderBy;
+extern NSString *const OBSQueryParamCollectionOrderByDistance;
 extern NSString *const OBSQueryParamCollectionOrderType;
 extern NSString *const OBSQueryParamCollectionOrderTypeAscendent;
 extern NSString *const OBSQueryParamCollectionOrderTypeDescendent;
+extern NSString *const OBSQueryParamCollectionLatitude;
+extern NSString *const OBSQueryParamCollectionLongitude;
+extern NSString *const OBSQueryParamCollectionRadius;
 
 @interface OBSQuery : NSObject
 

@@ -22,8 +22,6 @@
 extern NSString *const OBSConnectionResultDataKey;
 extern NSString *const OBSConnectionResultMetadataKey;
 
-#warning Query - e.g., lat=38.748392&long=-9.233534&radius=10000&pageNumber=1&pageSize=10&orderBy=_id&orderType=desc
-
 @interface OBSConnection : NSObject
 
 + (NSString *)OpenBaaSAddress;
