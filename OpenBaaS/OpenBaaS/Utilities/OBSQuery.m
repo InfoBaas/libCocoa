@@ -19,6 +19,8 @@ NSString *const OBSQueryParamCollectionOrderTypeDescendent = @"desc";
 NSString *const OBSQueryParamCollectionLatitude = @"lat";
 NSString *const OBSQueryParamCollectionLongitude = @"long";
 NSString *const OBSQueryParamCollectionRadius = @"radius";
+NSString *const OBSQueryParamHide = @"hide";
+NSString *const OBSQueryParamShow = @"show";
 
 static NSString *const _kQueryOperationKey = @"oper";
 static NSString *const _kQueryLeftOperationKey = @"op1";

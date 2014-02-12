@@ -19,6 +19,8 @@ extern NSString *const OBSQueryParamCollectionOrderTypeDescendent;
 extern NSString *const OBSQueryParamCollectionLatitude;
 extern NSString *const OBSQueryParamCollectionLongitude;
 extern NSString *const OBSQueryParamCollectionRadius;
+extern NSString *const OBSQueryParamHide;
+extern NSString *const OBSQueryParamShow;
 
 @interface OBSQuery : NSObject
 
