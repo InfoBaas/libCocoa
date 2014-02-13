@@ -15,6 +15,8 @@
 #import "OBSSession+.h"
 #import "OBSUser+.h"
 
+#import "Reachability.h"
+
 NSString *const OBSConnectionResultDataKey = @"data";
 NSString *const OBSConnectionResultMetadataKey = @"metadata";
 
@@ -39,12 +41,54 @@ NSString *const OBSConnectionResultMetadataKey = @"metadata";
 @property (nonatomic, strong) NSURLResponse *response;
 @property (nonatomic, strong) NSMutableData *data;
 @property (nonatomic, strong) NSError *error;
+@property (nonatomic, strong) NSMutableString *logEntry;
 
 @end
 
 static NSString *const _OBSRequestHeaderAppKey = @"appKey";
 static NSString *const _OBSRequestHeaderLocation = @"location";
 static NSString *const _OBSRequestHeaderSessionToken = @"sessionToken";
+
+static NSString *_OBSLogPath (void)
+{
+    NSString *cachesPath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
+    NSString *cacheFile = [cachesPath stringByAppendingPathComponent:@"com.openbaas.log.csv"];
+    return cacheFile;
+}
+void OBSPushLog (NSString *appId, NSString *appKey)
+{
+    NSData *data = [NSData dataWithContentsOfFile:_OBSLogPath()];
+    NSString *session = _obs_settings_get_sessionToken();
+    if ([data length] && session) {
+        // Auxiliaries
+        NSString *boundary = @"---p37mbyk1q2m164obqcjj-OpenBaaS-libCocoa-";
+        NSString *contentType = [NSString stringWithFormat:
+                                 @"multipart/form-data; boundary=%@",boundary];
+        
+        // Body
+        NSMutableData *body = [NSMutableData data];
+        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[@"Content-Disposition: form-data; name=\"file\"; filename=\"com.openbaas.log.csv\"\r\nContent-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:data];
+        [body appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        
+        // Request
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/apps/%@/log", [OBSConnection OpenBaaSAddress], appId]];
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+        [request setHTTPMethod:@"POST"];
+        [request addValue:contentType forHTTPHeaderField:@"Content-Type"];
+        [request addValue:appKey forHTTPHeaderField:_OBSRequestHeaderAppKey];
+        [request addValue:session forHTTPHeaderField:_OBSRequestHeaderSessionToken];
+        [request setHTTPBody:[NSData dataWithData:body]];
+        
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue new] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+            NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+            NSInteger statusCode = httpResponse.statusCode;
+            if (statusCode >= 200 && statusCode < 300)
+                [[NSFileManager defaultManager] createFileAtPath:_OBSLogPath() contents:[NSData data] attributes:nil];
+        }];
+    }
+}
 
 static NSMutableSet *_OBSOpenConnections (void)
 {
@@ -56,9 +100,44 @@ static NSMutableSet *_OBSOpenConnections (void)
     return set;
 }
 
+static NSString *_OBSCurrentReachabilityStatus (void)
+{
+    static Reachability *reachability = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        reachability = [Reachability reachabilityForInternetConnection];
+    });
+    
+    NetworkStatus netStat = NotReachable;
+    if ([reachability startNotifier]) {
+        netStat = [reachability currentReachabilityStatus];
+        [reachability stopNotifier];
+    }
+    
+    switch (netStat) {
+        case NotReachable:
+            return @"Not Reachable";
+            
+        case ReachableViaWiFi:
+            return @"Reachable Via WiFi";
+            
+        case ReachableViaWWAN:
+            return @"Reachable Via WWAN";
+            
+        default:
+            return @"Unknown Network Status";
+    }
+}
+
 #pragma mark -
 
 @implementation OBSConnection
+
++ (void)load
+{
+    if(![[NSFileManager defaultManager] fileExistsAtPath:_OBSLogPath()])
+        [[NSFileManager defaultManager] createFileAtPath:_OBSLogPath() contents:[NSData data] attributes:nil];
+}
 
 + (NSString *)OpenBaaSAddress
 {
@@ -88,10 +167,33 @@ static NSMutableSet *_OBSOpenConnections (void)
     @synchronized (set) {
         [set addObject:connection];
     }
+    
+    NSMutableString *logEntry = [NSMutableString string];
+    connection.logEntry = logEntry;
+    
+    // REST
+    [logEntry appendString:[NSString stringWithFormat:@"%@ %@;", request.HTTPMethod, request.URL.absoluteString]];
+    // User Id
+    NSString *userId = _obs_settings_get_userId();
+    [logEntry appendString:(userId ? [NSString stringWithFormat:@"%@;", userId] : @"NONE;")];
+    // Connectivity
+    [logEntry appendString:[NSString stringWithFormat:@"%@;", _OBSCurrentReachabilityStatus()]];
 
     connection.connection = [[NSURLConnection alloc] initWithRequest:request delegate:connection startImmediately:NO];
     [connection.connection scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
+    
+    // Start Time
+    [logEntry appendString:[NSString stringWithFormat:@"%f;", @([NSDate timeIntervalSinceReferenceDate])]];
     [connection.connection start];
+}
+
+- (void)closeLogEntry
+{
+    [self.logEntry appendString:[NSString stringWithFormat:@"%f;\n", @([NSDate timeIntervalSinceReferenceDate])]];
+    NSFileHandle *fileHandler = [NSFileHandle fileHandleForUpdatingAtPath:_OBSLogPath()];
+    [fileHandler seekToEndOfFile];
+    [fileHandler writeData:[self.logEntry dataUsingEncoding:NSUTF8StringEncoding]];
+    [fileHandler closeFile];
 }
 
 #pragma mark NSURLConnection Delegation
@@ -99,6 +201,7 @@ static NSMutableSet *_OBSOpenConnections (void)
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
     if (connection == self.connection) {
+        [self closeLogEntry];
         if (self.handler)
             [self.queue addOperationWithBlock:^{
                 self.handler(nil,nil,error);
@@ -128,6 +231,7 @@ static NSMutableSet *_OBSOpenConnections (void)
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     if (connection == self.connection) {
+        [self closeLogEntry];
         if (self.handler)
             [self.queue addOperationWithBlock:^{
                 self.handler(self.response,[NSData dataWithData:self.data],nil);

@@ -45,7 +45,7 @@
 
 - (void)setAsCurrentSession
 {
-    _obs_settings_set_sessionToken(self.token);
+    _obs_settings_set_sessionInfo(self.token, self.user.userId);
 }
 
 - (BOOL)isCurrentSession
@@ -86,13 +86,13 @@
 
 + (void)forgetCurrentSession
 {
-    _obs_settings_set_sessionToken(nil);
+    _obs_settings_set_sessionInfo(nil, nil);
 }
 
 - (BOOL)forgetIfIsCurrentSession
 {
     if ([self isCurrentSession]) {
-        _obs_settings_set_sessionToken(nil);
+        _obs_settings_set_sessionInfo(nil, nil);
         return YES;
     }
     return NO;

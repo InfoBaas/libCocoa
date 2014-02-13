@@ -10,6 +10,8 @@
 
 #import "OBSClientProtocol.h"
 
+extern void OBSPushLog (NSString *appId, NSString *appKey);
+
 #pragma mark - Utilities
 
 #import "NSString+OpenBaaS.h"

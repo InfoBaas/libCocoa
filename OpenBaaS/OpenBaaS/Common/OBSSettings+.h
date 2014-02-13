@@ -8,5 +8,6 @@
 
 #import "OBSSettings.h"
 
-void _obs_settings_set_sessionToken (NSString *sessionToken);
+void _obs_settings_set_sessionInfo (NSString *sessionToken, NSString *userId);
 NSString *_obs_settings_get_sessionToken (void);
+NSString *_obs_settings_get_userId (void);

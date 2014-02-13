@@ -60,6 +60,9 @@
 		CEF3E1B118522B24001F999C /* NSString+OpenBaaS.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF3E1AF18522B24001F999C /* NSString+OpenBaaS.m */; };
 		EE7476FD18A3E34A003C154C /* OBSUserState.h in Headers */ = {isa = PBXBuildFile; fileRef = EE7476FB18A3E34A003C154C /* OBSUserState.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EE7476FE18A3E34A003C154C /* OBSUserState.m in Sources */ = {isa = PBXBuildFile; fileRef = EE7476FC18A3E34A003C154C /* OBSUserState.m */; };
+		EEC7781018ACEF3100C79A9B /* Reachability.h in Headers */ = {isa = PBXBuildFile; fileRef = EEC7780E18ACEF3100C79A9B /* Reachability.h */; };
+		EEC7781118ACEF3100C79A9B /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = EEC7780F18ACEF3100C79A9B /* Reachability.m */; };
+		EEC7781718AD1BB500C79A9B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEC7781618AD1BB500C79A9B /* SystemConfiguration.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -117,6 +120,9 @@
 		EE7476FB18A3E34A003C154C /* OBSUserState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSUserState.h; sourceTree = "<group>"; };
 		EE7476FC18A3E34A003C154C /* OBSUserState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSUserState.m; sourceTree = "<group>"; };
 		EE7476FF18A3E441003C154C /* OBSUserState+.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OBSUserState+.h"; sourceTree = "<group>"; };
+		EEC7780E18ACEF3100C79A9B /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		EEC7780F18ACEF3100C79A9B /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		EEC7781618AD1BB500C79A9B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +130,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EEC7781718AD1BB500C79A9B /* SystemConfiguration.framework in Frameworks */,
 				CECDB951183293B100B9FF8B /* UIKit.framework in Frameworks */,
 				CECDB94F1832913400B9FF8B /* CoreLocation.framework in Frameworks */,
 				CE95FEA31821238E00D390A3 /* Foundation.framework in Frameworks */,
@@ -189,6 +196,7 @@
 		CE95FE931821236E00D390A3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EEC7781618AD1BB500C79A9B /* SystemConfiguration.framework */,
 				CECDB950183293B100B9FF8B /* UIKit.framework */,
 				CECDB94E1832913400B9FF8B /* CoreLocation.framework */,
 				CE95FEA21821238E00D390A3 /* Foundation.framework */,
@@ -205,6 +213,7 @@
 				CE95FEAB182125AC00D390A3 /* OpenBaaS.h */,
 				CE19109C182287CF00342286 /* OBSClientProtocol.h */,
 				CE95FEC5182153A700D390A3 /* Tools */,
+				EEC7780D18ACEE9A00C79A9B /* Externals */,
 				CE95FE971821236E00D390A3 /* Supporting Files */,
 			);
 			path = OpenBaaS;
@@ -281,6 +290,15 @@
 			path = Tools;
 			sourceTree = "<group>";
 		};
+		EEC7780D18ACEE9A00C79A9B /* Externals */ = {
+			isa = PBXGroup;
+			children = (
+				EEC7780E18ACEF3100C79A9B /* Reachability.h */,
+				EEC7780F18ACEF3100C79A9B /* Reachability.m */,
+			);
+			path = Externals;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -301,6 +319,7 @@
 				CE91C18C182257CB00A82866 /* OBSAccount.h in Headers */,
 				CE95FEB21821380F00D390A3 /* OBSApplication.h in Headers */,
 				CEA4A80B1860C0C600CA482A /* OBSImageFile.h in Headers */,
+				EEC7781018ACEF3100C79A9B /* Reachability.h in Headers */,
 				CEA4A8031860BC3600CA482A /* OBSMedia.h in Headers */,
 				CEB182B718242D4900F7BF87 /* OBSSession.h in Headers */,
 				CE3CBBA918295E87000C2F17 /* OBSUser.h in Headers */,
@@ -430,6 +449,7 @@
 				EE7476FE18A3E34A003C154C /* OBSUserState.m in Sources */,
 				CE95FEB31821380F00D390A3 /* OBSApplication.m in Sources */,
 				CE3CBBAA18295E87000C2F17 /* OBSUser.m in Sources */,
+				EEC7781118ACEF3100C79A9B /* Reachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
