@@ -19,3 +19,11 @@
 @property (nonatomic, readonly) NSInteger firstElement;
 
 @end
+
+@interface OBSCollectionPageElement : NSObject
+
+@property (nonatomic, readonly) NSString *identifier;
+@property (nonatomic, readonly) id data;
+@property (nonatomic, readonly) id metadata;
+
+@end

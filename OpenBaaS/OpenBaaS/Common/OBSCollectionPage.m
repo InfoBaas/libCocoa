@@ -16,6 +16,17 @@
     if (!elements || [elements isEqual:[NSNull null]]) {
         return nil;
     }
+    
+    NSMutableArray *mutableElements = [NSMutableArray arrayWithCapacity:[elements count]];
+    for (NSDictionary *el in elements) {
+        OBSCollectionPageElement *obsEl = [OBSCollectionPageElement collectionPageElementFromJSON:el];
+        if (obsEl) {
+            [mutableElements addObject:obsEl];
+        } else {
+            [mutableElements addObject:[NSNull null]];
+        }
+    }
+    
     NSNumber *pageNumber = data[@"pageNumber"];
     if (!pageNumber || [pageNumber isEqual:[NSNull null]]) {
         return nil;
@@ -35,7 +46,7 @@
 
     OBSCollectionPage *collectionPage = [[self alloc] init];
 
-    collectionPage.elements = elements;
+    collectionPage.elements = [NSArray arrayWithArray:mutableElements];
     collectionPage.pageNumber = [pageNumber integerValue];
     collectionPage.pageSize = [pageSize integerValue];
     collectionPage.pageCount = [numberOfPages integerValue];
@@ -44,6 +55,34 @@
     collectionPage.firstElement = (collectionPage.pageNumber - 1) * collectionPage.pageCount + 1;
 
     return collectionPage;
+}
+
+@end
+
+@implementation OBSCollectionPageElement
+
++ (OBSCollectionPageElement *)collectionPageElementFromJSON:(NSDictionary *)json
+{
+    NSString *identifier = json[@"_id"];
+    if (!identifier) {
+        return nil;
+    }
+    NSString *data = json[@"data"];
+    if (!data) {
+        return nil;
+    }
+    NSString *metadata = json[@"metadata"];
+//    if (!metadata) {
+//        return nil;
+//    }
+    
+    OBSCollectionPageElement *element = [[self alloc] init];
+    
+    element.identifier = identifier;
+    element.data = data;
+    element.metadata = metadata;
+    
+    return element;
 }
 
 @end
