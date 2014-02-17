@@ -12,7 +12,14 @@
 
 + (OBSUserState *)userStateFromJSONObject:(NSDictionary *)json
 {
-    NSString *userId = json[@"userId"];
+    if ([json isEqual:[NSNull null]]) {
+        json = nil;
+    }
+    
+    NSString *userId = json[@"_id"];
+    if (!userId) {
+        return nil;
+    }
     BOOL online = [json[@"online"] boolValue];
     id date = json[@"lastUpdateDate"];
     if (date) {

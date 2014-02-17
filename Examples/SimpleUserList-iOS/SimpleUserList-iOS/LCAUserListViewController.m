@@ -37,12 +37,13 @@
         if ([activityIndication isKindOfClass:[UIActivityIndicatorView class]])
             [activityIndication startAnimating];
 
-        NSMutableArray *users = [NSMutableArray array];
-        NSUInteger __block loaded = 0;
-        NSUInteger __block total = 0;
+//        NSMutableArray *users = [NSMutableArray array];
+//        NSUInteger __block loaded = 0;
+//        NSUInteger __block total = 0;
 
         LCAAppDelegate *delegate = (LCAAppDelegate *)[[UIApplication sharedApplication] delegate];
         OBSApplication *application = [OBSApplication applicationWithClient:delegate];
+        /*/
         [application getUsersWithQueryDictionary:@{OBSQueryParamCollectionPage:@(self.nextPageToLoad)}
                                completionHandler:^(OBSApplication *application, OBSCollectionPage *userIds, OBSError *error) {
                                    if (error) {
@@ -98,6 +99,47 @@
                                 }
                             }
                         }];
+        /*/
+        [application getUsersWithQueryDictionary:@{OBSQueryParamCollectionPage:@(self.nextPageToLoad)} completionHandler:^(OBSApplication *application, OBSCollectionPage *users, OBSError *error) {
+            if (error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [button setHidden:NO];
+                    if ([activityIndication isKindOfClass:[UIActivityIndicatorView class]])
+                        [activityIndication stopAnimating];
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[error description] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+                    [alert show];
+                });
+            } else {
+                NSArray *elements = users.elements;
+                
+                NSPredicate *success = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+                    return [evaluatedObject isKindOfClass:[OBSUser class]];
+                }];
+                NSArray *succedded = [elements filteredArrayUsingPredicate:success];
+                
+                NSPredicate *fail = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+                    return ![evaluatedObject isKindOfClass:[OBSUser class]];
+                }];
+                NSArray *failed = [elements filteredArrayUsingPredicate:fail];
+                
+                self.nextPageToLoad++;
+                [self.users addObjectsFromArray:succedded];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableView reloadData];
+                    
+                    [button setHidden:NO];
+                    if ([activityIndication isKindOfClass:[UIActivityIndicatorView class]])
+                        [activityIndication stopAnimating];
+                    
+                    if ([failed count]) {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"%u of %d failed to load.", [failed count], [elements count]] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+                        [alert show];
+                    }
+                });
+            }
+        }];
+        //*/
     }
 }
 

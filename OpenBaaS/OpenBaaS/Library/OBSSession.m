@@ -22,6 +22,13 @@
 
 + (OBSSession *)sessionFromDataJSON:(NSDictionary *)data andMetadataJSON:(NSDictionary *)metadata withClient:(id<OBSClientProtocol>)client
 {
+    if ([data isEqual:[NSNull null]]) {
+        data = nil;
+    }
+    if ([metadata isEqual:[NSNull null]]) {
+        metadata = nil;
+    }
+    
     NSString *sessionToken = data[@"returnToken"];
     if (!sessionToken || [sessionToken isEqual:[NSNull null]]) {
         return nil; // JSON does not contain a session token.

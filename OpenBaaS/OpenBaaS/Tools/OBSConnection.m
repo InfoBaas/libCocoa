@@ -253,7 +253,12 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 
     NSMutableArray *query = [NSMutableArray array];
     for (NSString *param in parameters) {
-        NSString *value = [parameters[param] description];
+        id p = parameters[param];
+        if ([p isKindOfClass:[NSDictionary class]] || [p isKindOfClass:[NSArray class]]) {
+            NSData *data = [NSJSONSerialization dataWithJSONObject:p options:kNilOptions error:nil];
+            p = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        }
+        NSString *value = [p description];
         [query addObject:[NSString stringWithFormat:@"%@=%@", param, [value obs_stringByAddingPercentEscapes]]];
     }
     return [query componentsJoinedByString:@"&"];

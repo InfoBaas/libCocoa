@@ -61,13 +61,14 @@
         if ([activityIndication isKindOfClass:[UIActivityIndicatorView class]])
             [activityIndication startAnimating];
 
-        NSMutableArray *imageFiles = [NSMutableArray array];
-        NSUInteger __block loaded = 0;
-        NSUInteger __block total = 0;
+//        NSMutableArray *imageFiles = [NSMutableArray array];
+//        NSUInteger __block loaded = 0;
+//        NSUInteger __block total = 0;
 
         LCAAppDelegate *delegate = (LCAAppDelegate *)[[UIApplication sharedApplication] delegate];
         OBSApplication *application = [OBSApplication applicationWithClient:delegate];
         OBSMedia *media = [application applicationMedia];
+        /*/
         [media getImageFilesWithQueryDictionary:@{OBSQueryParamCollectionPage:@(self.nextPageToLoad)}
                               completionHandler:^(OBSMedia *media, OBSCollectionPage *imageFileIds, OBSError *error) {
                                   if (error) {
@@ -123,6 +124,47 @@
                                }
                            }
                        }];
+        /*/
+        [media getImageFilesWithQueryDictionary:@{OBSQueryParamCollectionPage:@(self.nextPageToLoad)} completionHandler:^(OBSMedia *media, OBSCollectionPage *imageFiles, OBSError *error) {
+            if (error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [button setHidden:NO];
+                    if ([activityIndication isKindOfClass:[UIActivityIndicatorView class]])
+                        [activityIndication stopAnimating];
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[error description] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+                    [alert show];
+                });
+            } else {
+                NSArray *elements = imageFiles.elements;
+                
+                NSPredicate *success = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+                    return [evaluatedObject isKindOfClass:[OBSImageFile class]];
+                }];
+                NSArray *succedded = [elements filteredArrayUsingPredicate:success];
+                
+                NSPredicate *fail = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+                    return ![evaluatedObject isKindOfClass:[OBSImageFile class]];
+                }];
+                NSArray *failed = [elements filteredArrayUsingPredicate:fail];
+                
+                self.nextPageToLoad++;
+                [self.imageFiles addObjectsFromArray:succedded];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableView reloadData];
+                    
+                    [button setHidden:NO];
+                    if ([activityIndication isKindOfClass:[UIActivityIndicatorView class]])
+                        [activityIndication stopAnimating];
+                    
+                    if ([failed count]) {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"%u of %d failed to load.", [failed count], [elements count]] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+                        [alert show];
+                    }
+                });
+            }
+        }];
+        //*/
     }
 }
 

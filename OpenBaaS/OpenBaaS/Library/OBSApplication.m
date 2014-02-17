@@ -131,6 +131,47 @@
     }];
 }
 
+- (void)getUsersWithQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(OBSApplication *, OBSCollectionPage *, OBSError *))handler
+{
+    NSArray *show = query[OBSQueryParamShow];
+    if (!show)
+        show = @[];
+    
+    NSArray *userNativeFields = [OBSUser nativeFields];
+    show = [show arrayByAddingObjectsFromArray:userNativeFields];
+    
+    if (query) {
+        NSMutableDictionary *mutableQuery = [query mutableCopy];
+        mutableQuery[OBSQueryParamShow] = show;
+        query = mutableQuery;
+    } else {
+        query = @{OBSQueryParamShow: show};
+    }
+    
+    [self getUserIdsWithQueryDictionary:query completionHandler:^(OBSApplication *application, OBSCollectionPage *users, OBSError *error) {
+        if (error) {
+            handler(application, nil, error);
+        } else {
+            NSArray *elements = users.elements;
+            NSUInteger count = [elements count];
+            NSMutableArray *userObjects = [NSMutableArray arrayWithCapacity:count];
+            for (NSUInteger e = 0; e < count; e++) {
+                OBSCollectionPageElement *elementObject = elements[e];
+                NSDictionary *data = elementObject.data;
+                NSDictionary *metadata = elementObject.metadata;
+                OBSUser *user = [OBSUser userFromDataJSON:data andMetadataJSON:metadata withClient:application.client];
+                if (users) {
+                    [userObjects addObject:user];
+                } else {
+                    [userObjects addObject:[NSNull null]];
+                }
+            }
+            users.elements = [NSArray arrayWithArray:userObjects];
+            handler(application, users, nil);
+        }
+    }];
+}
+
 - (void)getUsersStatesOfUsersWithIds:(NSArray *)userIds includeMisses:(BOOL)includeMisses withQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(OBSApplication *, NSArray *, NSArray *, OBSError *))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -258,7 +299,15 @@
 
                 if ([result isKindOfClass:[NSDictionary class]]) {
                     // Result is valid.
-                    handler(self, path, result[OBSConnectionResultDataKey], result[OBSConnectionResultMetadataKey], nil);
+                    id data = result[OBSConnectionResultDataKey];
+                    if ([data isEqual:[NSNull null]]) {
+                        data = nil;
+                    }
+                    id metadata = result[OBSConnectionResultMetadataKey];
+                    if ([metadata isEqual:[NSNull null]]) {
+                        metadata = nil;
+                    }
+                    handler(self, path, data, metadata, nil);
                     return;
                 }
 

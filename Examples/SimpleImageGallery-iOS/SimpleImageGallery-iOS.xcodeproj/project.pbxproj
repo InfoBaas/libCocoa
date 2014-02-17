@@ -20,6 +20,7 @@
 		CEA4A7FB1860B1DD00CA482A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEA4A7FA1860B1DD00CA482A /* CoreLocation.framework */; };
 		CEA4A7FD1860B1ED00CA482A /* OpenBaaS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEA4A7FC1860B1ED00CA482A /* OpenBaaS.framework */; };
 		CEA4A8001860B5DF00CA482A /* LCASignInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA4A7FF1860B5DF00CA482A /* LCASignInViewController.m */; };
+		EEA6C80118B28AD000C7EF85 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEA6C80018B28AD000C7EF85 /* SystemConfiguration.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 		CEA4A7FC1860B1ED00CA482A /* OpenBaaS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenBaaS.framework; path = ../../OpenBaaS/OpenBaaS.framework; sourceTree = "<group>"; };
 		CEA4A7FE1860B5DF00CA482A /* LCASignInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LCASignInViewController.h; sourceTree = "<group>"; };
 		CEA4A7FF1860B5DF00CA482A /* LCASignInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LCASignInViewController.m; sourceTree = "<group>"; };
+		EEA6C80018B28AD000C7EF85 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EEA6C80118B28AD000C7EF85 /* SystemConfiguration.framework in Frameworks */,
 				CEA4A7FB1860B1DD00CA482A /* CoreLocation.framework in Frameworks */,
 				CEA4A7FD1860B1ED00CA482A /* OpenBaaS.framework in Frameworks */,
 				CEA4A7C51860B0E700CA482A /* CoreGraphics.framework in Frameworks */,
@@ -81,6 +84,7 @@
 		CEA4A7C11860B0E700CA482A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EEA6C80018B28AD000C7EF85 /* SystemConfiguration.framework */,
 				CEA4A7FA1860B1DD00CA482A /* CoreLocation.framework */,
 				CEA4A7C21860B0E700CA482A /* Foundation.framework */,
 				CEA4A7C41860B0E700CA482A /* CoreGraphics.framework */,
@@ -340,6 +344,7 @@
 				CEA4A7F61860B0E700CA482A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

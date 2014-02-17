@@ -23,6 +23,8 @@
 
 @property (nonatomic, strong) NSDate *lastUpdatedAt;
 
++ (NSArray *)nativeFields;
+
 + (OBSUser *)userFromDataJSON:(NSDictionary *)data andMetadataJSON:(NSDictionary *)metadata withClient:(id<OBSClientProtocol>)client;
 
 @end

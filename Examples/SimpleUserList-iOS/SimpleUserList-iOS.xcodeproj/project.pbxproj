@@ -20,6 +20,7 @@
 		CE930942185A03AE00560FFB /* LCASignInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE930941185A03AE00560FFB /* LCASignInViewController.m */; };
 		CE930945185A092200560FFB /* LCAUserListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE930944185A092200560FFB /* LCAUserListViewController.m */; };
 		CEA4A7B51860A34100CA482A /* LCAUserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA4A7B41860A34100CA482A /* LCAUserInfoViewController.m */; };
+		EEA6C7FF18B27E2500C7EF85 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEA6C7FE18B27E2500C7EF85 /* SystemConfiguration.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 		CE930944185A092200560FFB /* LCAUserListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LCAUserListViewController.m; sourceTree = "<group>"; };
 		CEA4A7B31860A34100CA482A /* LCAUserInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LCAUserInfoViewController.h; sourceTree = "<group>"; };
 		CEA4A7B41860A34100CA482A /* LCAUserInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LCAUserInfoViewController.m; sourceTree = "<group>"; };
+		EEA6C7FE18B27E2500C7EF85 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EEA6C7FF18B27E2500C7EF85 /* SystemConfiguration.framework in Frameworks */,
 				CE93093D1859E6B700560FFB /* CoreLocation.framework in Frameworks */,
 				CE93093F1859E6C900560FFB /* OpenBaaS.framework in Frameworks */,
 				CE9309071859E5D300560FFB /* CoreGraphics.framework in Frameworks */,
@@ -81,6 +84,7 @@
 		CE9309031859E5D300560FFB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EEA6C7FE18B27E2500C7EF85 /* SystemConfiguration.framework */,
 				CE93093C1859E6B700560FFB /* CoreLocation.framework */,
 				CE9309041859E5D300560FFB /* Foundation.framework */,
 				CE9309061859E5D300560FFB /* CoreGraphics.framework */,

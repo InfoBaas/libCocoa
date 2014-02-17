@@ -20,9 +20,21 @@
     _userFile = nil;
 }
 
++ (NSArray *)nativeFields
+{
+    return @[@"_id", @"email", @"userName", @"userFile", @"online", @"lastLocation", @"baseLocation", @"baseLocationOption", @"lastUpdateDate"];
+}
+
 + (OBSUser *)userFromDataJSON:(NSDictionary *)data andMetadataJSON:(NSDictionary *)metadata withClient:(id<OBSClientProtocol>)client
 {
-    NSString *userId = data[@"userId"];
+    if ([data isEqual:[NSNull null]]) {
+        data = nil;
+    }
+    if ([metadata isEqual:[NSNull null]]) {
+        metadata = nil;
+    }
+    
+    NSString *userId = data[@"_id"];
     if (!userId || [userId isEqual:[NSNull null]]) {
         return nil; // userId is missing from JSON.
     }
@@ -269,7 +281,15 @@
 
                 if ([result isKindOfClass:[NSDictionary class]]) {
                     // Result is valid.
-                    handler(self, path, result[OBSConnectionResultDataKey], result[OBSConnectionResultMetadataKey], nil);
+                    id data = result[OBSConnectionResultDataKey];
+                    if ([data isEqual:[NSNull null]]) {
+                        data = nil;
+                    }
+                    id metadata = result[OBSConnectionResultMetadataKey];
+                    if ([metadata isEqual:[NSNull null]]) {
+                        metadata = nil;
+                    }
+                    handler(self, path, data, metadata, nil);
                     return;
                 }
 

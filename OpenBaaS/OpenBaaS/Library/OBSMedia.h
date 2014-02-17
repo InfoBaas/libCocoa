@@ -28,6 +28,8 @@
 
 - (void)getImageFilesWithQueryDictionary:(NSDictionary *)query completionHandler:(void(^)(OBSMedia *media, OBSCollectionPage *imageFileIds, OBSError *error))handler elementCompletionHandler:(void(^)(OBSMedia *media, NSString *imageFileId, OBSImageFile *imageFile, OBSError *error))elementHandler;
 
+- (void)getImageFilesWithQueryDictionary:(NSDictionary *)query completionHandler:(void(^)(OBSMedia *media, OBSCollectionPage *imageFiles, OBSError *error))handler;
+
 #if TARGET_OS_IPHONE
 - (void)uploadImage:(UIImage *)image withFileName:(NSString *)fileName completionHandler:(void(^)(OBSMedia *media, OBSImageFile *imageFiles, OBSError *error))handler;
 #endif

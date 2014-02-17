@@ -16,6 +16,8 @@
 
 + (NSSet *)allSizes;
 
++ (NSArray *)nativeFields;
+
 + (OBSImageFile *)imageFileFromDataJSON:(NSDictionary *)data andMetadataJSON:(NSDictionary *)metadata withClient:(id<OBSClientProtocol>)client;
 
 @end

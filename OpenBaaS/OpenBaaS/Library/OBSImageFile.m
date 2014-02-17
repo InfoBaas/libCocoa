@@ -24,9 +24,21 @@ NSString *const OBSImageSizeOriginal = @"original";
     return allSizes;
 }
 
++ (NSArray *)nativeFields
+{
+    return @[@"_id", @"fileExtension", @"fileName"];
+}
+
 + (OBSImageFile *)imageFileFromDataJSON:(NSDictionary *)data andMetadataJSON:(NSDictionary *)metadata withClient:(id<OBSClientProtocol>)client
 {
-    NSString *mediaId = data[@"id"];
+    if ([data isEqual:[NSNull null]]) {
+        data = nil;
+    }
+    if ([metadata isEqual:[NSNull null]]) {
+        metadata = nil;
+    }
+    
+    NSString *mediaId = data[@"_id"];
     if (!mediaId || [mediaId isEqual:[NSNull null]]) {
         return nil;
     }

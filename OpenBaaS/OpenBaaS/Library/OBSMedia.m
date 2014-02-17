@@ -155,6 +155,47 @@
     }];
 }
 
+- (void)getImageFilesWithQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(OBSMedia *, OBSCollectionPage *, OBSError *))handler
+{
+    NSArray *show = query[OBSQueryParamShow];
+    if (!show)
+        show = @[];
+    
+    NSArray *userNativeFields = [OBSImageFile nativeFields];
+    show = [show arrayByAddingObjectsFromArray:userNativeFields];
+    
+    if (query) {
+        NSMutableDictionary *mutableQuery = [query mutableCopy];
+        mutableQuery[OBSQueryParamShow] = show;
+        query = mutableQuery;
+    } else {
+        query = @{OBSQueryParamShow: show};
+    }
+    
+    [self getImageFileIdsWithQueryDictionary:query completionHandler:^(OBSMedia *media, OBSCollectionPage *imageFiles, OBSError *error) {
+        if (error) {
+            handler(media, nil, error);
+        } else {
+            NSArray *elements = imageFiles.elements;
+            NSUInteger count = [elements count];
+            NSMutableArray *imageFileObjects = [NSMutableArray arrayWithCapacity:count];
+            for (NSUInteger e = 0; e < count; e++) {
+                OBSCollectionPageElement *elementObject = elements[e];
+                NSDictionary *data = elementObject.data;
+                NSDictionary *metadata = elementObject.metadata;
+                OBSImageFile *imageFile = [OBSImageFile imageFileFromDataJSON:data andMetadataJSON:metadata withClient:media.client];
+                if (imageFile) {
+                    [imageFileObjects addObject:imageFile];
+                } else {
+                    [imageFileObjects addObject:[NSNull null]];
+                }
+            }
+            imageFiles.elements = [NSArray arrayWithArray:imageFileObjects];
+            handler(media, imageFiles, nil);
+        }
+    }];
+}
+
 #if TARGET_OS_IPHONE
 - (void)uploadImage:(UIImage *)image withFileName:(NSString *)fileName completionHandler:(void(^)(OBSMedia *media, OBSImageFile *imageFiles, OBSError *error))handler
 #endif
