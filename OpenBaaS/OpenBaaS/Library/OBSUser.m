@@ -22,7 +22,7 @@
 
 + (NSArray *)nativeFields
 {
-    return @[@"_id", @"email", @"userName", @"userFile", @"online", @"lastLocation", @"baseLocation", @"baseLocationOption", @"lastUpdateDate"];
+    return @[@"_id", @"email", @"userName", @"userFile", @"online", @"location", @"baseLocation", @"baseLocationOption", @"_metadata/lastUpdateDate"];
 }
 
 + (OBSUser *)userFromDataJSON:(NSDictionary *)data andMetadataJSON:(NSDictionary *)metadata withClient:(id<OBSClientProtocol>)client
@@ -54,7 +54,7 @@
     BOOL online = [data[@"online"] boolValue];
 
     CLLocation *userLastLocation = nil;
-    NSString *lastLocationStr = data[@"lastLocation"];
+    NSString *lastLocationStr = data[@"location"];
     if ([lastLocationStr isEqual:[NSNull null]]) {
         lastLocationStr = nil;
     }
