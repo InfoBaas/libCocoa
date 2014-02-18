@@ -14,16 +14,6 @@ NSString *const OBSImageSizeOriginal = @"original";
 
 @implementation OBSImageFile
 
-+ (NSSet *)allSizes
-{
-    static NSSet *allSizes = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        allSizes = [NSSet setWithArray:@[OBSImageSizeOriginal]];
-    });
-    return allSizes;
-}
-
 + (NSArray *)nativeFields
 {
     return @[@"_id", @"fileExtension", @"fileName"];
@@ -67,7 +57,7 @@ NSString *const OBSImageSizeOriginal = @"original";
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *imageSize = size;
-        if (![[OBSImageFile allSizes] containsObject:imageSize]) {
+        if (!imageSize) {
             imageSize = OBSImageSizeOriginal;
         }
         [OBSConnection get_imageFile:self imageSize:imageSize queryDictionary:nil completionHandler:^(id result, NSInteger statusCode, NSError *error) {
