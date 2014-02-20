@@ -14,4 +14,8 @@
 @property (nonatomic, assign) NSInteger tag;
 @property (nonatomic, strong) NSString *identifier;
 
++ (id)newWithDictionaryRepresentation:(NSDictionary *)dictionaryRepresentation andClient:(id<OBSClientProtocol>)client;
+- (id)initWithDictionaryRepresentation:(NSDictionary *)dictionaryRepresentation andClient:(id<OBSClientProtocol>)client;
+- (NSDictionary *)dictionaryRepresentation;
+
 @end

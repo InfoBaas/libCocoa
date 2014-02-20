@@ -10,6 +10,23 @@
 
 #import "OBSConnection.h"
 
+static NSString *const _OBSUser_OBSObject = @"com.openbaas.user.-";
+
+static NSString *const _OBSUser_UserId = @"com.openbaas.user.user-id";
+static NSString *const _OBSUser_UserEmail = @"com.openbaas.user.user-email";
+static NSString *const _OBSUser_UserName = @"com.openbaas.user.user-name";
+static NSString *const _OBSUser_UserFile = @"com.openbaas.user.user-file";
+
+static NSString *const _OBSUser_Online = @"com.openbaas.user.online";
+
+static NSString *const _OBSUser_UserLastLocation_Latitude = @"com.openbaas.user.user-last-location.latitude";
+static NSString *const _OBSUser_UserLastLocation_Longitude = @"com.openbaas.user.user-last-location.longitude";
+static NSString *const _OBSUser_UserBaseLocation_Latitude = @"com.openbaas.user.user-base-location.latitude";
+static NSString *const _OBSUser_UserBaseLocation_Longitude = @"com.openbaas.user.user-base-location.longitude";
+static NSString *const _OBSUser_UsesBaseLocation = @"com.openbaas.user.uses-base-location";
+
+static NSString *const _OBSUser_LastUpdatedAt = @"com.openbaas.user.last-updated-at";
+
 @implementation OBSUser
 
 - (void)dealloc
@@ -421,6 +438,79 @@
             handler(self, path, NO, error);
         }
     });
+}
+
+#pragma mark -
+
++ (id)newWithDictionaryRepresentation:(NSDictionary *)dictionaryRepresentation andClient:(id<OBSClientProtocol>)client
+{
+    return [[self alloc] initWithDictionaryRepresentation:dictionaryRepresentation andClient:client];
+}
+
+- (id)initWithDictionaryRepresentation:(NSDictionary *)dictionaryRepresentation andClient:(id<OBSClientProtocol>)client
+{
+    self = [super initWithDictionaryRepresentation:dictionaryRepresentation[_OBSUser_OBSObject] andClient:client];
+    if (self) {
+        _userId = dictionaryRepresentation[_OBSUser_UserId];
+        _userEmail = dictionaryRepresentation[_OBSUser_UserEmail];
+        _userName = dictionaryRepresentation[_OBSUser_UserName];
+        _userFile = dictionaryRepresentation[_OBSUser_UserFile];
+        
+        _online = [dictionaryRepresentation[_OBSUser_Online] boolValue];
+        
+        {
+            NSNumber *lat = dictionaryRepresentation[_OBSUser_UserLastLocation_Latitude];
+            NSNumber *lng = dictionaryRepresentation[_OBSUser_UserLastLocation_Longitude];
+            if (lat && lng) {
+                CLLocationDegrees latitude = [lat doubleValue];
+                CLLocationDegrees longitude = [lng doubleValue];
+                _userLastLocation = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
+            }
+        }
+        
+        {
+            NSNumber *lat = dictionaryRepresentation[_OBSUser_UserBaseLocation_Latitude];
+            NSNumber *lng = dictionaryRepresentation[_OBSUser_UserBaseLocation_Longitude];
+            if (lat && lng) {
+                CLLocationDegrees latitude = [lat doubleValue];
+                CLLocationDegrees longitude = [lng doubleValue];
+                _userBaseLocation = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
+            }
+        }
+        
+        _usesBaseLocation = [dictionaryRepresentation[_OBSUser_UsesBaseLocation] boolValue];
+        
+        _lastUpdatedAt = dictionaryRepresentation[_OBSUser_LastUpdatedAt];
+    }
+    return self;
+}
+
+- (NSDictionary *)dictionaryRepresentation
+{
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+    
+    dictionary[_OBSUser_OBSObject] = [super dictionaryRepresentation];
+    
+    dictionary[_OBSUser_UserId] = _userId;
+    dictionary[_OBSUser_UserEmail] = _userEmail;
+    dictionary[_OBSUser_UserName] = _userName;
+    dictionary[_OBSUser_UserFile] = _userFile;
+    
+    dictionary[_OBSUser_Online] = @(_online);
+    
+    if (_userLastLocation) {
+        dictionary[_OBSUser_UserLastLocation_Latitude] = @(_userLastLocation.coordinate.latitude);
+        dictionary[_OBSUser_UserLastLocation_Longitude] = @(_userLastLocation.coordinate.longitude);
+    }
+    if (_userLastLocation) {
+        dictionary[_OBSUser_UserBaseLocation_Latitude] = @(_userBaseLocation.coordinate.latitude);
+        dictionary[_OBSUser_UserBaseLocation_Longitude] = @(_userBaseLocation.coordinate.longitude);
+    }
+    dictionary[_OBSUser_UsesBaseLocation] = @(_usesBaseLocation);
+    
+    dictionary[_OBSUser_LastUpdatedAt] = _lastUpdatedAt;
+    
+    return [NSDictionary dictionaryWithDictionary:dictionary];
 }
 
 @end

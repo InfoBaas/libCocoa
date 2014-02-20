@@ -61,7 +61,7 @@
                                                    code:kOBSLocalErrorCodeMissingRequiredParameters
                                                userInfo:userInfo];
             // Action completed with error.
-            handler(self, imageFileId, nil, error);
+            handler(self, imageFileId, NO, error);
         }
     });
 }

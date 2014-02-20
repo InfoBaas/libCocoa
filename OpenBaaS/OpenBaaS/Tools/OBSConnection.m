@@ -183,13 +183,13 @@ static NSString *_OBSCurrentReachabilityStatus (void)
     [connection.connection scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
     
     // Start Time
-    [logEntry appendString:[NSString stringWithFormat:@"%f;", @([NSDate timeIntervalSinceReferenceDate])]];
+    [logEntry appendString:[NSString stringWithFormat:@"%f;", [NSDate timeIntervalSinceReferenceDate]]];
     [connection.connection start];
 }
 
 - (void)closeLogEntry
 {
-    [self.logEntry appendString:[NSString stringWithFormat:@"%f;\n", @([NSDate timeIntervalSinceReferenceDate])]];
+    [self.logEntry appendString:[NSString stringWithFormat:@"%f;\n", [NSDate timeIntervalSinceReferenceDate]]];
     NSFileHandle *fileHandler = [NSFileHandle fileHandleForUpdatingAtPath:_OBSLogPath()];
     [fileHandler seekToEndOfFile];
     [fileHandler writeData:[self.logEntry dataUsingEncoding:NSUTF8StringEncoding]];

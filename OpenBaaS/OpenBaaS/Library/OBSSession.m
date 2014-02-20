@@ -12,6 +12,10 @@
 
 #import "OBSConnection.h"
 
+static NSString *const _OBSSession_OBSObject = @"com.openbaas.session.-";
+static NSString *const _OBSSession_Token = @"com.openbaas.session.token";
+static NSString *const _OBSSession_User = @"com.openbaas.session.user";
+
 @implementation OBSSession
 
 - (void)dealloc
@@ -103,6 +107,30 @@
         return YES;
     }
     return NO;
+}
+
+#pragma mark -
+
++ (id)newWithDictionaryRepresentation:(NSDictionary *)dictionaryRepresentation andClient:(id<OBSClientProtocol>)client
+{
+    return [[self alloc] initWithDictionaryRepresentation:dictionaryRepresentation andClient:client];
+}
+
+- (id)initWithDictionaryRepresentation:(NSDictionary *)dictionaryRepresentation andClient:(id<OBSClientProtocol>)client
+{
+    self = [super initWithDictionaryRepresentation:dictionaryRepresentation[_OBSSession_OBSObject] andClient:client];
+    if (self) {
+        _token = dictionaryRepresentation[_OBSSession_Token];
+        _user = [OBSUser newWithDictionaryRepresentation:dictionaryRepresentation[_OBSSession_User] andClient:client];
+    }
+    return self;
+}
+
+- (NSDictionary *)dictionaryRepresentation
+{
+    return @{_OBSSession_OBSObject: [super dictionaryRepresentation],
+             _OBSSession_Token: _token,
+             _OBSSession_User: [_user dictionaryRepresentation]};
 }
 
 @end
