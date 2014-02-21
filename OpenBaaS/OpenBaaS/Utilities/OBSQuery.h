@@ -10,6 +10,8 @@
 
 extern NSString *const OBSQueryParamCollectionPage;
 extern NSString *const OBSQueryParamCollectionPageSize;
+extern NSString *const OBSQueryParamCollectionElementIndex;
+extern NSString *const OBSQueryParamCollectionElementCount;
 extern NSString *const OBSQueryParamCollectionDataQuery;
 extern NSString *const OBSQueryParamCollectionOrderBy;
 extern NSString *const OBSQueryParamCollectionOrderByDistance;

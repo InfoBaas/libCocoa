@@ -10,6 +10,8 @@
 
 NSString *const OBSQueryParamCollectionPage = @"pageNumber";
 NSString *const OBSQueryParamCollectionPageSize = @"pageSize";
+NSString *const OBSQueryParamCollectionElementIndex = @"elemIndex";
+NSString *const OBSQueryParamCollectionElementCount = @"elemCount";
 NSString *const OBSQueryParamCollectionDataQuery = @"query";
 NSString *const OBSQueryParamCollectionOrderBy = @"orderBy";
 NSString *const OBSQueryParamCollectionOrderByDistance = @"_dist";
