@@ -29,30 +29,34 @@
     
     NSNumber *pageNumber = data[@"pageNumber"];
     if (!pageNumber || [pageNumber isEqual:[NSNull null]]) {
-        return nil;
+        pageNumber = nil;
     }
     NSNumber *pageSize = data[@"pageSize"];
     if (!pageSize || [pageSize isEqual:[NSNull null]]) {
-        return nil;
+        pageSize = nil;
     }
     NSNumber *numberOfElements = data[@"totalElems"];
     if (!numberOfElements || [numberOfElements isEqual:[NSNull null]]) {
-        return nil;
+        numberOfElements = nil;
     }
     NSNumber *numberOfPages = data[@"totalnumberpages"];
     if (!numberOfPages || [numberOfPages isEqual:[NSNull null]]) {
-        return nil;
+        numberOfPages = nil;
     }
 
     OBSCollectionPage *collectionPage = [[self alloc] init];
 
     collectionPage.elements = [NSArray arrayWithArray:mutableElements];
-    collectionPage.pageNumber = [pageNumber integerValue];
-    collectionPage.pageSize = [pageSize integerValue];
-    collectionPage.pageCount = [numberOfPages integerValue];
+    collectionPage.pageNumber = pageNumber ? [pageNumber integerValue] : NSNotFound;
+    collectionPage.pageSize = pageSize ? [pageSize integerValue] : NSNotFound;
+    collectionPage.pageCount = numberOfPages ? [numberOfPages integerValue] : NSNotFound;
 
     collectionPage.elementCount = [[collectionPage elements] count];
-    collectionPage.firstElement = (collectionPage.pageNumber - 1) * collectionPage.pageCount + 1;
+    if (pageNumber && numberOfPages) {
+        collectionPage.firstElement = (collectionPage.pageNumber - 1) * collectionPage.pageCount + 1;
+    } else {
+        collectionPage.firstElement = NSNotFound;
+    }
 
     return collectionPage;
 }
