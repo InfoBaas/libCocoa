@@ -491,10 +491,18 @@ static NSString *const _OBSUser_LastUpdatedAt = @"com.openbaas.user.last-updated
     
     dictionary[_OBSUser_OBSObject] = [super dictionaryRepresentation];
     
-    dictionary[_OBSUser_UserId] = _userId;
-    dictionary[_OBSUser_UserEmail] = _userEmail;
-    dictionary[_OBSUser_UserName] = _userName;
-    dictionary[_OBSUser_UserFile] = _userFile;
+    if (_userId) {
+        dictionary[_OBSUser_UserId] = _userId;
+    }
+    if (_userEmail) {
+        dictionary[_OBSUser_UserEmail] = _userEmail;
+    }
+    if (_userName) {
+        dictionary[_OBSUser_UserName] = _userName;
+    }
+    if (_userFile) {
+        dictionary[_OBSUser_UserFile] = _userFile;
+    }
     
     dictionary[_OBSUser_Online] = @(_online);
     

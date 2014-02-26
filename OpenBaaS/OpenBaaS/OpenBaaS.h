@@ -30,6 +30,7 @@ extern void OBSPushLog (NSString *appId, NSString *appKey);
 
 #import "OBSAccount.h"
 #import "OBSApplication.h"
+#import "OBSChatRoom.h"
 #import "OBSImageFile.h"
 #import "OBSMedia.h"
 #import "OBSSession.h"

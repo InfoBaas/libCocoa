@@ -60,6 +60,8 @@
 		CEF3E1B118522B24001F999C /* NSString+OpenBaaS.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF3E1AF18522B24001F999C /* NSString+OpenBaaS.m */; };
 		EE7476FD18A3E34A003C154C /* OBSUserState.h in Headers */ = {isa = PBXBuildFile; fileRef = EE7476FB18A3E34A003C154C /* OBSUserState.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EE7476FE18A3E34A003C154C /* OBSUserState.m in Sources */ = {isa = PBXBuildFile; fileRef = EE7476FC18A3E34A003C154C /* OBSUserState.m */; };
+		EEABB9A918BE5A230057E21D /* OBSChatRoom.h in Headers */ = {isa = PBXBuildFile; fileRef = EEABB9A718BE5A230057E21D /* OBSChatRoom.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EEABB9AA18BE5A230057E21D /* OBSChatRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = EEABB9A818BE5A230057E21D /* OBSChatRoom.m */; };
 		EEC7781018ACEF3100C79A9B /* Reachability.h in Headers */ = {isa = PBXBuildFile; fileRef = EEC7780E18ACEF3100C79A9B /* Reachability.h */; };
 		EEC7781118ACEF3100C79A9B /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = EEC7780F18ACEF3100C79A9B /* Reachability.m */; };
 		EEC7781718AD1BB500C79A9B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEC7781618AD1BB500C79A9B /* SystemConfiguration.framework */; };
@@ -120,6 +122,9 @@
 		EE7476FB18A3E34A003C154C /* OBSUserState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSUserState.h; sourceTree = "<group>"; };
 		EE7476FC18A3E34A003C154C /* OBSUserState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSUserState.m; sourceTree = "<group>"; };
 		EE7476FF18A3E441003C154C /* OBSUserState+.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OBSUserState+.h"; sourceTree = "<group>"; };
+		EEABB9A718BE5A230057E21D /* OBSChatRoom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSChatRoom.h; sourceTree = "<group>"; };
+		EEABB9A818BE5A230057E21D /* OBSChatRoom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSChatRoom.m; sourceTree = "<group>"; };
+		EEABB9AB18BE5A660057E21D /* OBSChatRoom+.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OBSChatRoom+.h"; sourceTree = "<group>"; };
 		EEC7780E18ACEF3100C79A9B /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		EEC7780F18ACEF3100C79A9B /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		EEC7781618AD1BB500C79A9B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
@@ -145,6 +150,7 @@
 			children = (
 				CE91C18A182257CB00A82866 /* OBSAccount.h */,
 				CE95FEB01821380F00D390A3 /* OBSApplication.h */,
+				EEABB9A718BE5A230057E21D /* OBSChatRoom.h */,
 				CEA4A8091860C0C600CA482A /* OBSImageFile.h */,
 				CEA4A8011860BC3600CA482A /* OBSMedia.h */,
 				CE95FEBE182149DC00D390A3 /* OBSSession.h */,
@@ -236,6 +242,8 @@
 				CE91C18B182257CB00A82866 /* OBSAccount.m */,
 				CE91C1841822547C00A82866 /* OBSApplication+.h */,
 				CE95FEB11821380F00D390A3 /* OBSApplication.m */,
+				EEABB9AB18BE5A660057E21D /* OBSChatRoom+.h */,
+				EEABB9A818BE5A230057E21D /* OBSChatRoom.m */,
 				CEA4A80D1860C0E800CA482A /* OBSImageFile+.h */,
 				CEA4A80A1860C0C600CA482A /* OBSImageFile.m */,
 				CEA4A8051860BC5300CA482A /* OBSMedia+.h */,
@@ -318,6 +326,7 @@
 				CE3CBBBC182A5665000C2F17 /* OBSSettings.h in Headers */,
 				CE91C18C182257CB00A82866 /* OBSAccount.h in Headers */,
 				CE95FEB21821380F00D390A3 /* OBSApplication.h in Headers */,
+				EEABB9A918BE5A230057E21D /* OBSChatRoom.h in Headers */,
 				CEA4A80B1860C0C600CA482A /* OBSImageFile.h in Headers */,
 				EEC7781018ACEF3100C79A9B /* Reachability.h in Headers */,
 				CEA4A8031860BC3600CA482A /* OBSMedia.h in Headers */,
@@ -450,6 +459,7 @@
 				CE95FEB31821380F00D390A3 /* OBSApplication.m in Sources */,
 				CE3CBBAA18295E87000C2F17 /* OBSUser.m in Sources */,
 				EEC7781118ACEF3100C79A9B /* Reachability.m in Sources */,
+				EEABB9AA18BE5A230057E21D /* OBSChatRoom.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
