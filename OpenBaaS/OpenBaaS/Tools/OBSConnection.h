@@ -14,6 +14,7 @@
 
 @class OBSAccount;
 @class OBSApplication;
+@class OBSChatRoom;
 @class OBSImageFile;
 @class OBSMedia;
 @class OBSSession;
@@ -98,6 +99,16 @@ extern NSString *const OBSConnectionResultMetadataKey;
 #if TARGET_OS_IPHONE
 + (void)post_media:(OBSMedia *)media image:(UIImage *)image withFileName:(NSString *)fileName queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler;
 #endif
+
+#pragma mark apps/<appid>/chatroom
+
++ (void)post_application:(OBSApplication *)application openChatRoomWithUserIds:(NSArray *)userIds queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler;
+
+#if TARGET_OS_IPHONE
++ (void)post_chatRoom:(OBSChatRoom *)chatRoom postMessageText:(NSString *)text image:(UIImage *)image fromUser:(OBSUser *)user queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler;
+#endif
+
++ (void)post_chatRoom:(OBSChatRoom *)chatRoom getMessagesFromDate:(NSDate *)date onwards:(BOOL)onwards count:(NSUInteger)count withQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler;
 
 @end
 

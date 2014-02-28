@@ -12,6 +12,7 @@
 
 #import "OBSAccount+.h"
 #import "OBSApplication+.h"
+#import "OBSChatRoom+.h"
 #import "OBSSession+.h"
 #import "OBSUser+.h"
 
@@ -833,6 +834,125 @@ static NSString *_OBSCurrentReachabilityStatus (void)
         [self setCurrentLocationHeaderFieldToRequest:request];
         [self setCurrentSessionHeaderFieldToRequest:request];
 
+        // Send
+        [self sendAsynchronousRequest:request
+                                queue:[NSOperationQueue new]
+                    completionHandler:[self innerHandlerWithOuterHandler:handler]];
+    });
+}
+
+#pragma mark apps/<appid>/chatroom
+
++ (void)post_application:(OBSApplication *)application openChatRoomWithUserIds:(NSArray *)userIds queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id, NSInteger, NSError *))handler
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // Address
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/chatroom", [self OpenBaaSAddress], [application applicationId]];
+        
+        // Body
+        NSDictionary *body = @{@"participants": userIds};
+        
+        // Request
+        NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
+        NSMutableURLRequest *request = [self post_requestForURL:url];
+        
+        NSError *error = nil;
+        [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:body options:kNilOptions error:&error]];
+        if (error) {
+            handler(nil, 0, error);
+            return;
+        }
+        
+        // Header
+        [self setAppKeyHeaderField:[application applicationKey] toRequest:request];
+        [self setCurrentLocationHeaderFieldToRequest:request];
+        [self setCurrentSessionHeaderFieldToRequest:request];
+        
+        // Send
+        [self sendAsynchronousRequest:request
+                                queue:[NSOperationQueue new]
+                    completionHandler:[self innerHandlerWithOuterHandler:handler]];
+    });
+}
+
+#if TARGET_OS_IPHONE
++ (void)post_chatRoom:(OBSChatRoom *)chatRoom postMessageText:(NSString *)text image:(UIImage *)image fromUser:(OBSUser *)user queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id, NSInteger, NSError *))handler
+#endif
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // Address
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/chatroom/%@/sendmessage", [self OpenBaaSAddress], [[chatRoom client] appId], [chatRoom chatRoomId]];
+        
+        // Auxiliaries
+        NSString *boundary = @"---p37mbyk1q2m164obqcjj-OpenBaaS-libCocoa-";
+        NSString *contentType = [NSString stringWithFormat:
+                                 @"multipart/form-data; boundary=%@",boundary];
+        
+        // Body
+        NSMutableData *body = [NSMutableData data];
+        
+        if (text) {
+            [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:[@"Content-Disposition: form-data; name=\"message\"\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:[[NSString stringWithFormat:@"%@\r\n", text] dataUsingEncoding:NSUTF8StringEncoding]];
+        }
+        
+        if (image) {
+            [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:[@"Content-Disposition: form-data; name=\"image\"; filename=\"image.png\"\r\nContent-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+#if TARGET_OS_IPHONE
+            [body appendData:UIImagePNGRepresentation(image)];
+#endif
+        }
+        
+        [body appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        
+        // Request
+        NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+        [request setHTTPMethod:@"POST"];
+        [request addValue:contentType forHTTPHeaderField:@"Content-Type"];
+        [request setHTTPBody:[NSData dataWithData:body]];
+        
+        // Header
+        [self setAppKeyHeaderField:[[chatRoom client] appKey] toRequest:request];
+        [self setCurrentLocationHeaderFieldToRequest:request];
+        [self setCurrentSessionHeaderFieldToRequest:request];
+        
+        // Send
+        [self sendAsynchronousRequest:request
+                                queue:[NSOperationQueue new]
+                    completionHandler:[self innerHandlerWithOuterHandler:handler]];
+    });
+}
+
++ (void)post_chatRoom:(OBSChatRoom *)chatRoom getMessagesFromDate:(NSDate *)date onwards:(BOOL)onwards count:(NSUInteger)count withQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(id, NSInteger, NSError *))handler
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // Address
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/chatroom/%@/getmessages", [self OpenBaaSAddress], [[chatRoom client] appId], [chatRoom chatRoomId]];
+        
+        // Body
+        NSDictionary *body = @{@"date": @((unsigned long long)([date timeIntervalSince1970]*1000)),
+                               @"numberMessages": @(count),
+                               @"orientation": onwards ? @"front" : @"back"};
+        
+        // Request
+        NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
+        NSMutableURLRequest *request = [self post_requestForURL:url];
+        
+        NSError *error = nil;
+        [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:body options:kNilOptions error:&error]];
+        if (error) {
+            handler(nil, 0, error);
+            return;
+        }
+        
+        // Header
+        [self setAppKeyHeaderField:[[chatRoom client] appKey] toRequest:request];
+        [self setCurrentLocationHeaderFieldToRequest:request];
+        [self setCurrentSessionHeaderFieldToRequest:request];
+        
         // Send
         [self sendAsynchronousRequest:request
                                 queue:[NSOperationQueue new]

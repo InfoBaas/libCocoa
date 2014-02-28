@@ -9,6 +9,7 @@
 #import "OBSApplication+.h"
 
 #import "OBSAccount+.h"
+#import "OBSChatRoom+.h"
 #import "OBSMedia+.h"
 #import "OBSUser+.h"
 #import "OBSUserState+.h"
@@ -73,7 +74,7 @@
         } else if (handler) {
             //// Some or all the required parameters are missing
             // Create an array to hold the missing parameters' names.
-            NSMutableArray *missingRequiredParameters = [NSMutableArray arrayWithCapacity:3];
+            NSMutableArray *missingRequiredParameters = [NSMutableArray arrayWithCapacity:1];
             // Add missing parameters to the array.
             if (!hasUserId) [missingRequiredParameters addObject:@"userId"];
             // Create userInfo dictionary.
@@ -218,7 +219,7 @@
         } else if (handler) {
             //// Some or all the required parameters are missing
             // Create an array to hold the missing parameters' names.
-            NSMutableArray *missingRequiredParameters = [NSMutableArray arrayWithCapacity:3];
+            NSMutableArray *missingRequiredParameters = [NSMutableArray arrayWithCapacity:1];
             // Add missing parameters to the array.
             if (!hasUserIds) [missingRequiredParameters addObject:@"userIds"];
             // Create userInfo dictionary.
@@ -229,6 +230,88 @@
                                                userInfo:userInfo];
             // Action completed with error.
             handler(self, userIds, nil, error);
+        }
+    });
+}
+
+- (void)getChatRoomWithUsers:(NSArray *)users completionHandler:(void (^)(OBSApplication *, NSArray *, OBSChatRoom *, OBSError *))handler
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        BOOL hasUsersArray = users && [users isKindOfClass:[NSArray class]];
+        if (hasUsersArray) {
+            NSMutableArray *userIds = [NSMutableArray arrayWithCapacity:[users count]];
+            for (OBSUser *user in users) {
+                [userIds addObject:user.userId];
+            }
+            [self getChatRoomWithUserIds:userIds completionHandler:^(OBSApplication *application, NSArray *userIds, OBSChatRoom *chatRoom, OBSError *error) {
+                if (handler)
+                    handler(application, users, chatRoom, error);
+            }];
+        } else {
+            if (handler) {
+                //// Some or all the required parameters are missing
+                // Create an array to hold the missing parameters' names.
+                NSMutableArray *missingRequiredParameters = [NSMutableArray arrayWithCapacity:1];
+                // Add missing parameters to the array.
+                if (!hasUsersArray) [missingRequiredParameters addObject:@"users"];
+                // Create userInfo dictionary.
+                NSDictionary *userInfo = @{kOBSErrorUserInfoKeyMissingRequiredParameters: [NSArray arrayWithArray:missingRequiredParameters]};
+                // Create an error instace to send to the callback.
+                OBSError *error = [OBSError errorWithDomain:kOBSErrorDomainLocal
+                                                       code:kOBSLocalErrorCodeMissingRequiredParameters
+                                                   userInfo:userInfo];
+                // Action completed with error.
+                handler(self, users, nil, error);
+            }
+        }
+    });
+}
+
+- (void)getChatRoomWithUserIds:(NSArray *)userIds completionHandler:(void (^)(OBSApplication *, NSArray *, OBSChatRoom *, OBSError *))handler
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        BOOL hasUserIdsArray = userIds && [userIds isKindOfClass:[NSArray class]];
+        if (hasUserIdsArray) {
+            [OBSConnection post_application:self openChatRoomWithUserIds:userIds queryDictionary:nil completionHandler:^(id result, NSInteger statusCode, NSError *error) {
+                if (!handler) {
+                    return;
+                }
+                
+                // Called with error?
+                if (error) {
+                    handler(self, userIds, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+                    return;
+                }
+                
+                // Create chat room.
+                OBSChatRoom *chatRoom = nil;
+                if ([result isKindOfClass:[NSDictionary class]]) {
+                    chatRoom = [OBSChatRoom chatRoomFromDataJSON:result andMetadataJSON:nil withClient:self.client];
+                }
+                if (!chatRoom) {
+                    // User wasn't created.
+                    handler(self, userIds, nil, [OBSError errorWithDomain:kOBSErrorDomainRemote code:kOBSRemoteErrorCodeResultDataIllFormed userInfo:nil]);
+                    return;
+                }
+                
+                handler(self, userIds, chatRoom, nil);
+            }];
+        } else {
+            if (handler) {
+                //// Some or all the required parameters are missing
+                // Create an array to hold the missing parameters' names.
+                NSMutableArray *missingRequiredParameters = [NSMutableArray arrayWithCapacity:1];
+                // Add missing parameters to the array.
+                if (!hasUserIdsArray) [missingRequiredParameters addObject:@"userIds"];
+                // Create userInfo dictionary.
+                NSDictionary *userInfo = @{kOBSErrorUserInfoKeyMissingRequiredParameters: [NSArray arrayWithArray:missingRequiredParameters]};
+                // Create an error instace to send to the callback.
+                OBSError *error = [OBSError errorWithDomain:kOBSErrorDomainLocal
+                                                       code:kOBSLocalErrorCodeMissingRequiredParameters
+                                                   userInfo:userInfo];
+                // Action completed with error.
+                handler(self, userIds, nil, error);
+            }
         }
     });
 }
@@ -267,7 +350,7 @@
         } else if (handler) {
             //// Some or all the required parameters are missing
             // Create an array to hold the missing parameters' names.
-            NSMutableArray *missingRequiredParameters = [NSMutableArray arrayWithCapacity:3];
+            NSMutableArray *missingRequiredParameters = [NSMutableArray arrayWithCapacity:1];
             // Add missing parameters to the array.
             if (!hasPath) [missingRequiredParameters addObject:@"path"];
             // Create userInfo dictionary.
@@ -317,7 +400,7 @@
         } else if (handler) {
             //// Some or all the required parameters are missing
             // Create an array to hold the missing parameters' names.
-            NSMutableArray *missingRequiredParameters = [NSMutableArray arrayWithCapacity:3];
+            NSMutableArray *missingRequiredParameters = [NSMutableArray arrayWithCapacity:1];
             // Add missing parameters to the array.
             if (!hasPath) [missingRequiredParameters addObject:@"path"];
             // Create userInfo dictionary.
@@ -353,7 +436,7 @@
         } else if (handler) {
             //// Some or all the required parameters are missing
             // Create an array to hold the missing parameters' names.
-            NSMutableArray *missingRequiredParameters = [NSMutableArray arrayWithCapacity:3];
+            NSMutableArray *missingRequiredParameters = [NSMutableArray arrayWithCapacity:2];
             // Add missing parameters to the array.
             if (!hasObject) [missingRequiredParameters addObject:@"object"];
             if (!hasPath) [missingRequiredParameters addObject:@"path"];
@@ -390,7 +473,7 @@
         } else if (handler) {
             //// Some or all the required parameters are missing
             // Create an array to hold the missing parameters' names.
-            NSMutableArray *missingRequiredParameters = [NSMutableArray arrayWithCapacity:3];
+            NSMutableArray *missingRequiredParameters = [NSMutableArray arrayWithCapacity:2];
             // Add missing parameters to the array.
             if (!hasObject) [missingRequiredParameters addObject:@"object"];
             if (!hasPath) [missingRequiredParameters addObject:@"path"];
@@ -426,7 +509,7 @@
         } else if (handler) {
             //// Some or all the required parameters are missing
             // Create an array to hold the missing parameters' names.
-            NSMutableArray *missingRequiredParameters = [NSMutableArray arrayWithCapacity:3];
+            NSMutableArray *missingRequiredParameters = [NSMutableArray arrayWithCapacity:1];
             // Add missing parameters to the array.
             if (!hasPath) [missingRequiredParameters addObject:@"path"];
             // Create userInfo dictionary.

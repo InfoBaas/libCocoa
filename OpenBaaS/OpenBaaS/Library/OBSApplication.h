@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class OBSAccount;
+@class OBSChatRoom;
 @class OBSMedia;
 @class OBSUser;
 
@@ -79,6 +80,10 @@
 - (void)getUsersWithQueryDictionary:(NSDictionary *)query completionHandler:(void(^)(OBSApplication *application, OBSCollectionPage *users, OBSError *error))handler;
 
 - (void)getUsersStatesOfUsersWithIds:(NSArray *)userIds includeMisses:(BOOL)includeMisses withQueryDictionary:(NSDictionary *)query completionHandler:(void(^)(OBSApplication *application, NSArray *userIds, NSArray *usersState, OBSError *error))handler;
+
+- (void)getChatRoomWithUsers:(NSArray *)users completionHandler:(void(^)(OBSApplication *application, NSArray *users, OBSChatRoom *chatRoom, OBSError *error))handler;
+
+- (void)getChatRoomWithUserIds:(NSArray *)userIds completionHandler:(void(^)(OBSApplication *application, NSArray *userIds, OBSChatRoom *chatRoom, OBSError *error))handler;
 
 #pragma mark Data
 
