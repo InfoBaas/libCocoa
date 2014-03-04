@@ -316,6 +316,100 @@
     });
 }
 
+- (void)registerDeviceToken:(NSData *)deviceToken forNotificationsToClient:(NSString *)client withCompletionHandler:(void (^)(OBSApplication *, NSData *, NSString *, BOOL, OBSError *))handler
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        BOOL hasDeviceToken = deviceToken && [deviceToken isKindOfClass:[NSData class]];
+        BOOL hasClient = client && [client isKindOfClass:[NSString class]];
+        if (hasDeviceToken && hasClient) {
+            NSMutableString *hex = [NSMutableString stringWithCapacity:[deviceToken length]*2];
+            [deviceToken enumerateByteRangesUsingBlock:^(const void *bytes, NSRange byteRange, BOOL *stop) {
+                const unsigned char *dataBytes = (const unsigned char *)bytes;
+                for (NSUInteger i = byteRange.location; i < byteRange.length; ++i) {
+                    [hex appendFormat:@"%02x", dataBytes[i]];
+                }
+            }];
+            [OBSConnection post_application:self registerDeviceToken:hex forNotificationsToClient:client withQueryDictionary:nil completionHandler:^(id result, NSInteger statusCode, NSError *error) {
+                if (!handler) {
+                    return;
+                }
+                
+                // Called with error?
+                if (error) {
+                    handler(self, deviceToken, client, NO, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+                    return;
+                }
+                
+                handler(self, deviceToken, client, YES, nil);
+            }];
+        } else {
+            if (handler) {
+                //// Some or all the required parameters are missing
+                // Create an array to hold the missing parameters' names.
+                NSMutableArray *missingRequiredParameters = [NSMutableArray arrayWithCapacity:2];
+                // Add missing parameters to the array.
+                if (!hasDeviceToken) [missingRequiredParameters addObject:@"deviceToken"];
+                if (!hasClient) [missingRequiredParameters addObject:@"client"];
+                // Create userInfo dictionary.
+                NSDictionary *userInfo = @{kOBSErrorUserInfoKeyMissingRequiredParameters: [NSArray arrayWithArray:missingRequiredParameters]};
+                // Create an error instace to send to the callback.
+                OBSError *error = [OBSError errorWithDomain:kOBSErrorDomainLocal
+                                                       code:kOBSLocalErrorCodeMissingRequiredParameters
+                                                   userInfo:userInfo];
+                // Action completed with error.
+                handler(self, deviceToken, client, NO, error);
+            }
+        }
+    });
+}
+
+- (void)unregisterDeviceToken:(NSData *)deviceToken forNotificationsToClient:(NSString *)client withCompletionHandler:(void (^)(OBSApplication *, NSData *, NSString *, BOOL, OBSError *))handler
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        BOOL hasDeviceToken = deviceToken && [deviceToken isKindOfClass:[NSString class]];
+        BOOL hasClient = client && [client isKindOfClass:[NSString class]];
+        if (hasDeviceToken && hasClient) {
+            NSMutableString *hex = [NSMutableString stringWithCapacity:[deviceToken length]*2];
+            [deviceToken enumerateByteRangesUsingBlock:^(const void *bytes, NSRange byteRange, BOOL *stop) {
+                const unsigned char *dataBytes = (const unsigned char *)bytes;
+                for (NSUInteger i = byteRange.location; i < byteRange.length; ++i) {
+                    [hex appendFormat:@"%02x", dataBytes[i]];
+                }
+            }];
+            [OBSConnection post_application:self unregisterDeviceToken:hex forNotificationsToClient:client withQueryDictionary:nil completionHandler:^(id result, NSInteger statusCode, NSError *error) {
+                if (!handler) {
+                    return;
+                }
+                
+                // Called with error?
+                if (error) {
+                    handler(self, deviceToken, client, NO, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+                    return;
+                }
+                
+                handler(self, deviceToken, client, YES, nil);
+            }];
+        } else {
+            if (handler) {
+                //// Some or all the required parameters are missing
+                // Create an array to hold the missing parameters' names.
+                NSMutableArray *missingRequiredParameters = [NSMutableArray arrayWithCapacity:2];
+                // Add missing parameters to the array.
+                if (!hasDeviceToken) [missingRequiredParameters addObject:@"deviceToken"];
+                if (!hasClient) [missingRequiredParameters addObject:@"client"];
+                // Create userInfo dictionary.
+                NSDictionary *userInfo = @{kOBSErrorUserInfoKeyMissingRequiredParameters: [NSArray arrayWithArray:missingRequiredParameters]};
+                // Create an error instace to send to the callback.
+                OBSError *error = [OBSError errorWithDomain:kOBSErrorDomainLocal
+                                                       code:kOBSLocalErrorCodeMissingRequiredParameters
+                                                   userInfo:userInfo];
+                // Action completed with error.
+                handler(self, deviceToken, client, NO, error);
+            }
+        }
+    });
+}
+
 #pragma mark Data
 
 - (void)searchPath:(NSString *)path withQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(OBSApplication *, NSString *, OBSCollectionPage *, OBSError *))handler

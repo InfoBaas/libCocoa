@@ -850,7 +850,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
         NSString *address = [NSString stringWithFormat:@"%@/apps/%@/chatroom", [self OpenBaaSAddress], [application applicationId]];
         
         // Body
-        NSDictionary *body = @{@"participants": userIds};
+        NSDictionary *body = @{@"participants": userIds, @"flagNotification": @(YES)};
         
         // Request
         NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
@@ -950,6 +950,74 @@ static NSString *_OBSCurrentReachabilityStatus (void)
         
         // Header
         [self setAppKeyHeaderField:[[chatRoom client] appKey] toRequest:request];
+        [self setCurrentLocationHeaderFieldToRequest:request];
+        [self setCurrentSessionHeaderFieldToRequest:request];
+        
+        // Send
+        [self sendAsynchronousRequest:request
+                                queue:[NSOperationQueue new]
+                    completionHandler:[self innerHandlerWithOuterHandler:handler]];
+    });
+}
+
+#pragma mark apps/<appid>/settings/notifications/APNS
+
++ (void)post_application:(OBSApplication *)application registerDeviceToken:(NSString *)deviceToken forNotificationsToClient:(NSString *)client withQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(id, NSInteger, NSError *))handler
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // Address
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/settings/notifications/APNS/register", [self OpenBaaSAddress], [application applicationId]];
+        
+        // Body
+        NSDictionary *body = @{@"deviceToken": deviceToken,
+                               @"clientId": client};
+        
+        // Request
+        NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
+        NSMutableURLRequest *request = [self post_requestForURL:url];
+        
+        NSError *error = nil;
+        [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:body options:kNilOptions error:&error]];
+        if (error) {
+            handler(nil, 0, error);
+            return;
+        }
+        
+        // Header
+        [self setAppKeyHeaderField:[application applicationKey] toRequest:request];
+        [self setCurrentLocationHeaderFieldToRequest:request];
+        [self setCurrentSessionHeaderFieldToRequest:request];
+        
+        // Send
+        [self sendAsynchronousRequest:request
+                                queue:[NSOperationQueue new]
+                    completionHandler:[self innerHandlerWithOuterHandler:handler]];
+    });
+}
+
++ (void)post_application:(OBSApplication *)application unregisterDeviceToken:(NSString *)deviceToken forNotificationsToClient:(NSString *)client withQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(id, NSInteger, NSError *))handler
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // Address
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/settings/notifications/APNS/unregister", [self OpenBaaSAddress], [application applicationId]];
+        
+        // Body
+        NSDictionary *body = @{@"deviceToken": deviceToken,
+                               @"clientId": client};
+        
+        // Request
+        NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
+        NSMutableURLRequest *request = [self post_requestForURL:url];
+        
+        NSError *error = nil;
+        [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:body options:kNilOptions error:&error]];
+        if (error) {
+            handler(nil, 0, error);
+            return;
+        }
+        
+        // Header
+        [self setAppKeyHeaderField:[application applicationKey] toRequest:request];
         [self setCurrentLocationHeaderFieldToRequest:request];
         [self setCurrentSessionHeaderFieldToRequest:request];
         

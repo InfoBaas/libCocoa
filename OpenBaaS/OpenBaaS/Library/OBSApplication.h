@@ -85,6 +85,10 @@
 
 - (void)getChatRoomWithUserIds:(NSArray *)userIds completionHandler:(void(^)(OBSApplication *application, NSArray *userIds, OBSChatRoom *chatRoom, OBSError *error))handler;
 
+- (void)registerDeviceToken:(NSData *)deviceToken forNotificationsToClient:(NSString *)client withCompletionHandler:(void(^)(OBSApplication *application, NSData *deviceToken, NSString *client, BOOL registered, OBSError *error))handler;
+
+- (void)unregisterDeviceToken:(NSData *)deviceToken forNotificationsToClient:(NSString *)client withCompletionHandler:(void(^)(OBSApplication *application, NSData *deviceToken, NSString *client, BOOL unregistered, OBSError *error))handler;
+
 #pragma mark Data
 
 - (void)searchPath:(NSString *)path withQueryDictionary:(NSDictionary *)query completionHandler:(void(^)(OBSApplication *application, NSString *path, OBSCollectionPage *paths, OBSError *error))handler;

@@ -175,7 +175,9 @@ static NSString *const _OBSUser_LastUpdatedAt = @"com.openbaas.user.last-updated
         
         self.userName = userName;
         self.userFile = userFile;
-        handler(self, nil);
+        if (handler) {
+            handler(self, nil);
+        }
     }];
 }
 
