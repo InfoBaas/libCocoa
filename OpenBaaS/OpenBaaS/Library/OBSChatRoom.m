@@ -11,8 +11,15 @@
 #import "OBSConnection.h"
 
 static NSString *const _OBSChatRoom_OBSObject = @"com.openbaas.chat-room.-";
-
 static NSString *const _OBSChatRoom_ChatRoomId = @"com.openbaas.chat-room.chat-room-id";
+
+static NSString *const _OBSChatMessage_OBSObject = @"com.openbaas.chat-message.-";
+static NSString *const _OBSChatMessage_ChatMessageId = @"com.openbaas.chat-message.chat-message-id";
+static NSString *const _OBSChatMessage_SenderId = @"com.openbaas.chat-message.sender-id";
+static NSString *const _OBSChatMessage_Date = @"com.openbaas.chat-message.date";
+static NSString *const _OBSChatMessage_Unread = @"com.openbaas.chat-message.unread";
+static NSString *const _OBSChatMessage_Text = @"com.openbaas.chat-message.text";
+static NSString *const _OBSChatMessage_ImageId = @"com.openbaas.chat-message.image-id";
 
 @implementation OBSChatRoom
 
@@ -299,6 +306,63 @@ static NSString *const _OBSChatRoom_ChatRoomId = @"com.openbaas.chat-room.chat-r
             [self.chatRoom markMessages:@[self] asReadWithCompletionHandler:nil];
         }
     }
+}
+
+#pragma mark -
+
++ (id)newWithDictionaryRepresentation:(NSDictionary *)dictionaryRepresentation andClient:(id<OBSClientProtocol>)client
+{
+    return [[self alloc] initWithDictionaryRepresentation:dictionaryRepresentation andClient:client];
+}
+
+- (id)initWithDictionaryRepresentation:(NSDictionary *)dictionaryRepresentation andClient:(id<OBSClientProtocol>)client
+{
+    self = [super initWithDictionaryRepresentation:dictionaryRepresentation[_OBSChatMessage_OBSObject] andClient:client];
+    if (self) {
+        _chatMessageId = dictionaryRepresentation[_OBSChatMessage_ChatMessageId];
+        _senderId = dictionaryRepresentation[_OBSChatMessage_SenderId];
+        _unread = [dictionaryRepresentation[_OBSChatMessage_Unread] boolValue];
+        _text = dictionaryRepresentation[_OBSChatMessage_Text];
+        _imageId = dictionaryRepresentation[_OBSChatMessage_ImageId];
+        NSNumber *date = dictionaryRepresentation[_OBSChatMessage_Date];
+        if (date) {
+            _date = [NSDate dateWithTimeIntervalSince1970:[date doubleValue]];
+        } else {
+            _date = nil;
+        }
+    }
+    return self;
+}
+
+- (NSDictionary *)dictionaryRepresentation
+{
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+    
+    dictionary[_OBSChatMessage_OBSObject] = [super dictionaryRepresentation];
+    
+    if (_chatMessageId) {
+        dictionary[_OBSChatMessage_ChatMessageId] = _chatMessageId;
+    }
+    
+    if (_senderId) {
+        dictionary[_OBSChatMessage_SenderId] = _senderId;
+    }
+    
+    if (_date) {
+        dictionary[_OBSChatMessage_Date] = @([_date timeIntervalSince1970]);
+    }
+    
+    dictionary[_OBSChatMessage_Unread] = @(_unread);
+    
+    if (_text) {
+        dictionary[_OBSChatMessage_Text] = _text;
+    }
+    
+    if (_imageId) {
+        dictionary[_OBSChatMessage_ImageId] = _imageId;
+    }
+    
+    return [NSDictionary dictionaryWithDictionary:dictionary];
 }
 
 @end
