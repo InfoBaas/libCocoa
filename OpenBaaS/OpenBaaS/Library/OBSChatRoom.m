@@ -153,6 +153,52 @@ static NSString *const _OBSChatRoom_ChatRoomId = @"com.openbaas.chat-room.chat-r
     });
 }
 
+- (void)markMessages:(NSArray *)messages asReadWithCompletionHandler:(void (^)(OBSChatRoom *, NSArray *, BOOL, OBSError *))handler
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        BOOL hasMessages = messages && [messages isKindOfClass:[NSArray class]];
+        if (hasMessages) {
+            NSArray *chats = [messages valueForKey:@"chatMessageId"];
+            if ([chats count] == [messages count]) {
+                [OBSConnection post_chatRoom:self markMessagesWithIds:chats withQueryDictionary:nil completionHandler:^(id result, NSInteger statusCode, NSError *error) {
+                    if (!handler) {
+                        return;
+                    }
+                    
+                    if (error) {
+                        handler(self, messages, NO, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+                    } else {
+                        handler(self, messages, YES, nil);
+                    }
+                }];
+            } else if (handler) {
+                // Create userInfo dictionary.
+                NSDictionary *userInfo = @{kOBSErrorUserInfoKeyInvalidParameters: @[@"messages"]};
+                // Create an error instace to send to the callback.
+                OBSError *error = [OBSError errorWithDomain:kOBSErrorDomainLocal
+                                                       code:kOBSLocalErrorCodeInvalidParameters
+                                                   userInfo:userInfo];
+                // Action completed with error.
+                handler(self, messages, NO, error);
+            }
+        } else if (handler) {
+            //// Some or all the required parameters are missing
+            // Create an array to hold the missing parameters' names.
+            NSMutableArray *missingRequiredParameters = [NSMutableArray arrayWithCapacity:1];
+            // Add missing parameters to the array.
+            if (!hasMessages) [missingRequiredParameters addObject:@"messages"];
+            // Create userInfo dictionary.
+            NSDictionary *userInfo = @{kOBSErrorUserInfoKeyMissingRequiredParameters: [NSArray arrayWithArray:missingRequiredParameters]};
+            // Create an error instace to send to the callback.
+            OBSError *error = [OBSError errorWithDomain:kOBSErrorDomainLocal
+                                                   code:kOBSLocalErrorCodeMissingRequiredParameters
+                                               userInfo:userInfo];
+            // Action completed with error.
+            handler(self, messages, NO, error);
+        }
+    });
+}
+
 #pragma mark -
 
 + (id)newWithDictionaryRepresentation:(NSDictionary *)dictionaryRepresentation andClient:(id<OBSClientProtocol>)client
@@ -213,6 +259,11 @@ static NSString *const _OBSChatRoom_ChatRoomId = @"com.openbaas.chat-room.chat-r
         date = [NSDate dateWithTimeIntervalSince1970:([milli doubleValue]/1000)];
     }
     
+    NSNumber *read = data[@"read"];
+    if (read && [read isEqual:[NSNull null]]) {
+        read = nil;
+    }
+    
     NSString *text = data[@"messageText"];
     if ([text isEqual:[NSNull null]]) {
         text = nil;
@@ -225,13 +276,29 @@ static NSString *const _OBSChatRoom_ChatRoomId = @"com.openbaas.chat-room.chat-r
     
     OBSChatMessage *chatMessage = [[self alloc] initWithClient:room.client];
     chatMessage.chatRoom = room;
+    
     chatMessage.chatMessageId = chatMessageId;
     chatMessage.senderId = senderId;
     chatMessage.date = date;
+    chatMessage.unread = ![read boolValue];
+    
     chatMessage.text = text;
     chatMessage.imageId = imageId;
     
     return chatMessage;
+}
+
+- (void)markAsReadWithCompletionHandler:(void (^)(OBSChatMessage *, BOOL, OBSError *))handler
+{
+    if (self.isUnread) {
+        if (handler) {
+            [self.chatRoom markMessages:@[self] asReadWithCompletionHandler:^(OBSChatRoom *chatRoom, NSArray *messages, BOOL marked, OBSError *error) {
+                handler(self, marked, error);
+            }];
+        } else {
+            [self.chatRoom markMessages:@[self] asReadWithCompletionHandler:nil];
+        }
+    }
 }
 
 @end

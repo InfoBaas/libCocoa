@@ -23,6 +23,7 @@
 @property (nonatomic, strong) NSString *chatMessageId;
 @property (nonatomic, strong) NSString *senderId;
 @property (nonatomic, strong) NSDate *date;
+@property (nonatomic, assign) BOOL unread;
 
 @property (nonatomic, strong) NSString *text;
 @property (nonatomic, strong) NSString *imageId;

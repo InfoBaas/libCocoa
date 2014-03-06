@@ -960,6 +960,38 @@ static NSString *_OBSCurrentReachabilityStatus (void)
     });
 }
 
++ (void)post_chatRoom:(OBSChatRoom *)chatRoom markMessagesWithIds:(NSArray *)messageIds withQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(id, NSInteger, NSError *))handler
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // Address
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/chatroom/%@/readmessages", [self OpenBaaSAddress], [[chatRoom client] appId], [chatRoom chatRoomId]];
+        
+        // Body
+        NSDictionary *body = @{@"msgsList": messageIds};
+        
+        // Request
+        NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
+        NSMutableURLRequest *request = [self post_requestForURL:url];
+        
+        NSError *error = nil;
+        [request setHTTPBody:[NSJSONSerialization dataWithJSONObject:body options:kNilOptions error:&error]];
+        if (error) {
+            handler(nil, 0, error);
+            return;
+        }
+        
+        // Header
+        [self setAppKeyHeaderField:[[chatRoom client] appKey] toRequest:request];
+        [self setCurrentLocationHeaderFieldToRequest:request];
+        [self setCurrentSessionHeaderFieldToRequest:request];
+        
+        // Send
+        [self sendAsynchronousRequest:request
+                                queue:[NSOperationQueue new]
+                    completionHandler:[self innerHandlerWithOuterHandler:handler]];
+    });
+}
+
 #pragma mark apps/<appid>/settings/notifications/APNS
 
 + (void)post_application:(OBSApplication *)application registerDeviceToken:(NSString *)deviceToken forNotificationsToClient:(NSString *)client withQueryDictionary:(NSDictionary *)query completionHandler:(void (^)(id, NSInteger, NSError *))handler

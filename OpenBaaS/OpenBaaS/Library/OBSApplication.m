@@ -366,7 +366,7 @@
 - (void)unregisterDeviceToken:(NSData *)deviceToken forNotificationsToClient:(NSString *)client withCompletionHandler:(void (^)(OBSApplication *, NSData *, NSString *, BOOL, OBSError *))handler
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        BOOL hasDeviceToken = deviceToken && [deviceToken isKindOfClass:[NSString class]];
+        BOOL hasDeviceToken = deviceToken && [deviceToken isKindOfClass:[NSData class]];
         BOOL hasClient = client && [client isKindOfClass:[NSString class]];
         if (hasDeviceToken && hasClient) {
             NSMutableString *hex = [NSMutableString stringWithCapacity:[deviceToken length]*2];
