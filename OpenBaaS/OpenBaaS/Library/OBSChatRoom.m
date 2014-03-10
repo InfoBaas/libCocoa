@@ -12,6 +12,7 @@
 
 static NSString *const _OBSChatRoom_OBSObject = @"com.openbaas.chat-room.-";
 static NSString *const _OBSChatRoom_ChatRoomId = @"com.openbaas.chat-room.chat-room-id";
+static NSString *const _OBSChatRoom_UnreadMessages = @"com.openbaas.chat-room.unread-messages";
 
 static NSString *const _OBSChatMessage_OBSObject = @"com.openbaas.chat-message.-";
 static NSString *const _OBSChatMessage_ChatMessageId = @"com.openbaas.chat-message.chat-message-id";
@@ -37,8 +38,14 @@ static NSString *const _OBSChatMessage_ImageId = @"com.openbaas.chat-message.ima
         return nil;
     }
     
+    NSNumber *unreadMessages = data[@"unreadMessages"];
+    if (!unreadMessages) {
+        unreadMessages = @0;
+    }
+    
     OBSChatRoom *chatRoom = [[self alloc] initWithClient:client];
     chatRoom.chatRoomId = chatRoomId;
+    chatRoom.unreadMessages = unreadMessages;
     return chatRoom;
 }
 
@@ -218,6 +225,7 @@ static NSString *const _OBSChatMessage_ImageId = @"com.openbaas.chat-message.ima
     self = [super initWithDictionaryRepresentation:dictionaryRepresentation[_OBSChatRoom_OBSObject] andClient:client];
     if (self) {
         _chatRoomId = dictionaryRepresentation[_OBSChatRoom_ChatRoomId];
+        _unreadMessages = dictionaryRepresentation[_OBSChatRoom_UnreadMessages];
     }
     return self;
 }
@@ -230,6 +238,9 @@ static NSString *const _OBSChatMessage_ImageId = @"com.openbaas.chat-message.ima
     
     if (_chatRoomId) {
         dictionary[_OBSChatRoom_ChatRoomId] = _chatRoomId;
+    }
+    if (_unreadMessages) {
+        dictionary[_OBSChatRoom_UnreadMessages] = _unreadMessages;
     }
 
     return [NSDictionary dictionaryWithDictionary:dictionary];

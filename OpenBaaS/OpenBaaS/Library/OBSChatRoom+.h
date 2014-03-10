@@ -11,6 +11,7 @@
 @interface OBSChatRoom ()
 
 @property (nonatomic, strong) NSString *chatRoomId;
+@property (nonatomic, strong) NSNumber *unreadMessages;
 
 + (OBSChatRoom *)chatRoomFromDataJSON:(NSDictionary *)data andMetadataJSON:(NSDictionary *)metadata withClient:(id<OBSClientProtocol>)client;
 

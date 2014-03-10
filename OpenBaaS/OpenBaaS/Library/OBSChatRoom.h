@@ -17,6 +17,7 @@
 @interface OBSChatRoom : OBSObject
 
 @property (nonatomic, readonly) NSString *chatRoomId;
+@property (nonatomic, readonly) NSNumber *unreadMessages;
 
 - (void)getMessagesFromDate:(NSDate *)date onwards:(BOOL)onwards count:(NSUInteger)count withCompletionHandler:(void(^)(OBSChatRoom *chatRoom, NSArray *messages , OBSError *error))handler;
 
