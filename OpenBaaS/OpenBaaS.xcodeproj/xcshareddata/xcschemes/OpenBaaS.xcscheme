@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0500"
+   LastUpgradeVersion = "0510"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CE95FE901821236E00D390A3"
-               BuildableName = "OpenBaaS.framework"
+               BlueprintIdentifier = "EECBA0D118D08CE10047241B"
+               BuildableName = "libOpenBaaS.a"
                BlueprintName = "OpenBaaS"
                ReferencedContainer = "container:OpenBaaS.xcodeproj">
             </BuildableReference>
@@ -28,6 +28,16 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "EECBA0E118D08CE10047241B"
+               BuildableName = "OpenBaaSTests.xctest"
+               BlueprintName = "OpenBaaSTests"
+               ReferencedContainer = "container:OpenBaaS.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

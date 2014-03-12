@@ -8,6 +8,8 @@
 
 #import "OBSApplication+.h"
 
+#import "OBSQuery+.h"
+
 #import "OBSAccount+.h"
 #import "OBSChatRoom+.h"
 #import "OBSMedia+.h"

@@ -8,11 +8,14 @@
 
 #import "OBSConnection.h"
 
+#import "NSString+OpenBaaS.h"
 #import "OBSLocationCentre+.h"
 
 #import "OBSAccount+.h"
 #import "OBSApplication+.h"
 #import "OBSChatRoom+.h"
+#import "OBSImageFile+.h"
+#import "OBSMedia+.h"
 #import "OBSSession+.h"
 #import "OBSUser+.h"
 

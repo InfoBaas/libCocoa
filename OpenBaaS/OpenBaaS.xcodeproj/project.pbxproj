@@ -7,347 +7,340 @@
 	objects = {
 
 /* Begin PBXAggregateTarget section */
-		CE95FEA5182124F200D390A3 /* OpenBaaS.framework */ = {
+		EECBA16118D0C6750047241B /* OpenBaaS-libCocoa */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = CE95FEA6182124F200D390A3 /* Build configuration list for PBXAggregateTarget "OpenBaaS.framework" */;
+			buildConfigurationList = EECBA16218D0C6750047241B /* Build configuration list for PBXAggregateTarget "OpenBaaS-libCocoa" */;
 			buildPhases = (
-				CE95FEA91821250000D390A3 /* ShellScript */,
-				CE95FEAA1821250500D390A3 /* ShellScript */,
-				CECDB948183100B900B9FF8B /* ShellScript */,
+				EECBA16618D0C6B80047241B /* ShellScript */,
 			);
 			dependencies = (
 			);
-			name = OpenBaaS.framework;
-			productName = OpenBaaS.framework;
+			name = "OpenBaaS-libCocoa";
+			productName = "OpenBaaS-libCocoa";
 		};
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		CE3CBBA918295E87000C2F17 /* OBSUser.h in Headers */ = {isa = PBXBuildFile; fileRef = CE3CBBA718295E87000C2F17 /* OBSUser.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CE3CBBAA18295E87000C2F17 /* OBSUser.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3CBBA818295E87000C2F17 /* OBSUser.m */; };
-		CE3CBBBC182A5665000C2F17 /* OBSSettings.h in Headers */ = {isa = PBXBuildFile; fileRef = CE3CBBBA182A5665000C2F17 /* OBSSettings.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CE3CBBBD182A5665000C2F17 /* OBSSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3CBBBB182A5665000C2F17 /* OBSSettings.m */; };
-		CE62C75A1823D70200460A2D /* OBSClientProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = CE19109C182287CF00342286 /* OBSClientProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CE91C18C182257CB00A82866 /* OBSAccount.h in Headers */ = {isa = PBXBuildFile; fileRef = CE91C18A182257CB00A82866 /* OBSAccount.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CE91C18D182257CB00A82866 /* OBSAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = CE91C18B182257CB00A82866 /* OBSAccount.m */; };
-		CE91C1921822608700A82866 /* OBSConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = CE91C1901822608700A82866 /* OBSConnection.m */; };
-		CE93A138183BD9FD003E321E /* OBSCollectionPage.h in Headers */ = {isa = PBXBuildFile; fileRef = CE93A136183BD9FD003E321E /* OBSCollectionPage.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CE93A139183BD9FD003E321E /* OBSCollectionPage.m in Sources */ = {isa = PBXBuildFile; fileRef = CE93A137183BD9FD003E321E /* OBSCollectionPage.m */; };
-		CE95FEA31821238E00D390A3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE95FEA21821238E00D390A3 /* Foundation.framework */; };
-		CE95FEAD182125AC00D390A3 /* OpenBaaS.h in Headers */ = {isa = PBXBuildFile; fileRef = CE95FEAB182125AC00D390A3 /* OpenBaaS.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CE95FEB21821380F00D390A3 /* OBSApplication.h in Headers */ = {isa = PBXBuildFile; fileRef = CE95FEB01821380F00D390A3 /* OBSApplication.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CE95FEB31821380F00D390A3 /* OBSApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = CE95FEB11821380F00D390A3 /* OBSApplication.m */; };
-		CE95FEB71821394E00D390A3 /* OBSEmailValidation.h in Headers */ = {isa = PBXBuildFile; fileRef = CE95FEB51821394E00D390A3 /* OBSEmailValidation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CE95FEB81821394E00D390A3 /* OBSEmailValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = CE95FEB61821394E00D390A3 /* OBSEmailValidation.m */; };
-		CE95FEBC182139BA00D390A3 /* OBSError.h in Headers */ = {isa = PBXBuildFile; fileRef = CE95FEBA182139BA00D390A3 /* OBSError.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CE95FEBD182139BA00D390A3 /* OBSError.m in Sources */ = {isa = PBXBuildFile; fileRef = CE95FEBB182139BA00D390A3 /* OBSError.m */; };
-		CE95FEC1182149DC00D390A3 /* OBSSession.m in Sources */ = {isa = PBXBuildFile; fileRef = CE95FEBF182149DC00D390A3 /* OBSSession.m */; };
-		CEA1F4C31860653C00D5D0B0 /* OBSQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = CEA1F4C11860653C00D5D0B0 /* OBSQuery.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CEA1F4C41860653C00D5D0B0 /* OBSQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA1F4C21860653C00D5D0B0 /* OBSQuery.m */; };
-		CEA4A8031860BC3600CA482A /* OBSMedia.h in Headers */ = {isa = PBXBuildFile; fileRef = CEA4A8011860BC3600CA482A /* OBSMedia.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CEA4A8041860BC3600CA482A /* OBSMedia.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA4A8021860BC3600CA482A /* OBSMedia.m */; };
-		CEA4A80B1860C0C600CA482A /* OBSImageFile.h in Headers */ = {isa = PBXBuildFile; fileRef = CEA4A8091860C0C600CA482A /* OBSImageFile.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CEA4A80C1860C0C600CA482A /* OBSImageFile.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA4A80A1860C0C600CA482A /* OBSImageFile.m */; };
-		CEB182A2182425D300F7BF87 /* OBSObject.h in Headers */ = {isa = PBXBuildFile; fileRef = CEB182A0182425D300F7BF87 /* OBSObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CEB182A3182425D300F7BF87 /* OBSObject.m in Sources */ = {isa = PBXBuildFile; fileRef = CEB182A1182425D300F7BF87 /* OBSObject.m */; };
-		CEB182B618242D3B00F7BF87 /* OBSConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = CE91C18F1822608700A82866 /* OBSConnection.h */; };
-		CEB182B718242D4900F7BF87 /* OBSSession.h in Headers */ = {isa = PBXBuildFile; fileRef = CE95FEBE182149DC00D390A3 /* OBSSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CECDB94B18328FF900B9FF8B /* OBSLocationCentre.h in Headers */ = {isa = PBXBuildFile; fileRef = CECDB94918328FF900B9FF8B /* OBSLocationCentre.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CECDB94C18328FF900B9FF8B /* OBSLocationCentre.m in Sources */ = {isa = PBXBuildFile; fileRef = CECDB94A18328FF900B9FF8B /* OBSLocationCentre.m */; };
-		CECDB94F1832913400B9FF8B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CECDB94E1832913400B9FF8B /* CoreLocation.framework */; };
-		CECDB951183293B100B9FF8B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CECDB950183293B100B9FF8B /* UIKit.framework */; };
-		CEF3E1B018522B24001F999C /* NSString+OpenBaaS.h in Headers */ = {isa = PBXBuildFile; fileRef = CEF3E1AE18522B24001F999C /* NSString+OpenBaaS.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CEF3E1B118522B24001F999C /* NSString+OpenBaaS.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF3E1AF18522B24001F999C /* NSString+OpenBaaS.m */; };
-		EE7476FD18A3E34A003C154C /* OBSUserState.h in Headers */ = {isa = PBXBuildFile; fileRef = EE7476FB18A3E34A003C154C /* OBSUserState.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EE7476FE18A3E34A003C154C /* OBSUserState.m in Sources */ = {isa = PBXBuildFile; fileRef = EE7476FC18A3E34A003C154C /* OBSUserState.m */; };
-		EEABB9A918BE5A230057E21D /* OBSChatRoom.h in Headers */ = {isa = PBXBuildFile; fileRef = EEABB9A718BE5A230057E21D /* OBSChatRoom.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EEABB9AA18BE5A230057E21D /* OBSChatRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = EEABB9A818BE5A230057E21D /* OBSChatRoom.m */; };
-		EEC7781018ACEF3100C79A9B /* Reachability.h in Headers */ = {isa = PBXBuildFile; fileRef = EEC7780E18ACEF3100C79A9B /* Reachability.h */; };
-		EEC7781118ACEF3100C79A9B /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = EEC7780F18ACEF3100C79A9B /* Reachability.m */; };
-		EEC7781718AD1BB500C79A9B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEC7781618AD1BB500C79A9B /* SystemConfiguration.framework */; };
+		EECBA0D618D08CE10047241B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EECBA0D518D08CE10047241B /* Foundation.framework */; };
+		EECBA0DB18D08CE10047241B /* OpenBaaS.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = EECBA0DA18D08CE10047241B /* OpenBaaS.h */; };
+		EECBA0FE18D08F240047241B /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = EECBA0FD18D08F240047241B /* Reachability.m */; };
+		EECBA10218D08F400047241B /* OBSConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = EECBA10118D08F400047241B /* OBSConnection.m */; };
+		EECBA11C18D08F520047241B /* OBSAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = EECBA10618D08F520047241B /* OBSAccount.m */; };
+		EECBA11D18D08F520047241B /* OBSApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = EECBA10918D08F520047241B /* OBSApplication.m */; };
+		EECBA11E18D08F520047241B /* OBSChatRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = EECBA10C18D08F520047241B /* OBSChatRoom.m */; };
+		EECBA11F18D08F520047241B /* OBSImageFile.m in Sources */ = {isa = PBXBuildFile; fileRef = EECBA10F18D08F520047241B /* OBSImageFile.m */; };
+		EECBA12018D08F520047241B /* OBSMedia.m in Sources */ = {isa = PBXBuildFile; fileRef = EECBA11218D08F520047241B /* OBSMedia.m */; };
+		EECBA12118D08F520047241B /* OBSSession.m in Sources */ = {isa = PBXBuildFile; fileRef = EECBA11518D08F520047241B /* OBSSession.m */; };
+		EECBA12218D08F520047241B /* OBSUser.m in Sources */ = {isa = PBXBuildFile; fileRef = EECBA11818D08F520047241B /* OBSUser.m */; };
+		EECBA12318D08F520047241B /* OBSUserState.m in Sources */ = {isa = PBXBuildFile; fileRef = EECBA11B18D08F520047241B /* OBSUserState.m */; };
+		EECBA13118D08F5B0047241B /* OBSCollectionPage.m in Sources */ = {isa = PBXBuildFile; fileRef = EECBA12718D08F5B0047241B /* OBSCollectionPage.m */; };
+		EECBA13218D08F5B0047241B /* OBSError.m in Sources */ = {isa = PBXBuildFile; fileRef = EECBA12A18D08F5B0047241B /* OBSError.m */; };
+		EECBA13318D08F5B0047241B /* OBSObject.m in Sources */ = {isa = PBXBuildFile; fileRef = EECBA12D18D08F5B0047241B /* OBSObject.m */; };
+		EECBA13418D08F5B0047241B /* OBSSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = EECBA13018D08F5B0047241B /* OBSSettings.m */; };
+		EECBA14118D08F610047241B /* NSString+OpenBaaS.m in Sources */ = {isa = PBXBuildFile; fileRef = EECBA13718D08F610047241B /* NSString+OpenBaaS.m */; };
+		EECBA14218D08F610047241B /* OBSEmailValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = EECBA13A18D08F610047241B /* OBSEmailValidation.m */; };
+		EECBA14318D08F610047241B /* OBSLocationCentre.m in Sources */ = {isa = PBXBuildFile; fileRef = EECBA13D18D08F610047241B /* OBSLocationCentre.m */; };
+		EECBA14418D08F610047241B /* OBSQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = EECBA14018D08F610047241B /* OBSQuery.m */; };
+		EECBA14618D08F7D0047241B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EECBA14518D08F7D0047241B /* UIKit.framework */; };
+		EECBA14818D08F830047241B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EECBA14718D08F830047241B /* CoreLocation.framework */; };
+		EECBA14A18D08F890047241B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EECBA14918D08F890047241B /* SystemConfiguration.framework */; };
+		EECBA15018D0C4BF0047241B /* NSString+OpenBaaS.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = EECBA13618D08F610047241B /* NSString+OpenBaaS.h */; };
+		EECBA15118D0C4C50047241B /* OBSEmailValidation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = EECBA13918D08F610047241B /* OBSEmailValidation.h */; };
+		EECBA15218D0C4C90047241B /* OBSLocationCentre.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = EECBA13C18D08F610047241B /* OBSLocationCentre.h */; };
+		EECBA15318D0C4CC0047241B /* OBSQuery.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = EECBA13F18D08F610047241B /* OBSQuery.h */; };
+		EECBA15418D0C4CF0047241B /* OBSCollectionPage.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = EECBA12618D08F5B0047241B /* OBSCollectionPage.h */; };
+		EECBA15518D0C4D20047241B /* OBSError.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = EECBA12918D08F5B0047241B /* OBSError.h */; };
+		EECBA15618D0C4D40047241B /* OBSObject.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = EECBA12C18D08F5B0047241B /* OBSObject.h */; };
+		EECBA15718D0C4D70047241B /* OBSSettings.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = EECBA12F18D08F5B0047241B /* OBSSettings.h */; };
+		EECBA15818D0C4DD0047241B /* OBSAccount.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = EECBA10518D08F520047241B /* OBSAccount.h */; };
+		EECBA15918D0C4E10047241B /* OBSApplication.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = EECBA10818D08F520047241B /* OBSApplication.h */; };
+		EECBA15A18D0C4E50047241B /* OBSChatRoom.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = EECBA10B18D08F520047241B /* OBSChatRoom.h */; };
+		EECBA15B18D0C4E80047241B /* OBSImageFile.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = EECBA10E18D08F520047241B /* OBSImageFile.h */; };
+		EECBA15C18D0C4EB0047241B /* OBSMedia.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = EECBA11118D08F520047241B /* OBSMedia.h */; };
+		EECBA15D18D0C4EF0047241B /* OBSSession.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = EECBA11418D08F520047241B /* OBSSession.h */; };
+		EECBA15E18D0C4F20047241B /* OBSUser.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = EECBA11718D08F520047241B /* OBSUser.h */; };
+		EECBA15F18D0C4F50047241B /* OBSUserState.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = EECBA11A18D08F520047241B /* OBSUserState.h */; };
+		EECBA16018D0C5030047241B /* OBSClientProtocol.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = EECBA14F18D0C4780047241B /* OBSClientProtocol.h */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		EECBA0D018D08CE10047241B /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				EECBA0DB18D08CE10047241B /* OpenBaaS.h in CopyFiles */,
+				EECBA16018D0C5030047241B /* OBSClientProtocol.h in CopyFiles */,
+				EECBA15018D0C4BF0047241B /* NSString+OpenBaaS.h in CopyFiles */,
+				EECBA15118D0C4C50047241B /* OBSEmailValidation.h in CopyFiles */,
+				EECBA15218D0C4C90047241B /* OBSLocationCentre.h in CopyFiles */,
+				EECBA15318D0C4CC0047241B /* OBSQuery.h in CopyFiles */,
+				EECBA15418D0C4CF0047241B /* OBSCollectionPage.h in CopyFiles */,
+				EECBA15518D0C4D20047241B /* OBSError.h in CopyFiles */,
+				EECBA15618D0C4D40047241B /* OBSObject.h in CopyFiles */,
+				EECBA15718D0C4D70047241B /* OBSSettings.h in CopyFiles */,
+				EECBA15818D0C4DD0047241B /* OBSAccount.h in CopyFiles */,
+				EECBA15918D0C4E10047241B /* OBSApplication.h in CopyFiles */,
+				EECBA15A18D0C4E50047241B /* OBSChatRoom.h in CopyFiles */,
+				EECBA15B18D0C4E80047241B /* OBSImageFile.h in CopyFiles */,
+				EECBA15C18D0C4EB0047241B /* OBSMedia.h in CopyFiles */,
+				EECBA15D18D0C4EF0047241B /* OBSSession.h in CopyFiles */,
+				EECBA15E18D0C4F20047241B /* OBSUser.h in CopyFiles */,
+				EECBA15F18D0C4F50047241B /* OBSUserState.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
-		CE19109C182287CF00342286 /* OBSClientProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OBSClientProtocol.h; sourceTree = "<group>"; };
-		CE3CBBA718295E87000C2F17 /* OBSUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSUser.h; sourceTree = "<group>"; };
-		CE3CBBA818295E87000C2F17 /* OBSUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSUser.m; sourceTree = "<group>"; };
-		CE3CBBAB18295EB1000C2F17 /* OBSUser+.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OBSUser+.h"; sourceTree = "<group>"; };
-		CE3CBBBA182A5665000C2F17 /* OBSSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSSettings.h; sourceTree = "<group>"; };
-		CE3CBBBB182A5665000C2F17 /* OBSSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSSettings.m; sourceTree = "<group>"; };
-		CE3CBBBE182A5686000C2F17 /* OBSSettings+.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OBSSettings+.h"; sourceTree = "<group>"; };
-		CE91C1841822547C00A82866 /* OBSApplication+.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OBSApplication+.h"; sourceTree = "<group>"; };
-		CE91C185182254A800A82866 /* OBSSession+.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OBSSession+.h"; sourceTree = "<group>"; };
-		CE91C1881822553900A82866 /* OBSError+.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OBSError+.h"; sourceTree = "<group>"; };
-		CE91C1891822554700A82866 /* OBSEmailValidation+.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OBSEmailValidation+.h"; sourceTree = "<group>"; };
-		CE91C18A182257CB00A82866 /* OBSAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSAccount.h; sourceTree = "<group>"; };
-		CE91C18B182257CB00A82866 /* OBSAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSAccount.m; sourceTree = "<group>"; };
-		CE91C18E1822580100A82866 /* OBSAccount+.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OBSAccount+.h"; sourceTree = "<group>"; };
-		CE91C18F1822608700A82866 /* OBSConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSConnection.h; sourceTree = "<group>"; };
-		CE91C1901822608700A82866 /* OBSConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSConnection.m; sourceTree = "<group>"; };
-		CE93A136183BD9FD003E321E /* OBSCollectionPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSCollectionPage.h; sourceTree = "<group>"; };
-		CE93A137183BD9FD003E321E /* OBSCollectionPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSCollectionPage.m; sourceTree = "<group>"; };
-		CE93A13A183BDA13003E321E /* OBSCollectionPage+.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OBSCollectionPage+.h"; sourceTree = "<group>"; };
-		CE95FE911821236E00D390A3 /* OpenBaaS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OpenBaaS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CE95FE981821236E00D390A3 /* OpenBaaS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OpenBaaS-Info.plist"; sourceTree = "<group>"; };
-		CE95FE9C1821236E00D390A3 /* OpenBaaS-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OpenBaaS-Prefix.pch"; sourceTree = "<group>"; };
-		CE95FEA21821238E00D390A3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		CE95FEAB182125AC00D390A3 /* OpenBaaS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenBaaS.h; sourceTree = "<group>"; };
-		CE95FEB01821380F00D390A3 /* OBSApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSApplication.h; sourceTree = "<group>"; };
-		CE95FEB11821380F00D390A3 /* OBSApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSApplication.m; sourceTree = "<group>"; };
-		CE95FEB51821394E00D390A3 /* OBSEmailValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSEmailValidation.h; sourceTree = "<group>"; };
-		CE95FEB61821394E00D390A3 /* OBSEmailValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSEmailValidation.m; sourceTree = "<group>"; };
-		CE95FEBA182139BA00D390A3 /* OBSError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSError.h; sourceTree = "<group>"; };
-		CE95FEBB182139BA00D390A3 /* OBSError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSError.m; sourceTree = "<group>"; };
-		CE95FEBE182149DC00D390A3 /* OBSSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSSession.h; sourceTree = "<group>"; };
-		CE95FEBF182149DC00D390A3 /* OBSSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSSession.m; sourceTree = "<group>"; };
-		CEA1F4C11860653C00D5D0B0 /* OBSQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSQuery.h; sourceTree = "<group>"; };
-		CEA1F4C21860653C00D5D0B0 /* OBSQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSQuery.m; sourceTree = "<group>"; };
-		CEA1F4C51860656300D5D0B0 /* OBSQuery+.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OBSQuery+.h"; sourceTree = "<group>"; };
-		CEA4A8011860BC3600CA482A /* OBSMedia.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSMedia.h; sourceTree = "<group>"; };
-		CEA4A8021860BC3600CA482A /* OBSMedia.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSMedia.m; sourceTree = "<group>"; };
-		CEA4A8051860BC5300CA482A /* OBSMedia+.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OBSMedia+.h"; sourceTree = "<group>"; };
-		CEA4A8091860C0C600CA482A /* OBSImageFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSImageFile.h; sourceTree = "<group>"; };
-		CEA4A80A1860C0C600CA482A /* OBSImageFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSImageFile.m; sourceTree = "<group>"; };
-		CEA4A80D1860C0E800CA482A /* OBSImageFile+.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OBSImageFile+.h"; sourceTree = "<group>"; };
-		CEB182A0182425D300F7BF87 /* OBSObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSObject.h; sourceTree = "<group>"; };
-		CEB182A1182425D300F7BF87 /* OBSObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSObject.m; sourceTree = "<group>"; };
-		CEB182A4182425F000F7BF87 /* OBSObject+.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OBSObject+.h"; sourceTree = "<group>"; };
-		CECDB94918328FF900B9FF8B /* OBSLocationCentre.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSLocationCentre.h; sourceTree = "<group>"; };
-		CECDB94A18328FF900B9FF8B /* OBSLocationCentre.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSLocationCentre.m; sourceTree = "<group>"; };
-		CECDB94D1832902100B9FF8B /* OBSLocationCentre+.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OBSLocationCentre+.h"; sourceTree = "<group>"; };
-		CECDB94E1832913400B9FF8B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/System/Library/Frameworks/CoreLocation.framework; sourceTree = DEVELOPER_DIR; };
-		CECDB950183293B100B9FF8B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
-		CEF3E1AE18522B24001F999C /* NSString+OpenBaaS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+OpenBaaS.h"; sourceTree = "<group>"; };
-		CEF3E1AF18522B24001F999C /* NSString+OpenBaaS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+OpenBaaS.m"; sourceTree = "<group>"; };
-		EE7476FB18A3E34A003C154C /* OBSUserState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSUserState.h; sourceTree = "<group>"; };
-		EE7476FC18A3E34A003C154C /* OBSUserState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSUserState.m; sourceTree = "<group>"; };
-		EE7476FF18A3E441003C154C /* OBSUserState+.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OBSUserState+.h"; sourceTree = "<group>"; };
-		EEABB9A718BE5A230057E21D /* OBSChatRoom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSChatRoom.h; sourceTree = "<group>"; };
-		EEABB9A818BE5A230057E21D /* OBSChatRoom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSChatRoom.m; sourceTree = "<group>"; };
-		EEABB9AB18BE5A660057E21D /* OBSChatRoom+.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OBSChatRoom+.h"; sourceTree = "<group>"; };
-		EEC7780E18ACEF3100C79A9B /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
-		EEC7780F18ACEF3100C79A9B /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
-		EEC7781618AD1BB500C79A9B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
+		EECBA0D218D08CE10047241B /* libOpenBaaS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libOpenBaaS.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		EECBA0D518D08CE10047241B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		EECBA0D918D08CE10047241B /* OpenBaaS-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OpenBaaS-Prefix.pch"; sourceTree = "<group>"; };
+		EECBA0DA18D08CE10047241B /* OpenBaaS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenBaaS.h; sourceTree = "<group>"; };
+		EECBA0FC18D08F240047241B /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		EECBA0FD18D08F240047241B /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		EECBA10018D08F400047241B /* OBSConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSConnection.h; sourceTree = "<group>"; };
+		EECBA10118D08F400047241B /* OBSConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSConnection.m; sourceTree = "<group>"; };
+		EECBA10418D08F520047241B /* OBSAccount+.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OBSAccount+.h"; sourceTree = "<group>"; };
+		EECBA10518D08F520047241B /* OBSAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSAccount.h; sourceTree = "<group>"; };
+		EECBA10618D08F520047241B /* OBSAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSAccount.m; sourceTree = "<group>"; };
+		EECBA10718D08F520047241B /* OBSApplication+.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OBSApplication+.h"; sourceTree = "<group>"; };
+		EECBA10818D08F520047241B /* OBSApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSApplication.h; sourceTree = "<group>"; };
+		EECBA10918D08F520047241B /* OBSApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSApplication.m; sourceTree = "<group>"; };
+		EECBA10A18D08F520047241B /* OBSChatRoom+.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OBSChatRoom+.h"; sourceTree = "<group>"; };
+		EECBA10B18D08F520047241B /* OBSChatRoom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSChatRoom.h; sourceTree = "<group>"; };
+		EECBA10C18D08F520047241B /* OBSChatRoom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSChatRoom.m; sourceTree = "<group>"; };
+		EECBA10D18D08F520047241B /* OBSImageFile+.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OBSImageFile+.h"; sourceTree = "<group>"; };
+		EECBA10E18D08F520047241B /* OBSImageFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSImageFile.h; sourceTree = "<group>"; };
+		EECBA10F18D08F520047241B /* OBSImageFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSImageFile.m; sourceTree = "<group>"; };
+		EECBA11018D08F520047241B /* OBSMedia+.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OBSMedia+.h"; sourceTree = "<group>"; };
+		EECBA11118D08F520047241B /* OBSMedia.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSMedia.h; sourceTree = "<group>"; };
+		EECBA11218D08F520047241B /* OBSMedia.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSMedia.m; sourceTree = "<group>"; };
+		EECBA11318D08F520047241B /* OBSSession+.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OBSSession+.h"; sourceTree = "<group>"; };
+		EECBA11418D08F520047241B /* OBSSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSSession.h; sourceTree = "<group>"; };
+		EECBA11518D08F520047241B /* OBSSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSSession.m; sourceTree = "<group>"; };
+		EECBA11618D08F520047241B /* OBSUser+.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OBSUser+.h"; sourceTree = "<group>"; };
+		EECBA11718D08F520047241B /* OBSUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSUser.h; sourceTree = "<group>"; };
+		EECBA11818D08F520047241B /* OBSUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSUser.m; sourceTree = "<group>"; };
+		EECBA11918D08F520047241B /* OBSUserState+.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OBSUserState+.h"; sourceTree = "<group>"; };
+		EECBA11A18D08F520047241B /* OBSUserState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSUserState.h; sourceTree = "<group>"; };
+		EECBA11B18D08F520047241B /* OBSUserState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSUserState.m; sourceTree = "<group>"; };
+		EECBA12518D08F5B0047241B /* OBSCollectionPage+.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OBSCollectionPage+.h"; sourceTree = "<group>"; };
+		EECBA12618D08F5B0047241B /* OBSCollectionPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSCollectionPage.h; sourceTree = "<group>"; };
+		EECBA12718D08F5B0047241B /* OBSCollectionPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSCollectionPage.m; sourceTree = "<group>"; };
+		EECBA12818D08F5B0047241B /* OBSError+.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OBSError+.h"; sourceTree = "<group>"; };
+		EECBA12918D08F5B0047241B /* OBSError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSError.h; sourceTree = "<group>"; };
+		EECBA12A18D08F5B0047241B /* OBSError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSError.m; sourceTree = "<group>"; };
+		EECBA12B18D08F5B0047241B /* OBSObject+.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OBSObject+.h"; sourceTree = "<group>"; };
+		EECBA12C18D08F5B0047241B /* OBSObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSObject.h; sourceTree = "<group>"; };
+		EECBA12D18D08F5B0047241B /* OBSObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSObject.m; sourceTree = "<group>"; };
+		EECBA12E18D08F5B0047241B /* OBSSettings+.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OBSSettings+.h"; sourceTree = "<group>"; };
+		EECBA12F18D08F5B0047241B /* OBSSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSSettings.h; sourceTree = "<group>"; };
+		EECBA13018D08F5B0047241B /* OBSSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSSettings.m; sourceTree = "<group>"; };
+		EECBA13618D08F610047241B /* NSString+OpenBaaS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+OpenBaaS.h"; sourceTree = "<group>"; };
+		EECBA13718D08F610047241B /* NSString+OpenBaaS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+OpenBaaS.m"; sourceTree = "<group>"; };
+		EECBA13818D08F610047241B /* OBSEmailValidation+.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OBSEmailValidation+.h"; sourceTree = "<group>"; };
+		EECBA13918D08F610047241B /* OBSEmailValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSEmailValidation.h; sourceTree = "<group>"; };
+		EECBA13A18D08F610047241B /* OBSEmailValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSEmailValidation.m; sourceTree = "<group>"; };
+		EECBA13B18D08F610047241B /* OBSLocationCentre+.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OBSLocationCentre+.h"; sourceTree = "<group>"; };
+		EECBA13C18D08F610047241B /* OBSLocationCentre.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSLocationCentre.h; sourceTree = "<group>"; };
+		EECBA13D18D08F610047241B /* OBSLocationCentre.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSLocationCentre.m; sourceTree = "<group>"; };
+		EECBA13E18D08F610047241B /* OBSQuery+.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "OBSQuery+.h"; sourceTree = "<group>"; };
+		EECBA13F18D08F610047241B /* OBSQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSQuery.h; sourceTree = "<group>"; };
+		EECBA14018D08F610047241B /* OBSQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSQuery.m; sourceTree = "<group>"; };
+		EECBA14518D08F7D0047241B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		EECBA14718D08F830047241B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		EECBA14918D08F890047241B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		EECBA14F18D0C4780047241B /* OBSClientProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSClientProtocol.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		CE95FE8E1821236E00D390A3 /* Frameworks */ = {
+		EECBA0CF18D08CE10047241B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EEC7781718AD1BB500C79A9B /* SystemConfiguration.framework in Frameworks */,
-				CECDB951183293B100B9FF8B /* UIKit.framework in Frameworks */,
-				CECDB94F1832913400B9FF8B /* CoreLocation.framework in Frameworks */,
-				CE95FEA31821238E00D390A3 /* Foundation.framework in Frameworks */,
+				EECBA14A18D08F890047241B /* SystemConfiguration.framework in Frameworks */,
+				EECBA14818D08F830047241B /* CoreLocation.framework in Frameworks */,
+				EECBA14618D08F7D0047241B /* UIKit.framework in Frameworks */,
+				EECBA0D618D08CE10047241B /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		CE91C1831822542E00A82866 /* Public Headers */ = {
+		EECBA0C918D08CE10047241B = {
 			isa = PBXGroup;
 			children = (
-				CE91C18A182257CB00A82866 /* OBSAccount.h */,
-				CE95FEB01821380F00D390A3 /* OBSApplication.h */,
-				EEABB9A718BE5A230057E21D /* OBSChatRoom.h */,
-				CEA4A8091860C0C600CA482A /* OBSImageFile.h */,
-				CEA4A8011860BC3600CA482A /* OBSMedia.h */,
-				CE95FEBE182149DC00D390A3 /* OBSSession.h */,
-				CE3CBBA718295E87000C2F17 /* OBSUser.h */,
-				EE7476FB18A3E34A003C154C /* OBSUserState.h */,
-			);
-			name = "Public Headers";
-			sourceTree = "<group>";
-		};
-		CE91C1861822551700A82866 /* Public Headers */ = {
-			isa = PBXGroup;
-			children = (
-				CE93A136183BD9FD003E321E /* OBSCollectionPage.h */,
-				CE95FEBA182139BA00D390A3 /* OBSError.h */,
-				CEB182A0182425D300F7BF87 /* OBSObject.h */,
-				CE3CBBBA182A5665000C2F17 /* OBSSettings.h */,
-			);
-			name = "Public Headers";
-			sourceTree = "<group>";
-		};
-		CE91C1871822552200A82866 /* Public Headers */ = {
-			isa = PBXGroup;
-			children = (
-				CEF3E1AE18522B24001F999C /* NSString+OpenBaaS.h */,
-				CE95FEB51821394E00D390A3 /* OBSEmailValidation.h */,
-				CECDB94918328FF900B9FF8B /* OBSLocationCentre.h */,
-				CEA1F4C11860653C00D5D0B0 /* OBSQuery.h */,
-			);
-			name = "Public Headers";
-			sourceTree = "<group>";
-		};
-		CE95FE881821236E00D390A3 = {
-			isa = PBXGroup;
-			children = (
-				CE95FE961821236E00D390A3 /* OpenBaaS */,
-				CE95FE931821236E00D390A3 /* Frameworks */,
-				CE95FE921821236E00D390A3 /* Products */,
+				EECBA0D718D08CE10047241B /* OpenBaaS */,
+				EECBA0D418D08CE10047241B /* Frameworks */,
+				EECBA0D318D08CE10047241B /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		CE95FE921821236E00D390A3 /* Products */ = {
+		EECBA0D318D08CE10047241B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				CE95FE911821236E00D390A3 /* OpenBaaS.framework */,
+				EECBA0D218D08CE10047241B /* libOpenBaaS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		CE95FE931821236E00D390A3 /* Frameworks */ = {
+		EECBA0D418D08CE10047241B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				EEC7781618AD1BB500C79A9B /* SystemConfiguration.framework */,
-				CECDB950183293B100B9FF8B /* UIKit.framework */,
-				CECDB94E1832913400B9FF8B /* CoreLocation.framework */,
-				CE95FEA21821238E00D390A3 /* Foundation.framework */,
+				EECBA14918D08F890047241B /* SystemConfiguration.framework */,
+				EECBA14718D08F830047241B /* CoreLocation.framework */,
+				EECBA14518D08F7D0047241B /* UIKit.framework */,
+				EECBA0D518D08CE10047241B /* Foundation.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		CE95FE961821236E00D390A3 /* OpenBaaS */ = {
+		EECBA0D718D08CE10047241B /* OpenBaaS */ = {
 			isa = PBXGroup;
 			children = (
-				CE95FEB41821393900D390A3 /* Utilities */,
-				CE95FEB9182139A300D390A3 /* Common */,
-				CE95FEAF182137B800D390A3 /* Library */,
-				CE95FEAB182125AC00D390A3 /* OpenBaaS.h */,
-				CE19109C182287CF00342286 /* OBSClientProtocol.h */,
-				CE95FEC5182153A700D390A3 /* Tools */,
-				EEC7780D18ACEE9A00C79A9B /* Externals */,
-				CE95FE971821236E00D390A3 /* Supporting Files */,
+				EECBA13518D08F610047241B /* Utilities */,
+				EECBA12418D08F5B0047241B /* Common */,
+				EECBA10318D08F520047241B /* Library */,
+				EECBA0DA18D08CE10047241B /* OpenBaaS.h */,
+				EECBA14F18D0C4780047241B /* OBSClientProtocol.h */,
+				EECBA0FF18D08F400047241B /* Tools */,
+				EECBA0FB18D08F240047241B /* Externals */,
+				EECBA0D818D08CE10047241B /* Supporting Files */,
 			);
 			path = OpenBaaS;
 			sourceTree = "<group>";
 		};
-		CE95FE971821236E00D390A3 /* Supporting Files */ = {
+		EECBA0D818D08CE10047241B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				CE95FE981821236E00D390A3 /* OpenBaaS-Info.plist */,
-				CE95FE9C1821236E00D390A3 /* OpenBaaS-Prefix.pch */,
+				EECBA0D918D08CE10047241B /* OpenBaaS-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		CE95FEAF182137B800D390A3 /* Library */ = {
+		EECBA0FB18D08F240047241B /* Externals */ = {
 			isa = PBXGroup;
 			children = (
-				CE91C1831822542E00A82866 /* Public Headers */,
-				CE91C18E1822580100A82866 /* OBSAccount+.h */,
-				CE91C18B182257CB00A82866 /* OBSAccount.m */,
-				CE91C1841822547C00A82866 /* OBSApplication+.h */,
-				CE95FEB11821380F00D390A3 /* OBSApplication.m */,
-				EEABB9AB18BE5A660057E21D /* OBSChatRoom+.h */,
-				EEABB9A818BE5A230057E21D /* OBSChatRoom.m */,
-				CEA4A80D1860C0E800CA482A /* OBSImageFile+.h */,
-				CEA4A80A1860C0C600CA482A /* OBSImageFile.m */,
-				CEA4A8051860BC5300CA482A /* OBSMedia+.h */,
-				CEA4A8021860BC3600CA482A /* OBSMedia.m */,
-				CE91C185182254A800A82866 /* OBSSession+.h */,
-				CE95FEBF182149DC00D390A3 /* OBSSession.m */,
-				CE3CBBAB18295EB1000C2F17 /* OBSUser+.h */,
-				CE3CBBA818295E87000C2F17 /* OBSUser.m */,
-				EE7476FF18A3E441003C154C /* OBSUserState+.h */,
-				EE7476FC18A3E34A003C154C /* OBSUserState.m */,
-			);
-			path = Library;
-			sourceTree = "<group>";
-		};
-		CE95FEB41821393900D390A3 /* Utilities */ = {
-			isa = PBXGroup;
-			children = (
-				CE91C1871822552200A82866 /* Public Headers */,
-				CEF3E1AF18522B24001F999C /* NSString+OpenBaaS.m */,
-				CE91C1891822554700A82866 /* OBSEmailValidation+.h */,
-				CE95FEB61821394E00D390A3 /* OBSEmailValidation.m */,
-				CECDB94D1832902100B9FF8B /* OBSLocationCentre+.h */,
-				CECDB94A18328FF900B9FF8B /* OBSLocationCentre.m */,
-				CEA1F4C51860656300D5D0B0 /* OBSQuery+.h */,
-				CEA1F4C21860653C00D5D0B0 /* OBSQuery.m */,
-			);
-			path = Utilities;
-			sourceTree = "<group>";
-		};
-		CE95FEB9182139A300D390A3 /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				CE91C1861822551700A82866 /* Public Headers */,
-				CE93A13A183BDA13003E321E /* OBSCollectionPage+.h */,
-				CE93A137183BD9FD003E321E /* OBSCollectionPage.m */,
-				CE91C1881822553900A82866 /* OBSError+.h */,
-				CE95FEBB182139BA00D390A3 /* OBSError.m */,
-				CEB182A4182425F000F7BF87 /* OBSObject+.h */,
-				CEB182A1182425D300F7BF87 /* OBSObject.m */,
-				CE3CBBBE182A5686000C2F17 /* OBSSettings+.h */,
-				CE3CBBBB182A5665000C2F17 /* OBSSettings.m */,
-			);
-			path = Common;
-			sourceTree = "<group>";
-		};
-		CE95FEC5182153A700D390A3 /* Tools */ = {
-			isa = PBXGroup;
-			children = (
-				CE91C18F1822608700A82866 /* OBSConnection.h */,
-				CE91C1901822608700A82866 /* OBSConnection.m */,
-			);
-			path = Tools;
-			sourceTree = "<group>";
-		};
-		EEC7780D18ACEE9A00C79A9B /* Externals */ = {
-			isa = PBXGroup;
-			children = (
-				EEC7780E18ACEF3100C79A9B /* Reachability.h */,
-				EEC7780F18ACEF3100C79A9B /* Reachability.m */,
+				EECBA0FC18D08F240047241B /* Reachability.h */,
+				EECBA0FD18D08F240047241B /* Reachability.m */,
 			);
 			path = Externals;
 			sourceTree = "<group>";
 		};
+		EECBA0FF18D08F400047241B /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				EECBA10018D08F400047241B /* OBSConnection.h */,
+				EECBA10118D08F400047241B /* OBSConnection.m */,
+			);
+			path = Tools;
+			sourceTree = "<group>";
+		};
+		EECBA10318D08F520047241B /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				EECBA14E18D0900F0047241B /* Public */,
+				EECBA10418D08F520047241B /* OBSAccount+.h */,
+				EECBA10618D08F520047241B /* OBSAccount.m */,
+				EECBA10718D08F520047241B /* OBSApplication+.h */,
+				EECBA10918D08F520047241B /* OBSApplication.m */,
+				EECBA10A18D08F520047241B /* OBSChatRoom+.h */,
+				EECBA10C18D08F520047241B /* OBSChatRoom.m */,
+				EECBA10D18D08F520047241B /* OBSImageFile+.h */,
+				EECBA10F18D08F520047241B /* OBSImageFile.m */,
+				EECBA11018D08F520047241B /* OBSMedia+.h */,
+				EECBA11218D08F520047241B /* OBSMedia.m */,
+				EECBA11318D08F520047241B /* OBSSession+.h */,
+				EECBA11518D08F520047241B /* OBSSession.m */,
+				EECBA11618D08F520047241B /* OBSUser+.h */,
+				EECBA11818D08F520047241B /* OBSUser.m */,
+				EECBA11918D08F520047241B /* OBSUserState+.h */,
+				EECBA11B18D08F520047241B /* OBSUserState.m */,
+			);
+			path = Library;
+			sourceTree = "<group>";
+		};
+		EECBA12418D08F5B0047241B /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				EECBA14D18D08FFA0047241B /* Public */,
+				EECBA12518D08F5B0047241B /* OBSCollectionPage+.h */,
+				EECBA12718D08F5B0047241B /* OBSCollectionPage.m */,
+				EECBA12818D08F5B0047241B /* OBSError+.h */,
+				EECBA12A18D08F5B0047241B /* OBSError.m */,
+				EECBA12B18D08F5B0047241B /* OBSObject+.h */,
+				EECBA12D18D08F5B0047241B /* OBSObject.m */,
+				EECBA12E18D08F5B0047241B /* OBSSettings+.h */,
+				EECBA13018D08F5B0047241B /* OBSSettings.m */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		EECBA13518D08F610047241B /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				EECBA14C18D08FE70047241B /* Public */,
+				EECBA13718D08F610047241B /* NSString+OpenBaaS.m */,
+				EECBA13818D08F610047241B /* OBSEmailValidation+.h */,
+				EECBA13A18D08F610047241B /* OBSEmailValidation.m */,
+				EECBA13B18D08F610047241B /* OBSLocationCentre+.h */,
+				EECBA13D18D08F610047241B /* OBSLocationCentre.m */,
+				EECBA13E18D08F610047241B /* OBSQuery+.h */,
+				EECBA14018D08F610047241B /* OBSQuery.m */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		EECBA14C18D08FE70047241B /* Public */ = {
+			isa = PBXGroup;
+			children = (
+				EECBA13618D08F610047241B /* NSString+OpenBaaS.h */,
+				EECBA13918D08F610047241B /* OBSEmailValidation.h */,
+				EECBA13C18D08F610047241B /* OBSLocationCentre.h */,
+				EECBA13F18D08F610047241B /* OBSQuery.h */,
+			);
+			name = Public;
+			sourceTree = "<group>";
+		};
+		EECBA14D18D08FFA0047241B /* Public */ = {
+			isa = PBXGroup;
+			children = (
+				EECBA12618D08F5B0047241B /* OBSCollectionPage.h */,
+				EECBA12918D08F5B0047241B /* OBSError.h */,
+				EECBA12C18D08F5B0047241B /* OBSObject.h */,
+				EECBA12F18D08F5B0047241B /* OBSSettings.h */,
+			);
+			name = Public;
+			sourceTree = "<group>";
+		};
+		EECBA14E18D0900F0047241B /* Public */ = {
+			isa = PBXGroup;
+			children = (
+				EECBA10518D08F520047241B /* OBSAccount.h */,
+				EECBA10818D08F520047241B /* OBSApplication.h */,
+				EECBA10B18D08F520047241B /* OBSChatRoom.h */,
+				EECBA10E18D08F520047241B /* OBSImageFile.h */,
+				EECBA11118D08F520047241B /* OBSMedia.h */,
+				EECBA11418D08F520047241B /* OBSSession.h */,
+				EECBA11718D08F520047241B /* OBSUser.h */,
+				EECBA11A18D08F520047241B /* OBSUserState.h */,
+			);
+			name = Public;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
-/* Begin PBXHeadersBuildPhase section */
-		CE95FEA4182124CF00D390A3 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				CE95FEAD182125AC00D390A3 /* OpenBaaS.h in Headers */,
-				CE62C75A1823D70200460A2D /* OBSClientProtocol.h in Headers */,
-				CEF3E1B018522B24001F999C /* NSString+OpenBaaS.h in Headers */,
-				CE95FEB71821394E00D390A3 /* OBSEmailValidation.h in Headers */,
-				CECDB94B18328FF900B9FF8B /* OBSLocationCentre.h in Headers */,
-				CEA1F4C31860653C00D5D0B0 /* OBSQuery.h in Headers */,
-				CE93A138183BD9FD003E321E /* OBSCollectionPage.h in Headers */,
-				CE95FEBC182139BA00D390A3 /* OBSError.h in Headers */,
-				CEB182A2182425D300F7BF87 /* OBSObject.h in Headers */,
-				CE3CBBBC182A5665000C2F17 /* OBSSettings.h in Headers */,
-				CE91C18C182257CB00A82866 /* OBSAccount.h in Headers */,
-				CE95FEB21821380F00D390A3 /* OBSApplication.h in Headers */,
-				EEABB9A918BE5A230057E21D /* OBSChatRoom.h in Headers */,
-				CEA4A80B1860C0C600CA482A /* OBSImageFile.h in Headers */,
-				EEC7781018ACEF3100C79A9B /* Reachability.h in Headers */,
-				CEA4A8031860BC3600CA482A /* OBSMedia.h in Headers */,
-				CEB182B718242D4900F7BF87 /* OBSSession.h in Headers */,
-				CE3CBBA918295E87000C2F17 /* OBSUser.h in Headers */,
-				EE7476FD18A3E34A003C154C /* OBSUserState.h in Headers */,
-				CEB182B618242D3B00F7BF87 /* OBSConnection.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXHeadersBuildPhase section */
-
 /* Begin PBXNativeTarget section */
-		CE95FE901821236E00D390A3 /* OpenBaaS */ = {
+		EECBA0D118D08CE10047241B /* OpenBaaS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CE95FE9F1821236E00D390A3 /* Build configuration list for PBXNativeTarget "OpenBaaS" */;
+			buildConfigurationList = EECBA0F518D08CE10047241B /* Build configuration list for PBXNativeTarget "OpenBaaS" */;
 			buildPhases = (
-				CE95FE8D1821236E00D390A3 /* Sources */,
-				CE95FE8E1821236E00D390A3 /* Frameworks */,
-				CE95FE8F1821236E00D390A3 /* Resources */,
-				CE95FEA4182124CF00D390A3 /* Headers */,
+				EECBA0CE18D08CE10047241B /* Sources */,
+				EECBA0CF18D08CE10047241B /* Frameworks */,
+				EECBA0D018D08CE10047241B /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -355,48 +348,38 @@
 			);
 			name = OpenBaaS;
 			productName = OpenBaaS;
-			productReference = CE95FE911821236E00D390A3 /* OpenBaaS.framework */;
-			productType = "com.apple.product-type.bundle";
+			productReference = EECBA0D218D08CE10047241B /* libOpenBaaS.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		CE95FE891821236E00D390A3 /* Project object */ = {
+		EECBA0CA18D08CE10047241B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
-				ORGANIZATIONNAME = Infosistema;
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = "Tiago Rodrigues";
 			};
-			buildConfigurationList = CE95FE8C1821236E00D390A3 /* Build configuration list for PBXProject "OpenBaaS" */;
+			buildConfigurationList = EECBA0CD18D08CE10047241B /* Build configuration list for PBXProject "OpenBaaS" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = CE95FE881821236E00D390A3;
-			productRefGroup = CE95FE921821236E00D390A3 /* Products */;
+			mainGroup = EECBA0C918D08CE10047241B;
+			productRefGroup = EECBA0D318D08CE10047241B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				CE95FE901821236E00D390A3 /* OpenBaaS */,
-				CE95FEA5182124F200D390A3 /* OpenBaaS.framework */,
+				EECBA0D118D08CE10047241B /* OpenBaaS */,
+				EECBA16118D0C6750047241B /* OpenBaaS-libCocoa */,
 			);
 		};
 /* End PBXProject section */
 
-/* Begin PBXResourcesBuildPhase section */
-		CE95FE8F1821236E00D390A3 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
-
 /* Begin PBXShellScriptBuildPhase section */
-		CE95FEA91821250000D390A3 /* ShellScript */ = {
+		EECBA16618D0C6B80047241B /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -407,71 +390,46 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "xcodebuild clean -target ${PROJECT_NAME} -sdk iphoneos\nxcodebuild clean -target ${PROJECT_NAME} -sdk iphonesimulator";
-		};
-		CE95FEAA1821250500D390A3 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "xcodebuild -configuration ${CONFIGURATION} -target ${PROJECT_NAME} -sdk iphoneos -SYMROOT=${SYMROOT} -OBJROOT=${OBJROOT}\n\nxcodebuild -configuration ${CONFIGURATION} -target ${PROJECT_NAME} -sdk iphonesimulator -SYMROOT=${SYMROOT} -OBJROOT=${OBJROOT}\n\nINSTALL_DIR=${SRCROOT}/${TARGET_NAME}\nBUILD_DIR=${SRCROOT}/build\n\n\nDEVICE_DIR=${BUILD_DIR}/${CONFIGURATION}-iphoneos/${TARGET_NAME}\nSIMULATOR_DIR=${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${TARGET_NAME}\n\n# Create and renews the final product folder.\n\nrm -rf \"${INSTALL_DIR}\"\n\nmkdir -p \"${INSTALL_DIR}\"\n\nmkdir -p \"${INSTALL_DIR}/Versions/A/Headers\"\n\nxcrun -sdk iphoneos lipo -create ${SIMULATOR_DIR}/${PROJECT_NAME} ${DEVICE_DIR}/${PROJECT_NAME} -o ${INSTALL_DIR}/Versions/A/${PROJECT_NAME}\n\n# Copy the header files to the final product folder.\ncp -r \"${SIMULATOR_DIR}/Headers/\" \"${INSTALL_DIR}/Versions/A/Headers/\"\n\nmkdir -p \"${INSTALL_DIR}/Versions/A/Resources\"\n\ncp -r \"${DEVICE_DIR}/\" \"${INSTALL_DIR}/Versions/A/Resources/\"\n\n#create relative symbolic link.\ncd ${INSTALL_DIR}\n\n#link\nln -s A Versions/Current\nln -s Versions/A/${PROJECT_NAME} ${PROJECT_NAME}\nln -s Versions/A/Resources Resources\nln -s Versions/A/Headers Headers";
-		};
-		CECDB948183100B900B9FF8B /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#Generate documentation if in release mode\n/usr/bin/appledoc \\\n--project-name ${PRODUCT_NAME} \\\n--project-company \"Infosistema\" \\\n--company-id \"com.infosistema\" \\\n--output docs/${CONFIGURATION}/${PRODUCT_NAME} \\\n--keep-undocumented-objects \\\n--keep-undocumented-members \\\n--keep-intermediate-files \\\n--no-install-docset \\\n--no-repeat-first-par \\\n--no-warn-invalid-crossref \\\n--exit-threshold 2 \\\n${PROJECT_DIR}/${PRODUCT_NAME}";
+			shellScript = "# define output folder environment variable\nUNIVERSAL_OUTPUTFOLDER=${BUILD_DIR}/${CONFIGURATION}-universal\nINSTALL_DIR=${SRCROOT}/${TARGET_NAME}\n\n# Step 1. Build Device and Simulator versions\nxcodebuild -target OpenBaaS ONLY_ACTIVE_ARCH=NO -configuration ${CONFIGURATION} -sdk iphoneos  BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\"\nxcodebuild -target OpenBaaS -configuration ${CONFIGURATION} -sdk iphonesimulator -arch i386 BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\"\n\n# make sure the output directory exists\nmkdir -p \"${UNIVERSAL_OUTPUTFOLDER}\"\n\n# Step 2. Create universal binary file using lipo\nlipo -create -output \"${UNIVERSAL_OUTPUTFOLDER}/lib${PROJECT_NAME}.a\" \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/lib${PROJECT_NAME}.a\" \"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/lib${PROJECT_NAME}.a\"\n\n# Last touch. copy the header files. Just for convenience\ncp -R \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/include\" \"${UNIVERSAL_OUTPUTFOLDER}/\"\nrm -rf \"${INSTALL_DIR}\"\nmkdir -p \"${INSTALL_DIR}\"\ncp -r \"${UNIVERSAL_OUTPUTFOLDER}/\" \"${INSTALL_DIR}/\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		CE95FE8D1821236E00D390A3 /* Sources */ = {
+		EECBA0CE18D08CE10047241B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CECDB94C18328FF900B9FF8B /* OBSLocationCentre.m in Sources */,
-				CE95FEC1182149DC00D390A3 /* OBSSession.m in Sources */,
-				CE91C1921822608700A82866 /* OBSConnection.m in Sources */,
-				CEA4A8041860BC3600CA482A /* OBSMedia.m in Sources */,
-				CE95FEBD182139BA00D390A3 /* OBSError.m in Sources */,
-				CE95FEB81821394E00D390A3 /* OBSEmailValidation.m in Sources */,
-				CE3CBBBD182A5665000C2F17 /* OBSSettings.m in Sources */,
-				CEF3E1B118522B24001F999C /* NSString+OpenBaaS.m in Sources */,
-				CE93A139183BD9FD003E321E /* OBSCollectionPage.m in Sources */,
-				CEB182A3182425D300F7BF87 /* OBSObject.m in Sources */,
-				CE91C18D182257CB00A82866 /* OBSAccount.m in Sources */,
-				CEA4A80C1860C0C600CA482A /* OBSImageFile.m in Sources */,
-				CEA1F4C41860653C00D5D0B0 /* OBSQuery.m in Sources */,
-				EE7476FE18A3E34A003C154C /* OBSUserState.m in Sources */,
-				CE95FEB31821380F00D390A3 /* OBSApplication.m in Sources */,
-				CE3CBBAA18295E87000C2F17 /* OBSUser.m in Sources */,
-				EEC7781118ACEF3100C79A9B /* Reachability.m in Sources */,
-				EEABB9AA18BE5A230057E21D /* OBSChatRoom.m in Sources */,
+				EECBA14118D08F610047241B /* NSString+OpenBaaS.m in Sources */,
+				EECBA10218D08F400047241B /* OBSConnection.m in Sources */,
+				EECBA12318D08F520047241B /* OBSUserState.m in Sources */,
+				EECBA14418D08F610047241B /* OBSQuery.m in Sources */,
+				EECBA11E18D08F520047241B /* OBSChatRoom.m in Sources */,
+				EECBA13218D08F5B0047241B /* OBSError.m in Sources */,
+				EECBA11F18D08F520047241B /* OBSImageFile.m in Sources */,
+				EECBA14318D08F610047241B /* OBSLocationCentre.m in Sources */,
+				EECBA14218D08F610047241B /* OBSEmailValidation.m in Sources */,
+				EECBA12218D08F520047241B /* OBSUser.m in Sources */,
+				EECBA12018D08F520047241B /* OBSMedia.m in Sources */,
+				EECBA13318D08F5B0047241B /* OBSObject.m in Sources */,
+				EECBA13118D08F5B0047241B /* OBSCollectionPage.m in Sources */,
+				EECBA13418D08F5B0047241B /* OBSSettings.m in Sources */,
+				EECBA11C18D08F520047241B /* OBSAccount.m in Sources */,
+				EECBA0FE18D08F240047241B /* Reachability.m in Sources */,
+				EECBA11D18D08F520047241B /* OBSApplication.m in Sources */,
+				EECBA12118D08F520047241B /* OBSSession.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		CE95FE9D1821236E00D390A3 /* Debug */ = {
+		EECBA0F318D08CE10047241B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -484,7 +442,6 @@
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -494,21 +451,22 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx;
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
-		CE95FE9E1821236E00D390A3 /* Release */ = {
+		EECBA0F418D08CE10047241B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -519,72 +477,52 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				SDKROOT = macosx;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
-		CE95FEA01821236E00D390A3 /* Debug */ = {
+		EECBA0F618D08CE10047241B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = YES;
-				DEAD_CODE_STRIPPING = NO;
+				DSTROOT = /tmp/OpenBaaS.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OpenBaaS/OpenBaaS-Prefix.pch";
-				INFOPLIST_FILE = "OpenBaaS/OpenBaaS-Info.plist";
-				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				LINK_WITH_STANDARD_LIBRARIES = NO;
-				MACH_O_TYPE = mh_object;
-				MACOSX_DEPLOYMENT_TARGET = "";
-				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				WRAPPER_EXTENSION = framework;
+				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
-		CE95FEA11821236E00D390A3 /* Release */ = {
+		EECBA0F718D08CE10047241B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = YES;
-				DEAD_CODE_STRIPPING = NO;
+				DSTROOT = /tmp/OpenBaaS.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OpenBaaS/OpenBaaS-Prefix.pch";
-				INFOPLIST_FILE = "OpenBaaS/OpenBaaS-Info.plist";
-				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				LINK_WITH_STANDARD_LIBRARIES = NO;
-				MACH_O_TYPE = mh_object;
-				MACOSX_DEPLOYMENT_TARGET = "";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				WRAPPER_EXTENSION = framework;
+				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
-		CE95FEA7182124F200D390A3 /* Debug */ = {
+		EECBA16318D0C6750047241B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
 		};
-		CE95FEA8182124F200D390A3 /* Release */ = {
+		EECBA16418D0C6750047241B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -594,34 +532,34 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		CE95FE8C1821236E00D390A3 /* Build configuration list for PBXProject "OpenBaaS" */ = {
+		EECBA0CD18D08CE10047241B /* Build configuration list for PBXProject "OpenBaaS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				CE95FE9D1821236E00D390A3 /* Debug */,
-				CE95FE9E1821236E00D390A3 /* Release */,
+				EECBA0F318D08CE10047241B /* Debug */,
+				EECBA0F418D08CE10047241B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CE95FE9F1821236E00D390A3 /* Build configuration list for PBXNativeTarget "OpenBaaS" */ = {
+		EECBA0F518D08CE10047241B /* Build configuration list for PBXNativeTarget "OpenBaaS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				CE95FEA01821236E00D390A3 /* Debug */,
-				CE95FEA11821236E00D390A3 /* Release */,
+				EECBA0F618D08CE10047241B /* Debug */,
+				EECBA0F718D08CE10047241B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CE95FEA6182124F200D390A3 /* Build configuration list for PBXAggregateTarget "OpenBaaS.framework" */ = {
+		EECBA16218D0C6750047241B /* Build configuration list for PBXAggregateTarget "OpenBaaS-libCocoa" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				CE95FEA7182124F200D390A3 /* Debug */,
-				CE95FEA8182124F200D390A3 /* Release */,
+				EECBA16318D0C6750047241B /* Debug */,
+				EECBA16418D0C6750047241B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = CE95FE891821236E00D390A3 /* Project object */;
+	rootObject = EECBA0CA18D08CE10047241B /* Project object */;
 }

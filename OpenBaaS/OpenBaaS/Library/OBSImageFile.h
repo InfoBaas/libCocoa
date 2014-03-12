@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Infosistema. All rights reserved.
 //
 
-#import <OpenBaaS/OpenBaaS.h>
+#import <Foundation/Foundation.h>
 
 #if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>

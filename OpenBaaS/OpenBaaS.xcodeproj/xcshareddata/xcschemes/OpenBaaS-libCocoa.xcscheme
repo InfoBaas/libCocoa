@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0500"
+   LastUpgradeVersion = "0510"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CE95FEA5182124F200D390A3"
-               BuildableName = "OpenBaaS.framework"
-               BlueprintName = "OpenBaaS.framework"
+               BlueprintIdentifier = "EECBA16118D0C6750047241B"
+               BuildableName = "OpenBaaS-libCocoa"
+               BlueprintName = "OpenBaaS-libCocoa"
                ReferencedContainer = "container:OpenBaaS.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

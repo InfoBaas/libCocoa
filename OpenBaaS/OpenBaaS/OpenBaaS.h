@@ -2,8 +2,8 @@
 //  OpenBaaS.h
 //  OpenBaaS
 //
-//  Created by Tiago Rodrigues on 30/10/2013.
-//  Copyright (c) 2013 Infosistema. All rights reserved.
+//  Created by Tiago Rodrigues on 12/03/14.
+//  Copyright (c) 2014 Tiago Rodrigues. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

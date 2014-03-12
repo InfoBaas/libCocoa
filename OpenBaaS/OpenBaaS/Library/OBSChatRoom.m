@@ -8,6 +8,8 @@
 
 #import "OBSChatRoom+.h"
 
+#import "OBSUser+.h"
+
 #import "OBSConnection.h"
 
 static NSString *const _OBSChatRoom_OBSObject = @"com.openbaas.chat-room.-";

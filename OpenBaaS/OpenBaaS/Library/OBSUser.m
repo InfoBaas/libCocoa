@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Infosistema. All rights reserved.
 //
 
+#import "OBSApplication+.h"
 #import "OBSUser+.h"
 
 #import "OBSConnection.h"
