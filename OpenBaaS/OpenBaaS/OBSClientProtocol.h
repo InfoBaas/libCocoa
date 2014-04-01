@@ -8,9 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
+#import "OBSRealTimeChannel.h"
+
 @protocol OBSClientProtocol <NSObject>
 
 - (NSString *)appId;
 - (NSString *)appKey;
+
+@optional
+
+- (void)realTimeChannelOpened:(OBSRealTimeChannel *)channel;
+- (void)realTimeChannel:(OBSRealTimeChannel *)channel closedWithError:(NSError *)error;
+
+- (void)realTimeChannelWasPinged:(OBSRealTimeChannel *)channel;
+- (void)realTimeChannelWasPonged:(OBSRealTimeChannel *)channel;
 
 @end

@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		EEB0861718EAF9F2003927DE /* OBSRealTimeChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = EEB0861618EAF9F2003927DE /* OBSRealTimeChannel.m */; };
 		EECBA0D618D08CE10047241B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EECBA0D518D08CE10047241B /* Foundation.framework */; };
 		EECBA0DB18D08CE10047241B /* OpenBaaS.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = EECBA0DA18D08CE10047241B /* OpenBaaS.h */; };
 		EECBA0FE18D08F240047241B /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = EECBA0FD18D08F240047241B /* Reachability.m */; };
@@ -94,6 +95,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		EEB0861518EAF9F2003927DE /* OBSRealTimeChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSRealTimeChannel.h; sourceTree = "<group>"; };
+		EEB0861618EAF9F2003927DE /* OBSRealTimeChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSRealTimeChannel.m; sourceTree = "<group>"; };
+		EEB0861818EAFA1E003927DE /* OBSRealTimeChannel+.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OBSRealTimeChannel+.h"; sourceTree = "<group>"; };
 		EECBA0D218D08CE10047241B /* libOpenBaaS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libOpenBaaS.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		EECBA0D518D08CE10047241B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		EECBA0D918D08CE10047241B /* OpenBaaS-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OpenBaaS-Prefix.pch"; sourceTree = "<group>"; };
@@ -290,6 +294,8 @@
 				EECBA13D18D08F610047241B /* OBSLocationCentre.m */,
 				EECBA13E18D08F610047241B /* OBSQuery+.h */,
 				EECBA14018D08F610047241B /* OBSQuery.m */,
+				EEB0861818EAFA1E003927DE /* OBSRealTimeChannel+.h */,
+				EEB0861618EAF9F2003927DE /* OBSRealTimeChannel.m */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -301,6 +307,7 @@
 				EECBA13918D08F610047241B /* OBSEmailValidation.h */,
 				EECBA13C18D08F610047241B /* OBSLocationCentre.h */,
 				EECBA13F18D08F610047241B /* OBSQuery.h */,
+				EEB0861518EAF9F2003927DE /* OBSRealTimeChannel.h */,
 			);
 			name = Public;
 			sourceTree = "<group>";
@@ -400,6 +407,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EECBA14118D08F610047241B /* NSString+OpenBaaS.m in Sources */,
+				EEB0861718EAF9F2003927DE /* OBSRealTimeChannel.m in Sources */,
 				EECBA10218D08F400047241B /* OBSConnection.m in Sources */,
 				EECBA12318D08F520047241B /* OBSUserState.m in Sources */,
 				EECBA14418D08F610047241B /* OBSQuery.m in Sources */,
