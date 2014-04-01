@@ -22,6 +22,7 @@
 
 /* Begin PBXBuildFile section */
 		EEB0861718EAF9F2003927DE /* OBSRealTimeChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = EEB0861618EAF9F2003927DE /* OBSRealTimeChannel.m */; };
+		EEB0863018EB1BD7003927DE /* OBSRealTimeChannel.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = EEB0861518EAF9F2003927DE /* OBSRealTimeChannel.h */; };
 		EECBA0D618D08CE10047241B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EECBA0D518D08CE10047241B /* Foundation.framework */; };
 		EECBA0DB18D08CE10047241B /* OpenBaaS.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = EECBA0DA18D08CE10047241B /* OpenBaaS.h */; };
 		EECBA0FE18D08F240047241B /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = EECBA0FD18D08F240047241B /* Reachability.m */; };
@@ -77,6 +78,7 @@
 				EECBA15118D0C4C50047241B /* OBSEmailValidation.h in CopyFiles */,
 				EECBA15218D0C4C90047241B /* OBSLocationCentre.h in CopyFiles */,
 				EECBA15318D0C4CC0047241B /* OBSQuery.h in CopyFiles */,
+				EEB0863018EB1BD7003927DE /* OBSRealTimeChannel.h in CopyFiles */,
 				EECBA15418D0C4CF0047241B /* OBSCollectionPage.h in CopyFiles */,
 				EECBA15518D0C4D20047241B /* OBSError.h in CopyFiles */,
 				EECBA15618D0C4D40047241B /* OBSObject.h in CopyFiles */,

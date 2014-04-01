@@ -18,6 +18,7 @@ extern void OBSPushLog (NSString *appId, NSString *appKey);
 #import "OBSEmailValidation.h"
 #import "OBSLocationCentre.h"
 #import "OBSQuery.h"
+#import "OBSRealTimeChannel.h"
 
 #pragma mark - Common
 
