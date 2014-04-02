@@ -8,6 +8,7 @@
 
 #import "OBSRealTimeChannel+.h"
 #import "OBSConnection.h"
+#import "OBSChatRoom+.h"
 
 static NSString *const _OBSRealTimeChannel_SocketMessageUUID = @"uuid";
 static NSString *const _OBSRealTimeChannel_SocketMessageType = @"type";
@@ -243,23 +244,29 @@ static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
             [self.client realTimeChannelWasPonged:self];
         }
     } else if ([type isEqualToString:_OBSRealTimeChannel_TypeChatMessage]) {
-        if ([self.client respondsToSelector:@selector(realTimeChannel:receivedMessageWithChatId:senderId:text:image:)]) {
+        if ([self.client respondsToSelector:@selector(realTimeChannel:receivedMessage:completionHandler:)]) {
             NSDictionary *message = data[_OBSRealTimeChannel_SocketMessageData];
-            NSString *chatId = message[_OBSRealTimeChannel_DataKey_ChatRoomId];
-            NSString *senderId = message[_OBSRealTimeChannel_DataKey_SenderId];
-            NSString *text = message[_OBSRealTimeChannel_DataKey_Text];
-            NSString *image64 = message[_OBSRealTimeChannel_DataKey_ImageBase64];
-            UIImage *image = nil;
-            if (image64 && [self.client respondsToSelector:@selector(realTimeChannel:receivedMessageWithChatId:senderId:text:image:)]) {
-                image = [UIImage imageWithData:[[NSData alloc] initWithBase64EncodedString:image64 options:kNilOptions]];
-            }
+            
+            OBSChatRoom *room = [[OBSChatRoom alloc] init];
+            room.chatRoomId = message[_OBSRealTimeChannel_DataKey_ChatRoomId];
+            room.unreadMessages = 0;
+            
+            OBSChatMessage *chat = [[OBSChatMessage alloc] init];
+            chat.chatRoom = room;
+            chat.chatMessageId = nil;
+            chat.senderId = message[_OBSRealTimeChannel_DataKey_SenderId];
+            chat.date = nil;
+            chat.unread = NO;
+            chat.text = message[_OBSRealTimeChannel_DataKey_Text];
+            chat.imageId = nil;
+            
             if (uuid) {
-                [self.client realTimeChannel:self receivedMessageWithChatId:chatId senderId:senderId text:text image:image completionHandler:^(BOOL isOK) {
+                [self.client realTimeChannel:self receivedMessage:chat completionHandler:^(BOOL isOK) {
                     NSDictionary *ok = @{_OBSRealTimeChannel_SocketMessageType: isOK ? _OBSRealTimeChannel_TypeOK : _OBSRealTimeChannel_TypeNOK};
                     [self _queueData:ok withMessageTarget:nil originalMessage:nil];
                 }];
             } else {
-                [self.client realTimeChannel:self receivedMessageWithChatId:chatId senderId:senderId text:text image:image completionHandler:nil];
+                [self.client realTimeChannel:self receivedMessage:chat completionHandler:nil];
             }
         }
         return;

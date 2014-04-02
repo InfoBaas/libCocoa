@@ -10,6 +10,8 @@
 
 #import "OBSRealTimeChannel.h"
 
+@class OBSChatMessage;
+
 @protocol OBSClientProtocol <NSObject>
 
 - (NSString *)appId;
@@ -23,6 +25,6 @@
 - (void)realTimeChannelWasPinged:(OBSRealTimeChannel *)channel;
 - (void)realTimeChannelWasPonged:(OBSRealTimeChannel *)channel;
 
-- (void)realTimeChannel:(OBSRealTimeChannel *)channel receivedMessageWithChatId:(NSString *)chatId senderId:(NSString *)senderId text:(NSString *)text image:(UIImage *)image completionHandler:(void(^)(BOOL ok))handler;
+- (void)realTimeChannel:(OBSRealTimeChannel *)channel receivedMessage:(OBSChatMessage *)message completionHandler:(void(^)(BOOL ok))handler;
 
 @end
