@@ -31,6 +31,8 @@
 
 #pragma mark Chat
 
+- (NSDictionary *)target:(id)target openChatWithUserIds:(NSArray *)userIds;
+
 - (NSDictionary *)target:(id)target sendsMessageWithChatId:(NSString *)chatId senderId:(NSString *)senderId text:(NSString *)text;
 - (NSDictionary *)target:(id)target sendsMessageWithChatId:(NSString *)chatId senderId:(NSString *)senderId text:(NSString *)text image:(UIImage *)image;
 
