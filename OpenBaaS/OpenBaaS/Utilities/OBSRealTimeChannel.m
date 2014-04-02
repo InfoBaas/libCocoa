@@ -243,7 +243,6 @@ static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
             [self.client realTimeChannelWasPonged:self];
         }
     } else if ([type isEqualToString:_OBSRealTimeChannel_TypeChatMessage]) {
-        BOOL isOK = YES;
         if ([self.client respondsToSelector:@selector(realTimeChannel:receivedMessageWithChatId:senderId:text:image:)]) {
             NSDictionary *message = data[_OBSRealTimeChannel_SocketMessageData];
             NSString *chatId = message[_OBSRealTimeChannel_DataKey_ChatRoomId];
@@ -254,11 +253,14 @@ static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
             if (image64 && [self.client respondsToSelector:@selector(realTimeChannel:receivedMessageWithChatId:senderId:text:image:)]) {
                 image = [UIImage imageWithData:[[NSData alloc] initWithBase64EncodedString:image64 options:kNilOptions]];
             }
-            isOK = [self.client realTimeChannel:self receivedMessageWithChatId:chatId senderId:senderId text:text image:image];
-        }
-        if (uuid) {
-            NSDictionary *ok = @{_OBSRealTimeChannel_SocketMessageType: isOK ? _OBSRealTimeChannel_TypeOK : _OBSRealTimeChannel_TypeNOK};
-            [self _queueData:ok withMessageTarget:nil originalMessage:nil];
+            if (uuid) {
+                [self.client realTimeChannel:self receivedMessageWithChatId:chatId senderId:senderId text:text image:image completionHandler:^(BOOL isOK) {
+                    NSDictionary *ok = @{_OBSRealTimeChannel_SocketMessageType: isOK ? _OBSRealTimeChannel_TypeOK : _OBSRealTimeChannel_TypeNOK};
+                    [self _queueData:ok withMessageTarget:nil originalMessage:nil];
+                }];
+            } else {
+                [self.client realTimeChannel:self receivedMessageWithChatId:chatId senderId:senderId text:text image:image completionHandler:nil];
+            }
         }
         return;
     }

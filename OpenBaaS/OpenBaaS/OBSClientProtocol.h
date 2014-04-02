@@ -23,6 +23,6 @@
 - (void)realTimeChannelWasPinged:(OBSRealTimeChannel *)channel;
 - (void)realTimeChannelWasPonged:(OBSRealTimeChannel *)channel;
 
-- (BOOL)realTimeChannel:(OBSRealTimeChannel *)channel receivedMessageWithChatId:(NSString *)chatId senderId:(NSString *)senderId text:(NSString *)text image:(UIImage *)image;
+- (void)realTimeChannel:(OBSRealTimeChannel *)channel receivedMessageWithChatId:(NSString *)chatId senderId:(NSString *)senderId text:(NSString *)text image:(UIImage *)image completionHandler:(void(^)(BOOL ok))handler;
 
 @end
