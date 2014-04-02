@@ -15,6 +15,7 @@
 static NSString *const _OBSSession_OBSObject = @"com.openbaas.session.-";
 static NSString *const _OBSSession_Token = @"com.openbaas.session.token";
 static NSString *const _OBSSession_User = @"com.openbaas.session.user";
+static NSString *const _OBSSession_Port = @"com.openbaas.session.port";
 
 @implementation OBSSession
 
@@ -37,6 +38,9 @@ static NSString *const _OBSSession_User = @"com.openbaas.session.user";
     if (!sessionToken || [sessionToken isEqual:[NSNull null]]) {
         return nil; // JSON does not contain a session token.
     }
+    
+    // Socket port.
+    NSNumber *port = data[@"socketPort"];
 
     // Create user.
     OBSUser *user = [OBSUser userFromDataJSON:data andMetadataJSON:metadata withClient:client];
@@ -50,6 +54,9 @@ static NSString *const _OBSSession_User = @"com.openbaas.session.user";
     // Set proprieties.
     session.token = sessionToken;
     session.user = user;
+    if (port) {
+        session.socketPort = [port unsignedIntValue];
+    }
 
     return session;
 }
@@ -122,6 +129,11 @@ static NSString *const _OBSSession_User = @"com.openbaas.session.user";
     if (self) {
         _token = dictionaryRepresentation[_OBSSession_Token];
         _user = [OBSUser newWithDictionaryRepresentation:dictionaryRepresentation[_OBSSession_User] andClient:client];
+        
+        NSNumber *port = dictionaryRepresentation[_OBSSession_Port];
+        if (port) {
+            _socketPort = [port unsignedIntValue];
+        }
     }
     return self;
 }
@@ -130,7 +142,8 @@ static NSString *const _OBSSession_User = @"com.openbaas.session.user";
 {
     return @{_OBSSession_OBSObject: [super dictionaryRepresentation],
              _OBSSession_Token: _token,
-             _OBSSession_User: [_user dictionaryRepresentation]};
+             _OBSSession_User: [_user dictionaryRepresentation],
+             _OBSSession_Port: [NSNumber numberWithUnsignedInt:self.socketPort]};
 }
 
 @end

@@ -18,6 +18,8 @@
  */
 @property (nonatomic, strong, readonly) OBSUser *user;
 
+@property (nonatomic, assign, readonly) UInt32 socketPort;
+
 /**
  *  Sets the receiver as the device's current session.
  *
