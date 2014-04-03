@@ -8,8 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "OBSRealTimeChannel.h"
-
+@class OBSRealTimeChannel;
 @class OBSChatMessage;
 
 @protocol OBSClientProtocol <NSObject>

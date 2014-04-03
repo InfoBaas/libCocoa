@@ -9,9 +9,13 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+#import "OBSClientProtocol.h"
+
 @interface OBSRealTimeChannel : NSObject
 
 + (OBSRealTimeChannel *)defaultChannel;
+
+- (void)setClient:(id<OBSClientProtocol>)client;
 
 #pragma mark Connection
 
@@ -22,7 +26,7 @@
 
 #pragma mark Authenticate
 
-- (void)authenticateWithTarget:(id)target;
+- (void)authenticateWithCompletionHandler:(void(^)(BOOL ok, id result, NSString *errorMessage))handler;
 
 #pragma mark Ping
 
@@ -31,22 +35,9 @@
 
 #pragma mark Chat
 
-- (NSDictionary *)target:(id)target openChatWithUserIds:(NSArray *)userIds;
+- (void)openChatWithUserIds:(NSArray *)userIds withCompletionHandler:(void(^)(BOOL ok, id result, NSString *errorMessage))handler;
 
-- (NSDictionary *)target:(id)target sendsMessageWithChatId:(NSString *)chatId senderId:(NSString *)senderId text:(NSString *)text;
-- (NSDictionary *)target:(id)target sendsMessageWithChatId:(NSString *)chatId senderId:(NSString *)senderId text:(NSString *)text image:(UIImage *)image;
+- (void)sendMessageWithChatId:(NSString *)chatId senderId:(NSString *)senderId text:(NSString *)text withCompletionHandler:(void(^)(BOOL ok, id result, NSString *errorMessage))handler;
+- (void)sendMessageWithChatId:(NSString *)chatId senderId:(NSString *)senderId text:(NSString *)text image:(UIImage *)image withCompletionHandler:(void(^)(BOOL ok, id result, NSString *errorMessage))handler;
 
-@end
-
-#pragma mark - Informal Protocol
-
-@protocol OBSRealTimeChannelMessageTarget <NSObject>
-
-@optional
-
-- (void)realTimeChannel:(OBSRealTimeChannel *)channel hasBeenAuthenticated:(BOOL)authenticated;
-
-- (void)realTimeChannel:(OBSRealTimeChannel *)channel receivedAnOKForMessage:(id)message;
-- (void)realTimeChannel:(OBSRealTimeChannel *)channel receivedAnErrorMessage:(NSString *)error forMessage:(id)message;
-                         
 @end

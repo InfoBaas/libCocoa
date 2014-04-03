@@ -41,17 +41,12 @@ static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
     NSMutableData *_inputBuffer;
     NSOutputStream *_outputStream;
     NSMutableDictionary *_outputBuffer;
+    NSMutableDictionary *_outputBufferLookUp;
     NSMutableArray *_outputQueue;
     NSMutableArray *_outputSentQueue;
-    NSMutableDictionary *_messageTargets;
-    NSMutableDictionary *_messageOriginals;
+    NSMutableDictionary *_messageCompletionHandlers;
     BOOL _isSending;
     unsigned int _openSchedulerIntreval;
-}
-
-- (void)setClient:(id<OBSClientProtocol>)client
-{
-    _client = client;
 }
 
 - (id)init
@@ -60,10 +55,10 @@ static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
     if (self) {
         _inputBuffer = [NSMutableData data];
         _outputBuffer = [NSMutableDictionary dictionary];
+        _outputBufferLookUp = [NSMutableDictionary dictionary];
         _outputQueue = [NSMutableArray array];
         _outputSentQueue = [NSMutableArray array];
-        _messageTargets = [NSMutableDictionary dictionary];
-        _messageOriginals = [NSMutableDictionary dictionary];
+        _messageCompletionHandlers = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -134,10 +129,10 @@ static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
 
 #pragma mark Authenticate
 
-- (void)authenticateWithTarget:(id)target
+- (void)authenticateWithCompletionHandler:(void (^)(BOOL, id, NSString *))handler
 {
     NSDictionary *authenticate = @{_OBSRealTimeChannel_SocketMessageType: _OBSRealTimeChannel_TypeAuthenticate};
-    [self _queueData:authenticate withMessageTarget:target originalMessage:nil];
+    [self _queueData:authenticate withCompletionHandler:handler];
 }
 
 #pragma mark Ping
@@ -145,35 +140,33 @@ static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
 - (void)ping
 {
     NSDictionary *ping = @{_OBSRealTimeChannel_SocketMessageType: _OBSRealTimeChannel_TypePing};
-    [self _queueData:ping withMessageTarget:nil originalMessage:nil];
+    [self _queueData:ping withCompletionHandler:nil];
 }
 
 - (void)pong
 {
     NSDictionary *pong = @{_OBSRealTimeChannel_SocketMessageType: _OBSRealTimeChannel_TypePong};
-    [self _queueData:pong withMessageTarget:nil originalMessage:nil];
+    [self _queueData:pong withCompletionHandler:nil];
 }
 
 #pragma mark Chat
 
-- (NSDictionary *)target:(id)target openChatWithUserIds:(NSArray *)userIds
+- (void)openChatWithUserIds:(NSArray *)userIds withCompletionHandler:(void (^)(BOOL, id, NSString *))handler
 {
     NSDictionary *room = @{_OBSRealTimeChannel_DataKey_Participants: userIds};
     
     NSDictionary *data = @{_OBSRealTimeChannel_SocketMessageType: _OBSRealTimeChannel_TypeChatOpenRoom,
                            _OBSRealTimeChannel_SocketMessageData: room};
     
-    [self _queueData:data withMessageTarget:target originalMessage:room];
-    
-    return room;
+    [self _queueData:data withCompletionHandler:handler];
 }
 
-- (NSDictionary *)target:(id)target sendsMessageWithChatId:(NSString *)chatId senderId:(NSString *)senderId text:(NSString *)text
+- (void)sendMessageWithChatId:(NSString *)chatId senderId:(NSString *)senderId text:(NSString *)text withCompletionHandler:(void (^)(BOOL, id, NSString *))handler
 {
-    return [self target:target sendsMessageWithChatId:chatId senderId:senderId text:target image:nil];
+    [self sendMessageWithChatId:chatId senderId:senderId text:text image:nil withCompletionHandler:handler];
 }
 
-- (NSDictionary *)target:(id)target sendsMessageWithChatId:(NSString *)chatId senderId:(NSString *)senderId text:(NSString *)text image:(UIImage *)image
+- (void)sendMessageWithChatId:(NSString *)chatId senderId:(NSString *)senderId text:(NSString *)text image:(UIImage *)image withCompletionHandler:(void (^)(BOOL, id, NSString *))handler
 {
     NSDictionary *message = @{_OBSRealTimeChannel_DataKey_ChatRoomId: chatId,
                               _OBSRealTimeChannel_DataKey_SenderId: senderId,
@@ -183,9 +176,7 @@ static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
     NSDictionary *data = @{_OBSRealTimeChannel_SocketMessageType: _OBSRealTimeChannel_TypeChatMessage,
                            _OBSRealTimeChannel_SocketMessageData: message};
     
-    [self _queueData:data withMessageTarget:target originalMessage:message];
-    
-    return message;
+    [self _queueData:data withCompletionHandler:handler];
 }
 
 #pragma mark -
@@ -199,17 +190,28 @@ static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
         if (uuid) {
             @synchronized (_outputBuffer)
             {
-                id<OBSRealTimeChannelMessageTarget> target = [_messageTargets objectForKey:uuid];
-                if (target) {
-                    id message = [_messageOriginals objectForKey:uuid];
-                    if (message) {
-                        if ([target respondsToSelector:@selector(realTimeChannel:receivedAnOKForMessage:)]) {
-                            [target realTimeChannel:self receivedAnOKForMessage:message];
-                        }
+                void (^handler)(BOOL, id, NSString *) = [_messageCompletionHandlers objectForKey:uuid];
+                if (handler) {
+                    NSString *originalType = [_outputBufferLookUp objectForKey:uuid];
+                    if ([originalType isEqualToString:_OBSRealTimeChannel_TypeChatOpenRoom]) {
+                        NSDictionary *message = data[_OBSRealTimeChannel_SocketMessageData];
+                        
+                        NSDictionary *chatRoomData = nil;
+                        OBSChatRoom *chatRoom = [OBSChatRoom chatRoomFromDataJSON:chatRoomData andMetadataJSON:nil withClient:self.client];
+                        
+                        handler(YES, chatRoom, nil);
+                    } else if ([originalType isEqualToString:_OBSRealTimeChannel_TypeChatMessage]) {
+                        NSDictionary *message = data[_OBSRealTimeChannel_SocketMessageData];
+                        
+                        NSDictionary *chatRoomData = nil;
+                        OBSChatRoom *chatRoom = [OBSChatRoom chatRoomFromDataJSON:chatRoomData andMetadataJSON:nil withClient:self.client];
+                        
+                        NSDictionary *chatMessageData = nil;
+                        OBSChatMessage *chatMessage = [OBSChatMessage chatMessageInRoom:chatRoom fromDataJSON:chatMessageData andMetadataJSON:nil];
+                        
+                        handler(YES, chatMessage, nil);
                     } else {
-                        if ([target respondsToSelector:@selector(realTimeChannel:hasBeenAuthenticated:)]) {
-                            [target realTimeChannel:self hasBeenAuthenticated:YES];
-                        }
+                        handler(YES, nil, nil);
                     }
                 }
             }
@@ -218,20 +220,11 @@ static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
         if (uuid) {
             @synchronized (_outputBuffer)
             {
-                id<OBSRealTimeChannelMessageTarget> target = [_messageTargets objectForKey:uuid];
-                if (target) {
-                    id message = [_messageOriginals objectForKey:uuid];
-                    if (message) {
-                        if ([target respondsToSelector:@selector(realTimeChannel:receivedAnErrorMessage:forMessage:)]) {
-                            NSDictionary *d = data[_OBSRealTimeChannel_SocketMessageData];
-                            NSString *error = d[_OBSRealTimeChannel_DataKey_ErrorMessage];
-                            [target realTimeChannel:self receivedAnErrorMessage:error forMessage:message];
-                        }
-                    } else {
-                        if ([target respondsToSelector:@selector(realTimeChannel:hasBeenAuthenticated:)]) {
-                            [target realTimeChannel:self hasBeenAuthenticated:NO];
-                        }
-                    }
+                void (^handler)(BOOL, id, NSString *) = [_messageCompletionHandlers objectForKey:uuid];
+                if (handler) {
+                    NSDictionary *d = data[_OBSRealTimeChannel_SocketMessageData];
+                    NSString *error = d[_OBSRealTimeChannel_DataKey_ErrorMessage];
+                    handler(NO, nil, error);
                 }
             }
         }
@@ -247,26 +240,19 @@ static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
         if ([self.client respondsToSelector:@selector(realTimeChannel:receivedMessage:completionHandler:)]) {
             NSDictionary *message = data[_OBSRealTimeChannel_SocketMessageData];
             
-            OBSChatRoom *room = [[OBSChatRoom alloc] init];
-            room.chatRoomId = message[_OBSRealTimeChannel_DataKey_ChatRoomId];
-            room.unreadMessages = 0;
+            NSDictionary *chatRoomData = nil;
+            OBSChatRoom *chatRoom = [OBSChatRoom chatRoomFromDataJSON:chatRoomData andMetadataJSON:nil withClient:self.client];
             
-            OBSChatMessage *chat = [[OBSChatMessage alloc] init];
-            chat.chatRoom = room;
-            chat.chatMessageId = nil;
-            chat.senderId = message[_OBSRealTimeChannel_DataKey_SenderId];
-            chat.date = nil;
-            chat.unread = NO;
-            chat.text = message[_OBSRealTimeChannel_DataKey_Text];
-            chat.imageId = nil;
+            NSDictionary *chatMessageData = nil;
+            OBSChatMessage *chatMessage = [OBSChatMessage chatMessageInRoom:chatRoom fromDataJSON:chatMessageData andMetadataJSON:nil];
             
             if (uuid) {
-                [self.client realTimeChannel:self receivedMessage:chat completionHandler:^(BOOL isOK) {
+                [self.client realTimeChannel:self receivedMessage:chatMessage completionHandler:^(BOOL isOK) {
                     NSDictionary *ok = @{_OBSRealTimeChannel_SocketMessageType: isOK ? _OBSRealTimeChannel_TypeOK : _OBSRealTimeChannel_TypeNOK};
-                    [self _queueData:ok withMessageTarget:nil originalMessage:nil];
+                    [self _queueData:ok withCompletionHandler:nil];
                 }];
             } else {
-                [self.client realTimeChannel:self receivedMessage:chat completionHandler:nil];
+                [self.client realTimeChannel:self receivedMessage:chatMessage completionHandler:nil];
             }
         }
         return;
@@ -279,12 +265,12 @@ static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
                 // sent by me
                 [_outputSentQueue removeObject:uuid];
                 [_outputBuffer removeObjectForKey:uuid];
-                [_messageTargets removeObjectForKey:uuid];
-                [_messageOriginals removeObjectForKey:uuid];
+                [_outputBufferLookUp removeObjectForKey:uuid];
+                [_messageCompletionHandlers removeObjectForKey:uuid];
             } else {
                 // sent to me
                 NSDictionary *ok = @{_OBSRealTimeChannel_SocketMessageType: _OBSRealTimeChannel_TypeOK};
-                [self _queueData:ok withMessageTarget:nil originalMessage:nil];
+                [self _queueData:ok withCompletionHandler:nil];
             }
         }
     }
@@ -411,7 +397,7 @@ static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
     [self _send];
 }
 
-- (void)_queueData:(NSDictionary *)data withMessageTarget:(id)target originalMessage:(id)message
+- (void)_queueData:(NSDictionary *)data withCompletionHandler:(void (^)(BOOL, id, NSString *))handler
 {
     NSString *uuid = [[NSUUID UUID] UUIDString];
     
@@ -429,11 +415,9 @@ static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
     @synchronized (_outputBuffer)
     {
         [_outputBuffer setObject:bin forKey:uuid];
-        if (target) {
-            [_messageTargets setObject:target forKey:uuid];
-            if (message) {
-                [_messageOriginals setObject:message forKey:uuid];
-            }
+        [_outputBufferLookUp setObject:data[_OBSRealTimeChannel_SocketMessageType] forKey:uuid];
+        if (handler) {
+            [_messageCompletionHandlers setObject:handler forKey:uuid];
         }
         [_outputQueue addObject:uuid];
         [self _send];
