@@ -25,8 +25,8 @@ static NSString *const _OBSRealTimeChannel_TypePing = @"PING";
 static NSString *const _OBSRealTimeChannel_TypePong = @"PONG";
 
 static NSString *const _OBSRealTimeChannel_TypeChatOpenRoom = @"CREATE_CHAT_ROOM";
-static NSString *const _OBSRealTimeChannel_TypeSendChatMessage = @"RECV_CHAT_MSG";
-static NSString *const _OBSRealTimeChannel_TypeNewChatMessage = @"SENT_CHAT_MSG";
+static NSString *const _OBSRealTimeChannel_TypeSendChatMessage = @"SENT_CHAT_MSG";
+static NSString *const _OBSRealTimeChannel_TypeNewChatMessage = @"RECV_CHAT_MSG";
 
 static NSString *const _OBSRealTimeChannel_DataKey_ErrorMessage = @"errorMessage";
 
