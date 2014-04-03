@@ -11,6 +11,8 @@
 
 #import "OBSClientProtocol.h"
 
+@class OBSChatRoom;
+
 @interface OBSRealTimeChannel : NSObject
 
 + (OBSRealTimeChannel *)defaultChannel;
@@ -37,7 +39,7 @@
 
 - (void)openChatWithUserIds:(NSArray *)userIds withCompletionHandler:(void(^)(BOOL ok, id result, NSString *errorMessage))handler;
 
-- (void)sendMessageWithChatId:(NSString *)chatId senderId:(NSString *)senderId text:(NSString *)text withCompletionHandler:(void(^)(BOOL ok, id result, NSString *errorMessage))handler;
-- (void)sendMessageWithChatId:(NSString *)chatId senderId:(NSString *)senderId text:(NSString *)text image:(UIImage *)image withCompletionHandler:(void(^)(BOOL ok, id result, NSString *errorMessage))handler;
+- (void)sendMessageWithChatRoom:(OBSChatRoom *)chatRoom senderId:(NSString *)senderId text:(NSString *)text withCompletionHandler:(void(^)(BOOL ok, id result, NSString *errorMessage))handler;
+- (void)sendMessageWithChatRoom:(OBSChatRoom *)chatRoom senderId:(NSString *)senderId text:(NSString *)text image:(UIImage *)image withCompletionHandler:(void(^)(BOOL ok, id result, NSString *errorMessage))handler;
 
 @end
