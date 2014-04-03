@@ -10,7 +10,7 @@
 #import "OBSConnection.h"
 #import "OBSChatRoom+.h"
 
-static NSString *const _OBSRealTimeChannel_SocketMessageUUID = @"uuid";
+static NSString *const _OBSRealTimeChannel_SocketMessageUUID = @"messageId";
 static NSString *const _OBSRealTimeChannel_SocketMessageType = @"type";
 static NSString *const _OBSRealTimeChannel_SocketMessageAppId = @"appId";
 static NSString *const _OBSRealTimeChannel_SocketMessageSessionToken = @"sessionToken";
@@ -26,6 +26,7 @@ static NSString *const _OBSRealTimeChannel_TypePong = @"PONG";
 
 static NSString *const _OBSRealTimeChannel_TypeChatOpenRoom = @"CREATE_CHAT_ROOM";
 static NSString *const _OBSRealTimeChannel_TypeChatMessage = @"RECV_CHAT_MSG";
+static NSString *const _OBSRealTimeChannel_TypeNewChatMessage = @"SEND_CHAT_MSG";
 
 static NSString *const _OBSRealTimeChannel_DataKey_ErrorMessage = @"errorMessage";
 
@@ -236,7 +237,7 @@ static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
         if ([self.client respondsToSelector:@selector(realTimeChannelWasPonged:)]) {
             [self.client realTimeChannelWasPonged:self];
         }
-    } else if ([type isEqualToString:_OBSRealTimeChannel_TypeChatMessage]) {
+    } else if ([type isEqualToString:_OBSRealTimeChannel_TypeNewChatMessage]) {
         if ([self.client respondsToSelector:@selector(realTimeChannel:receivedMessage:completionHandler:)]) {
             NSDictionary *message = data[_OBSRealTimeChannel_SocketMessageData];
             
