@@ -77,7 +77,7 @@ void OBSPushLog (NSString *appId, NSString *appKey)
         [body appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
         
         // Request
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/apps/%@/log", [OBSConnection OpenBaaSAddress], appId]];
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/apps/%@/log", [OBSConnection OpenBaaSHTTPAddress], appId]];
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
         [request setHTTPMethod:@"POST"];
         [request addValue:contentType forHTTPHeaderField:@"Content-Type"];
@@ -143,13 +143,24 @@ static NSString *_OBSCurrentReachabilityStatus (void)
         [[NSFileManager defaultManager] createFileAtPath:_OBSLogPath() contents:[NSData data] attributes:nil];
 }
 
-+ (NSString *)OpenBaaSAddress
++ (NSString *)OpenBaaSHTTPAddress
 {
     static NSString *address = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        address = [[NSBundle mainBundle] objectForInfoDictionaryKey:OBSConfigURL];
-        NSAssert(address, @"\"%@\" key not found in bundle's info dictionary.", OBSConfigURL);
+        address = [[NSBundle mainBundle] objectForInfoDictionaryKey:OBSConfigHTTPAddress];
+        NSAssert(address, @"\"%@\" key not found in bundle's info dictionary.", OBSConfigHTTPAddress);
+    });
+    return address;
+}
+
++ (NSString *)OpenBaaSTCPAddress
+{
+    static NSString *address = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        address = [[NSBundle mainBundle] objectForInfoDictionaryKey:OBSConfigTCPAddress];
+        NSAssert(address, @"\"%@\" key not found in bundle's info dictionary.", OBSConfigTCPAddress);
     });
     return address;
 }
@@ -360,7 +371,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/sessions", [self OpenBaaSAddress], [client appId]];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/sessions", [self OpenBaaSHTTPAddress], [client appId]];
 
         // Request
         NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
@@ -384,7 +395,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/users", [self OpenBaaSAddress], [application applicationId]];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/users", [self OpenBaaSHTTPAddress], [application applicationId]];
 
         // Request
         NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
@@ -406,7 +417,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/users/%@", [self OpenBaaSAddress], [application applicationId], userId];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/users/%@", [self OpenBaaSHTTPAddress], [application applicationId], userId];
 
         // Request
         NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
@@ -430,7 +441,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/media/images", [self OpenBaaSAddress], [[media client] appId]];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/media/images", [self OpenBaaSHTTPAddress], [[media client] appId]];
 
         // Request
         NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
@@ -452,7 +463,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/media/images/%@", [self OpenBaaSAddress], [[media client] appId], imageFileId];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/media/images/%@", [self OpenBaaSHTTPAddress], [[media client] appId], imageFileId];
 
         // Request
         NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
@@ -474,7 +485,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/media/images/%@/%@/download", [self OpenBaaSAddress], [[imageFile client] appId], imageFile.mediaId, imageSize];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/media/images/%@/%@/download", [self OpenBaaSHTTPAddress], [[imageFile client] appId], imageFile.mediaId, imageSize];
 
         // Request
         NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
@@ -511,7 +522,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/data/%@", [self OpenBaaSAddress], [application applicationId], path];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/data/%@", [self OpenBaaSHTTPAddress], [application applicationId], path];
 
         // Request
         NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
@@ -535,7 +546,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/users/%@/data/%@", [self OpenBaaSAddress], [[user client] appId], [user userId], path];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/users/%@/data/%@", [self OpenBaaSHTTPAddress], [[user client] appId], [user userId], path];
 
         // Request
         NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
@@ -573,7 +584,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/signup", [self OpenBaaSAddress], [[account client] appId]];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/signup", [self OpenBaaSHTTPAddress], [[account client] appId]];
 
         // Body
         NSMutableDictionary *body = [NSMutableDictionary dictionaryWithObjectsAndKeys:email, @"email", password, @"password", nil];
@@ -606,7 +617,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/signin", [self OpenBaaSAddress], [[account client] appId]];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/signin", [self OpenBaaSHTTPAddress], [[account client] appId]];
 
         // Body
         NSDictionary *body = @{@"email": email,
@@ -638,7 +649,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/signout", [self OpenBaaSAddress], [[account client] appId]];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/signout", [self OpenBaaSHTTPAddress], [[account client] appId]];
 
         // Body
         NSDictionary *body = @{@"all": [NSNumber numberWithBool:all]};
@@ -674,7 +685,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/recovery", [self OpenBaaSAddress], [[account client] appId]];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/recovery", [self OpenBaaSHTTPAddress], [[account client] appId]];
 
         // Body
         NSDictionary *body = @{@"email": email};
@@ -704,7 +715,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/changepassword", [self OpenBaaSAddress], [[account client] appId]];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/changepassword", [self OpenBaaSHTTPAddress], [[account client] appId]];
         
         // Body
         NSDictionary *body = @{@"oldPassword": oldPassword,
@@ -739,7 +750,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/integration/facebook", [self OpenBaaSAddress], [[account client] appId]];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/integration/facebook", [self OpenBaaSHTTPAddress], [[account client] appId]];
 
         // Body
         NSDictionary *body = @{@"fbToken": oauthToken};
@@ -772,7 +783,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/usersstate", [self OpenBaaSAddress], [application applicationId]];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/usersstate", [self OpenBaaSHTTPAddress], [application applicationId]];
         
         // Body
         NSDictionary *body = @{@"users": userIds,
@@ -809,7 +820,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/media/images", [self OpenBaaSAddress], [[media client] appId]];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/media/images", [self OpenBaaSHTTPAddress], [[media client] appId]];
 
         // Auxiliaries
         NSString *boundary = @"---p37mbyk1q2m164obqcjj-OpenBaaS-libCocoa-";
@@ -850,7 +861,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/chatroom", [self OpenBaaSAddress], [application applicationId]];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/chatroom", [self OpenBaaSHTTPAddress], [application applicationId]];
         
         // Body
         NSDictionary *body = @{@"participants": userIds, @"flagNotification": @(YES)};
@@ -884,7 +895,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/chatroom/%@/sendmessage", [self OpenBaaSAddress], [[chatRoom client] appId], [chatRoom chatRoomId]];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/chatroom/%@/sendmessage", [self OpenBaaSHTTPAddress], [[chatRoom client] appId], [chatRoom chatRoomId]];
         
         // Auxiliaries
         NSString *boundary = @"---p37mbyk1q2m164obqcjj-OpenBaaS-libCocoa-";
@@ -933,7 +944,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/chatroom/%@/getmessages", [self OpenBaaSAddress], [[chatRoom client] appId], [chatRoom chatRoomId]];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/chatroom/%@/getmessages", [self OpenBaaSHTTPAddress], [[chatRoom client] appId], [chatRoom chatRoomId]];
         
         // Body
         NSDictionary *body = @{@"date": @((unsigned long long)([date timeIntervalSince1970]*1000)),
@@ -967,7 +978,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/chatroom/%@/readmessages", [self OpenBaaSAddress], [[chatRoom client] appId], [chatRoom chatRoomId]];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/chatroom/%@/readmessages", [self OpenBaaSHTTPAddress], [[chatRoom client] appId], [chatRoom chatRoomId]];
         
         // Body
         NSDictionary *body = @{@"msgsList": messageIds};
@@ -1001,7 +1012,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/settings/notifications/APNS/register", [self OpenBaaSAddress], [application applicationId]];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/settings/notifications/APNS/register", [self OpenBaaSHTTPAddress], [application applicationId]];
         
         // Body
         NSDictionary *body = @{@"deviceToken": deviceToken,
@@ -1034,7 +1045,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/settings/notifications/APNS/unregister", [self OpenBaaSAddress], [application applicationId]];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/settings/notifications/APNS/unregister", [self OpenBaaSHTTPAddress], [application applicationId]];
         
         // Body
         NSDictionary *body = @{@"deviceToken": deviceToken,
@@ -1083,7 +1094,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/data/%@", [self OpenBaaSAddress], [application applicationId], path];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/data/%@", [self OpenBaaSHTTPAddress], [application applicationId], path];
 
         // Body
         NSDictionary *body = [NSDictionary dictionaryWithDictionary:object];
@@ -1117,7 +1128,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/users/%@/data/%@", [self OpenBaaSAddress], [[user client] appId], [user userId], path];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/users/%@/data/%@", [self OpenBaaSHTTPAddress], [[user client] appId], [user userId], path];
 
         // Body
         NSDictionary *body = [NSDictionary dictionaryWithDictionary:object];
@@ -1165,7 +1176,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/sessions/%@", [self OpenBaaSAddress], [[session client] appId], [session token]];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/account/sessions/%@", [self OpenBaaSHTTPAddress], [[session client] appId], [session token]];
 
         // Request
         NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
@@ -1189,7 +1200,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/users/%@", [self OpenBaaSAddress], [[user client] appId], [user userId]];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/users/%@", [self OpenBaaSHTTPAddress], [[user client] appId], [user userId]];
 
         // Body
         NSDictionary *body = [NSDictionary dictionaryWithDictionary:data];
@@ -1223,7 +1234,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/data/%@", [self OpenBaaSAddress], [application applicationId], path];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/data/%@", [self OpenBaaSHTTPAddress], [application applicationId], path];
 
         // Body
         NSDictionary *body = [NSDictionary dictionaryWithDictionary:object];
@@ -1257,7 +1268,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/users/%@/data/%@", [self OpenBaaSAddress], [[user client] appId], [user userId], path];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/users/%@/data/%@", [self OpenBaaSHTTPAddress], [[user client] appId], [user userId], path];
 
         // Body
         NSDictionary *body = [NSDictionary dictionaryWithDictionary:object];
@@ -1305,7 +1316,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/media/images/%@", [self OpenBaaSAddress], [[media client] appId], imageFileId];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/media/images/%@", [self OpenBaaSHTTPAddress], [[media client] appId], imageFileId];
         
         // Request
         NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
@@ -1329,7 +1340,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/data/%@", [self OpenBaaSAddress], [application applicationId], path];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/data/%@", [self OpenBaaSHTTPAddress], [application applicationId], path];
 
         // Request
         NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
@@ -1353,7 +1364,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
-        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/users/%@/data/%@", [self OpenBaaSAddress], [[user client] appId], [user userId], path];
+        NSString *address = [NSString stringWithFormat:@"%@/apps/%@/users/%@/data/%@", [self OpenBaaSHTTPAddress], [[user client] appId], [user userId], path];
 
         // Request
         NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];

@@ -17,4 +17,5 @@
 
 #pragma mark - Config Keys
 
-#define OBSConfigURL            @"com.openbaas.config.url"
+#define OBSConfigHTTPAddress            @"com.openbaas.config.address.http"
+#define OBSConfigTCPAddress             @"com.openbaas.config.address.tcp"

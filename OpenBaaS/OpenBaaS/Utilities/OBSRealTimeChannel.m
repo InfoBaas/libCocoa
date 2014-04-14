@@ -36,11 +36,15 @@ static NSString *const _OBSRealTimeChannel_DataKey_SenderId = @"senderId";
 static NSString *const _OBSRealTimeChannel_DataKey_Text = @"text";
 static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
 
+#define _OBSRTC_ibuffSize       4096
+
 @implementation OBSRealTimeChannel {
     UInt32 _port;
     NSInputStream *_inputStream;
+    BOOL _inputStreamOpened;
     NSMutableData *_inputBuffer;
     NSOutputStream *_outputStream;
+    BOOL _outputStreamOpened;
     NSMutableDictionary *_outputBuffer;
     NSMutableDictionary *_outputBuffer_messageRooms;
     NSMutableDictionary *_outputBufferLookUp;
@@ -49,6 +53,7 @@ static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
     NSMutableDictionary *_messageCompletionHandlers;
     BOOL _isSending;
     unsigned int _openSchedulerIntreval;
+    NSMutableData *_outputBufferData;
 }
 
 - (id)init
@@ -62,6 +67,7 @@ static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
         _outputQueue = [NSMutableArray array];
         _outputSentQueue = [NSMutableArray array];
         _messageCompletionHandlers = [NSMutableDictionary dictionary];
+        _outputBufferData = [NSMutableData data];
     }
     return self;
 }
@@ -159,7 +165,8 @@ static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
     NSDictionary *room = @{_OBSRealTimeChannel_DataKey_Participants: userIds};
     
     NSDictionary *data = @{_OBSRealTimeChannel_SocketMessageType: _OBSRealTimeChannel_TypeChatOpenRoom,
-                           _OBSRealTimeChannel_SocketMessageData: room};
+                           _OBSRealTimeChannel_SocketMessageData: room,
+                           @"flagNotification": @(YES)};
     
     [self _queueData:data withCompletionHandler:handler];
 }
@@ -171,13 +178,22 @@ static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
 
 - (void)sendMessageWithChatRoom:(OBSChatRoom *)chatRoom senderId:(NSString *)senderId text:(NSString *)text image:(UIImage *)image withCompletionHandler:(void (^)(BOOL, id, NSString *))handler
 {
-    NSDictionary *message = @{_OBSRealTimeChannel_DataKey_ChatRoomId: chatRoom.chatRoomId,
-                              _OBSRealTimeChannel_DataKey_SenderId: senderId,
-                              _OBSRealTimeChannel_DataKey_Text: text,
-                              _OBSRealTimeChannel_DataKey_ImageBase64: [UIImagePNGRepresentation(image) base64EncodedStringWithOptions:kNilOptions]};
+    NSDictionary *message = image
+    ? @{_OBSRealTimeChannel_DataKey_ChatRoomId: chatRoom.chatRoomId,
+        _OBSRealTimeChannel_DataKey_SenderId: senderId,
+        _OBSRealTimeChannel_DataKey_Text: text,
+        _OBSRealTimeChannel_DataKey_ImageBase64: [UIImagePNGRepresentation(image) base64EncodedStringWithOptions:kNilOptions]}
+    : @{_OBSRealTimeChannel_DataKey_ChatRoomId: chatRoom.chatRoomId,
+        _OBSRealTimeChannel_DataKey_SenderId: senderId,
+        _OBSRealTimeChannel_DataKey_Text: text};
     
     NSDictionary *data = @{_OBSRealTimeChannel_SocketMessageType: _OBSRealTimeChannel_TypeSendChatMessage,
                            _OBSRealTimeChannel_SocketMessageData: message};
+    
+//    if (image) {
+//        NSData *d = UIImagePNGRepresentation(image);
+//        NSLog(@"%lu", (unsigned long)[d length]);
+//    }
     
     NSString *uuid = [[NSUUID UUID] UUIDString];
     
@@ -191,7 +207,8 @@ static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
         mut[_OBSRealTimeChannel_SocketMessageSessionToken] = session;
     }
     
-    NSData *bin = [NSJSONSerialization dataWithJSONObject:data options:kNilOptions error:nil];
+    NSMutableData *bin = [[NSJSONSerialization dataWithJSONObject:mut options:kNilOptions error:nil] mutableCopy];
+    [bin appendData:[@"\0" dataUsingEncoding:NSUTF8StringEncoding]];
     @synchronized (_outputBuffer)
     {
         [_outputBuffer_messageRooms setObject:chatRoom forKey:uuid];
@@ -308,14 +325,22 @@ static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
             
 		case NSStreamEventOpenCompleted:
             _openSchedulerIntreval = 0;
-            if ([self.client respondsToSelector:@selector(realTimeChannelOpened:)]) {
+            
+            if (aStream == _inputStream) {
+                _inputStreamOpened = YES;
+            } else if (aStream == _outputStream) {
+                _outputStreamOpened = YES;
+            }
+            
+            if (_inputStreamOpened && _outputStreamOpened && [self.client respondsToSelector:@selector(realTimeChannelOpened:)]) {
                 [self.client realTimeChannelOpened:self];
+                [self _send];
             }
 			break;
             
 		case NSStreamEventHasBytesAvailable:
             if (aStream == _inputStream) {
-                uint8_t buff[1024];
+                uint8_t buff[_OBSRTC_ibuffSize];
                 NSUInteger len;
                 
                 len = [_inputStream read:buff maxLength:sizeof(buff)];
@@ -333,6 +358,7 @@ static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
                         }
                     } else {
                         [self processData:data];
+                        [_inputBuffer setData:[NSData data]];
                     }
                 }
             }
@@ -394,7 +420,7 @@ static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
     
     CFReadStreamRef readStream;
     CFWriteStreamRef writeStream;
-    CFStreamCreatePairWithSocketToHost(NULL, (__bridge CFStringRef)[OBSConnection OpenBaaSAddress], _port, &readStream, &writeStream);
+    CFStreamCreatePairWithSocketToHost(NULL, (__bridge CFStringRef)[OBSConnection OpenBaaSTCPAddress], _port, &readStream, &writeStream);
     NSInputStream *inputStream = (__bridge NSInputStream *)readStream;
     NSOutputStream *outputStream = (__bridge NSOutputStream *)writeStream;
     
@@ -415,8 +441,6 @@ static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
         
         [currentRunLoop run];
     });
-    
-    [self _send];
 }
 
 - (void)_queueData:(NSDictionary *)data withCompletionHandler:(void (^)(BOOL, id, NSString *))handler
@@ -433,7 +457,8 @@ static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
         mut[_OBSRealTimeChannel_SocketMessageSessionToken] = session;
     }
     
-    NSData *bin = [NSJSONSerialization dataWithJSONObject:data options:kNilOptions error:nil];
+    NSMutableData *bin = [[NSJSONSerialization dataWithJSONObject:mut options:kNilOptions error:nil] mutableCopy];
+    [bin appendData:[@"\0" dataUsingEncoding:NSUTF8StringEncoding]];
     @synchronized (_outputBuffer)
     {
         [_outputBuffer setObject:bin forKey:uuid];
@@ -450,13 +475,22 @@ static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
 {
     @synchronized (_outputBuffer)
     {
-        if (!_isSending && [_outputBuffer count]) {
-            NSString *uuid = [_outputQueue firstObject];
-            NSData *data = [_outputBuffer objectForKey:uuid];
-            _isSending = YES;
-            if ([_outputStream write:[data bytes] maxLength:[data length]] >= 0) {
-                [_outputQueue removeObjectAtIndex:0];
-                [_outputSentQueue addObject:uuid];
+        if (_inputStreamOpened && _outputStreamOpened && !_isSending && [_outputStream hasSpaceAvailable]) {
+            if ([_outputBufferData length]) {
+                _isSending = YES;
+                NSInteger sent = [_outputStream write:[_outputBufferData bytes] maxLength:[_outputBufferData length]];
+                if (sent >= 0) {
+                    [_outputBufferData replaceBytesInRange:NSMakeRange(0, sent) withBytes:NULL length:0];
+                }
+            } else {
+                if ([_outputQueue count]) {
+                    NSString *uuid = [_outputQueue firstObject];
+                    NSData *data = [_outputBuffer objectForKey:uuid];
+                    [_outputBufferData appendData:data];
+                    [_outputQueue removeObjectAtIndex:0];
+                    [_outputSentQueue addObject:uuid];
+                    [self _send];
+                }
             }
         }
     }
@@ -464,6 +498,8 @@ static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
 
 - (void)_close
 {
+    [_inputBuffer setData:[NSData data]];
+    
     if (_inputStream) {
         [_inputStream close];
         _inputStream = nil;
@@ -473,6 +509,8 @@ static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
         [_outputStream close];
         _outputStream = nil;
     }
+    
+    _inputStreamOpened = _outputStreamOpened = NO;
     
     @synchronized (_outputBuffer)
     {

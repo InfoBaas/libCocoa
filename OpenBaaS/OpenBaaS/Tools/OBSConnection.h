@@ -25,7 +25,8 @@ extern NSString *const OBSConnectionResultMetadataKey;
 
 @interface OBSConnection : NSObject
 
-+ (NSString *)OpenBaaSAddress;
++ (NSString *)OpenBaaSHTTPAddress;
++ (NSString *)OpenBaaSTCPAddress;
 
 + (void)sendAsynchronousRequest:(NSURLRequest*) request
                           queue:(NSOperationQueue*) queue
