@@ -47,7 +47,8 @@
 @property (nonatomic, readonly, getter = isUnread) BOOL unread;
 
 @property (nonatomic, readonly) NSString *text;
-@property (nonatomic, readonly) NSString *imageId;
+@property (nonatomic, readonly) BOOL hasImage;
+@property (nonatomic, strong) NSString *imageId;
 
 - (void)markAsReadWithCompletionHandler:(void(^)(OBSChatMessage *message, BOOL marked, OBSError *error))handler;
 

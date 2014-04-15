@@ -818,36 +818,48 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 + (void)post_media:(OBSMedia *)media image:(UIImage *)image withFileName:(NSString *)fileName queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler
 #endif
 {
+    [self post_media:media image:image forMessage:nil withFileName:fileName queryDictionary:query completionHandler:handler];
+}
+
++ (void)post_media:(OBSMedia *)media image:(UIImage *)image forMessage:(OBSChatMessage *)message withFileName:(NSString *)fileName queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler
+{
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // Address
         NSString *address = [NSString stringWithFormat:@"%@/apps/%@/media/images", [self OpenBaaSHTTPAddress], [[media client] appId]];
-
+        
         // Auxiliaries
         NSString *boundary = @"---p37mbyk1q2m164obqcjj-OpenBaaS-libCocoa-";
         NSString *contentType = [NSString stringWithFormat:
                                  @"multipart/form-data; boundary=%@",boundary];
-
+        
         // Body
         NSMutableData *body = [NSMutableData data];
+        
+        if (message) {
+            [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:[@"Content-Disposition: form-data; name=\"messageId\"\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:[[NSString stringWithFormat:@"%@\r\n", message.chatMessageId] dataUsingEncoding:NSUTF8StringEncoding]];
+        }
+        
         [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
         [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"file\"; filename=\"%@.png\"\r\nContent-Type: application/octet-stream\r\n\r\n", fileName] dataUsingEncoding:NSUTF8StringEncoding]];
 #if TARGET_OS_IPHONE
         [body appendData:UIImagePNGRepresentation(image)];
 #endif
         [body appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-
+        
         // Request
         NSURL *url = [self urlWithAddress:address andQueryParametersDictionary:query];
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
         [request setHTTPMethod:@"POST"];
         [request addValue:contentType forHTTPHeaderField:@"Content-Type"];
         [request setHTTPBody:[NSData dataWithData:body]];
-
+        
         // Header
         [self setAppKeyHeaderField:[[media client] appKey] toRequest:request];
         [self setCurrentLocationHeaderFieldToRequest:request];
         [self setCurrentSessionHeaderFieldToRequest:request];
-
+        
         // Send
         [self sendAsynchronousRequest:request
                                 queue:[NSOperationQueue new]

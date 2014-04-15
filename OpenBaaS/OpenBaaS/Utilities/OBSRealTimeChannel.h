@@ -13,6 +13,9 @@
 
 @class OBSChatRoom;
 
+NSString *OBSRealTimeChannelNotificationMessageImagePostSucceeded(NSString *messageId);
+NSString *OBSRealTimeChannelNotificationMessageImagePostFailed(NSString *messageId);
+
 @interface OBSRealTimeChannel : NSObject
 
 + (OBSRealTimeChannel *)defaultChannel;
@@ -41,5 +44,7 @@
 
 - (void)sendMessageWithChatRoom:(OBSChatRoom *)chatRoom senderId:(NSString *)senderId text:(NSString *)text withCompletionHandler:(void(^)(BOOL ok, id result, NSString *errorMessage))handler;
 - (void)sendMessageWithChatRoom:(OBSChatRoom *)chatRoom senderId:(NSString *)senderId text:(NSString *)text image:(UIImage *)image withCompletionHandler:(void(^)(BOOL ok, id result, NSString *errorMessage))handler;
+
+- (void)postMessageWithChatRoom:(OBSChatRoom *)chatRoom senderId:(NSString *)senderId text:(NSString *)text image:(UIImage *)image withCompletionHandler:(void(^)(BOOL ok, id result, NSString *errorMessage))handler;
 
 @end

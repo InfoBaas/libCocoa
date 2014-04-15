@@ -289,6 +289,11 @@ static NSString *const _OBSChatMessage_ImageId = @"com.openbaas.chat-message.ima
         text = nil;
     }
     
+    NSNumber *hasImage = data[@"hasImage"];
+    if ([hasImage isEqual:[NSNull null]]) {
+        hasImage = nil;
+    }
+    
     NSString *imageId = data[@"imageId"];
     if ([imageId isEqual:[NSNull null]] || [imageId isEqualToString:[NSString string]]) {
         imageId = nil;
@@ -303,6 +308,7 @@ static NSString *const _OBSChatMessage_ImageId = @"com.openbaas.chat-message.ima
     chatMessage.unread = ![read boolValue];
     
     chatMessage.text = text;
+    chatMessage.hasImage = [hasImage boolValue];
     chatMessage.imageId = imageId;
     
     return chatMessage;

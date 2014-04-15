@@ -101,6 +101,8 @@ extern NSString *const OBSConnectionResultMetadataKey;
 + (void)post_media:(OBSMedia *)media image:(UIImage *)image withFileName:(NSString *)fileName queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler;
 #endif
 
++ (void)post_media:(OBSMedia *)media image:(UIImage *)image forMessage:(OBSChatMessage *)message withFileName:(NSString *)fileName queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler;
+
 #pragma mark apps/<appid>/chatroom
 
 + (void)post_application:(OBSApplication *)application openChatRoomWithUserIds:(NSArray *)userIds queryDictionary:(NSDictionary *)query completionHandler:(void (^)(id result, NSInteger statusCode, NSError *error))handler;

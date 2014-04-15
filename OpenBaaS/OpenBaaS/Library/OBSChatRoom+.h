@@ -27,7 +27,7 @@
 @property (nonatomic, assign) BOOL unread;
 
 @property (nonatomic, strong) NSString *text;
-@property (nonatomic, strong) NSString *imageId;
+@property (nonatomic, assign) BOOL hasImage;
 
 + (OBSChatMessage *)chatMessageInRoom:(OBSChatRoom *)room fromDataJSON:(NSDictionary *)data andMetadataJSON:(NSDictionary *)metadata;
 

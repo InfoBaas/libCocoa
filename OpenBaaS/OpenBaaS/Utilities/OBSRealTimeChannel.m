@@ -9,6 +9,8 @@
 #import "OBSRealTimeChannel+.h"
 #import "OBSConnection.h"
 #import "OBSChatRoom+.h"
+#import "OBSApplication+.h"
+#import "OBSMedia+.h"
 
 static NSString *const _OBSRealTimeChannel_SocketMessageUUID = @"messageId";
 static NSString *const _OBSRealTimeChannel_SocketMessageType = @"type";
@@ -35,6 +37,7 @@ static NSString *const _OBSRealTimeChannel_DataKey_Participants = @"participants
 static NSString *const _OBSRealTimeChannel_DataKey_SenderId = @"senderId";
 static NSString *const _OBSRealTimeChannel_DataKey_Text = @"text";
 static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
+static NSString *const _OBSRealTimeChannel_DataKey_HasImage = @"hasImage";
 
 #define _OBSRTC_ibuffSize       4096
 
@@ -182,18 +185,15 @@ static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
     ? @{_OBSRealTimeChannel_DataKey_ChatRoomId: chatRoom.chatRoomId,
         _OBSRealTimeChannel_DataKey_SenderId: senderId,
         _OBSRealTimeChannel_DataKey_Text: text,
+        _OBSRealTimeChannel_DataKey_HasImage: @(YES),
         _OBSRealTimeChannel_DataKey_ImageBase64: [UIImagePNGRepresentation(image) base64EncodedStringWithOptions:kNilOptions]}
     : @{_OBSRealTimeChannel_DataKey_ChatRoomId: chatRoom.chatRoomId,
         _OBSRealTimeChannel_DataKey_SenderId: senderId,
-        _OBSRealTimeChannel_DataKey_Text: text};
+        _OBSRealTimeChannel_DataKey_Text: text,
+        _OBSRealTimeChannel_DataKey_HasImage: @(NO)};
     
     NSDictionary *data = @{_OBSRealTimeChannel_SocketMessageType: _OBSRealTimeChannel_TypeSendChatMessage,
                            _OBSRealTimeChannel_SocketMessageData: message};
-    
-//    if (image) {
-//        NSData *d = UIImagePNGRepresentation(image);
-//        NSLog(@"%lu", (unsigned long)[d length]);
-//    }
     
     NSString *uuid = [[NSUUID UUID] UUIDString];
     
@@ -216,6 +216,61 @@ static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
         [_outputBufferLookUp setObject:data[_OBSRealTimeChannel_SocketMessageType] forKey:uuid];
         if (handler) {
             [_messageCompletionHandlers setObject:handler forKey:uuid];
+        }
+        [_outputQueue addObject:uuid];
+        [self _send];
+    }
+}
+
+- (void)postMessageWithChatRoom:(OBSChatRoom *)chatRoom senderId:(NSString *)senderId text:(NSString *)text image:(UIImage *)image withCompletionHandler:(void (^)(BOOL, id, NSString *))handler
+{
+    void (^inner)(BOOL, id, NSString *) = ^(BOOL ok, id result, NSString *errorMessage) {
+        handler(ok, result, errorMessage);
+        if (ok && image) {
+            OBSApplication *app = [OBSApplication applicationWithClient:chatRoom.client];
+            OBSMedia *media = [app applicationMedia];
+            OBSChatMessage *msg = result;
+            [OBSConnection post_media:media image:image forMessage:msg withFileName:@"InthebeginningMancreatedgod" queryDictionary:nil completionHandler:^(id result, NSInteger statusCode, NSError *error) {
+                if (error) {
+                    NSString *notifname = OBSRealTimeChannelNotificationMessageImagePostFailed(msg.chatMessageId);
+                    [[NSNotificationCenter defaultCenter] postNotificationName:notifname object:self userInfo:@{@"com.openbaas.rtc.image": image, @"com.openbaas.rtc.error": error}];
+                } else {
+                    NSString *notifname = OBSRealTimeChannelNotificationMessageImagePostSucceeded(msg.chatMessageId);
+                    [[NSNotificationCenter defaultCenter] postNotificationName:notifname object:self userInfo:@{@"com.openbaas.rtc.image": image}];
+                }
+            }];
+        }
+    };
+    
+    NSDictionary *message =  @{_OBSRealTimeChannel_DataKey_ChatRoomId: chatRoom.chatRoomId,
+                               _OBSRealTimeChannel_DataKey_SenderId: senderId,
+                               _OBSRealTimeChannel_DataKey_Text: text,
+                               _OBSRealTimeChannel_DataKey_HasImage: @(image!=nil)};
+    
+    NSDictionary *data = @{_OBSRealTimeChannel_SocketMessageType: _OBSRealTimeChannel_TypeSendChatMessage,
+                           _OBSRealTimeChannel_SocketMessageData: message};
+    
+    NSString *uuid = [[NSUUID UUID] UUIDString];
+    
+    NSMutableDictionary *mut = [data mutableCopy];
+    
+    mut[_OBSRealTimeChannel_SocketMessageUUID] = uuid;
+    mut[_OBSRealTimeChannel_SocketMessageAppId] = [self.client appId];
+    
+    NSString *session = _obs_settings_get_sessionToken();
+    if (session) {
+        mut[_OBSRealTimeChannel_SocketMessageSessionToken] = session;
+    }
+    
+    NSMutableData *bin = [[NSJSONSerialization dataWithJSONObject:mut options:kNilOptions error:nil] mutableCopy];
+    [bin appendData:[@"\0" dataUsingEncoding:NSUTF8StringEncoding]];
+    @synchronized (_outputBuffer)
+    {
+        [_outputBuffer_messageRooms setObject:chatRoom forKey:uuid];
+        [_outputBuffer setObject:bin forKey:uuid];
+        [_outputBufferLookUp setObject:data[_OBSRealTimeChannel_SocketMessageType] forKey:uuid];
+        if (handler) {
+            [_messageCompletionHandlers setObject:inner forKey:uuid];
         }
         [_outputQueue addObject:uuid];
         [self _send];
@@ -546,3 +601,16 @@ static NSString *const _OBSRealTimeChannel_DataKey_ImageBase64 = @"image";
 }
 
 @end
+
+static NSString *const _OBSNotification_RTC_MessageImagePostSucceeded = @"com.openbaas.rtc.chat-message.%@.image-post.ok";
+static NSString *const _OBSNotification_RTC_MessageImagePostFailed = @"com.openbaas.rtc.chat-message.%@.image-post.nok";
+
+NSString *OBSRealTimeChannelNotificationMessageImagePostSucceeded(NSString *messageId)
+{
+    return [NSString stringWithFormat:_OBSNotification_RTC_MessageImagePostSucceeded, messageId];
+}
+
+NSString *OBSRealTimeChannelNotificationMessageImagePostFailed(NSString *messageId)
+{
+    return [NSString stringWithFormat:_OBSNotification_RTC_MessageImagePostFailed, messageId];
+}
