@@ -12,9 +12,8 @@
 #import "OBSClientProtocol.h"
 
 @class OBSChatRoom;
-
-NSString *OBSRealTimeChannelNotificationMessageImagePostSucceeded(NSString *messageId);
-NSString *OBSRealTimeChannelNotificationMessageImagePostFailed(NSString *messageId);
+@class OBSImageFile;
+@class OBSError;
 
 @interface OBSRealTimeChannel : NSObject
 
@@ -45,6 +44,6 @@ NSString *OBSRealTimeChannelNotificationMessageImagePostFailed(NSString *message
 - (void)sendMessageWithChatRoom:(OBSChatRoom *)chatRoom senderId:(NSString *)senderId text:(NSString *)text withCompletionHandler:(void(^)(BOOL ok, id result, NSString *errorMessage))handler;
 - (void)sendMessageWithChatRoom:(OBSChatRoom *)chatRoom senderId:(NSString *)senderId text:(NSString *)text image:(UIImage *)image withCompletionHandler:(void(^)(BOOL ok, id result, NSString *errorMessage))handler;
 
-- (void)postMessageWithChatRoom:(OBSChatRoom *)chatRoom senderId:(NSString *)senderId text:(NSString *)text image:(UIImage *)image withCompletionHandler:(void(^)(BOOL ok, id result, NSString *errorMessage))handler;
+- (void)postMessageWithChatRoom:(OBSChatRoom *)chatRoom senderId:(NSString *)senderId text:(NSString *)text image:(UIImage *)image withCompletionHandler:(void(^)(BOOL ok, id result, NSString *errorMessage))handler andImageCompletionHandler:(void(^)(BOOL ok, UIImage *image, OBSImageFile *file, OBSError *error))ihandler;
 
 @end

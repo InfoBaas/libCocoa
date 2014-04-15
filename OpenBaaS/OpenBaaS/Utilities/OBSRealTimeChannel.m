@@ -11,6 +11,8 @@
 #import "OBSChatRoom+.h"
 #import "OBSApplication+.h"
 #import "OBSMedia+.h"
+#import "OBSImageFile+.h"
+#import "OBSError+.h"
 
 static NSString *const _OBSRealTimeChannel_SocketMessageUUID = @"messageId";
 static NSString *const _OBSRealTimeChannel_SocketMessageType = @"type";
@@ -222,7 +224,7 @@ static NSString *const _OBSRealTimeChannel_DataKey_HasImage = @"hasImage";
     }
 }
 
-- (void)postMessageWithChatRoom:(OBSChatRoom *)chatRoom senderId:(NSString *)senderId text:(NSString *)text image:(UIImage *)image withCompletionHandler:(void (^)(BOOL, id, NSString *))handler
+- (void)postMessageWithChatRoom:(OBSChatRoom *)chatRoom senderId:(NSString *)senderId text:(NSString *)text image:(UIImage *)image withCompletionHandler:(void (^)(BOOL, id, NSString *))handler andImageCompletionHandler:(void (^)(BOOL, UIImage *, OBSImageFile *, OBSError *))ihandler
 {
     void (^inner)(BOOL, id, NSString *) = ^(BOOL ok, id result, NSString *errorMessage) {
         handler(ok, result, errorMessage);
@@ -231,13 +233,27 @@ static NSString *const _OBSRealTimeChannel_DataKey_HasImage = @"hasImage";
             OBSMedia *media = [app applicationMedia];
             OBSChatMessage *msg = result;
             [OBSConnection post_media:media image:image forMessage:msg withFileName:@"InthebeginningMancreatedgod" queryDictionary:nil completionHandler:^(id result, NSInteger statusCode, NSError *error) {
+                if (!ihandler)
+                    return;
+                
+                // Called with error?
                 if (error) {
-                    NSString *notifname = OBSRealTimeChannelNotificationMessageImagePostFailed(msg.chatMessageId);
-                    [[NSNotificationCenter defaultCenter] postNotificationName:notifname object:self userInfo:@{@"com.openbaas.rtc.image": image, @"com.openbaas.rtc.error": error}];
-                } else {
-                    NSString *notifname = OBSRealTimeChannelNotificationMessageImagePostSucceeded(msg.chatMessageId);
-                    [[NSNotificationCenter defaultCenter] postNotificationName:notifname object:self userInfo:@{@"com.openbaas.rtc.image": image}];
+                    ihandler(NO, image, nil, [OBSError errorWithDomain:error.domain code:error.code userInfo:error.userInfo]);
+                    return;
                 }
+                
+                // Create image file.
+                OBSImageFile *imageFile = nil;
+                if ([result isKindOfClass:[NSDictionary class]]) {
+                    imageFile = [OBSImageFile imageFileFromDataJSON:result[OBSConnectionResultDataKey] andMetadataJSON:result[OBSConnectionResultMetadataKey] withClient:self.client];
+                }
+                if (!imageFile) {
+                    // Image file wasn't created.
+                    ihandler(NO, image, nil, [OBSError errorWithDomain:kOBSErrorDomainRemote code:kOBSRemoteErrorCodeResultDataIllFormed userInfo:nil]);
+                    return;
+                }
+                
+                ihandler(YES, image, imageFile, nil);
             }];
         }
     };
@@ -601,16 +617,3 @@ static NSString *const _OBSRealTimeChannel_DataKey_HasImage = @"hasImage";
 }
 
 @end
-
-static NSString *const _OBSNotification_RTC_MessageImagePostSucceeded = @"com.openbaas.rtc.chat-message.%@.image-post.ok";
-static NSString *const _OBSNotification_RTC_MessageImagePostFailed = @"com.openbaas.rtc.chat-message.%@.image-post.nok";
-
-NSString *OBSRealTimeChannelNotificationMessageImagePostSucceeded(NSString *messageId)
-{
-    return [NSString stringWithFormat:_OBSNotification_RTC_MessageImagePostSucceeded, messageId];
-}
-
-NSString *OBSRealTimeChannelNotificationMessageImagePostFailed(NSString *messageId)
-{
-    return [NSString stringWithFormat:_OBSNotification_RTC_MessageImagePostFailed, messageId];
-}
