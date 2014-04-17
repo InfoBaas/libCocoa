@@ -167,11 +167,11 @@ static NSString *const _OBSRealTimeChannel_DataKey_HasImage = @"hasImage";
 
 - (void)openChatWithUserIds:(NSArray *)userIds withCompletionHandler:(void (^)(BOOL, id, NSString *))handler
 {
-    NSDictionary *room = @{_OBSRealTimeChannel_DataKey_Participants: userIds};
+    NSDictionary *room = @{_OBSRealTimeChannel_DataKey_Participants: userIds,
+                           @"flagNotification": @(YES)};
     
     NSDictionary *data = @{_OBSRealTimeChannel_SocketMessageType: _OBSRealTimeChannel_TypeChatOpenRoom,
-                           _OBSRealTimeChannel_SocketMessageData: room,
-                           @"flagNotification": @(YES)};
+                           _OBSRealTimeChannel_SocketMessageData: room};
     
     [self _queueData:data withCompletionHandler:handler];
 }
