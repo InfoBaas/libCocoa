@@ -359,7 +359,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 
 + (NSMutableURLRequest *)get_requestForURL:(NSURL *)url
 {
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:30];
     [request setHTTPMethod:@"GET"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     return request;
@@ -572,7 +572,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 
 + (NSMutableURLRequest *)post_requestForURL:(NSURL *)url
 {
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:30];
     [request setHTTPMethod:@"POST"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     return request;
@@ -1094,7 +1094,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 
 + (NSMutableURLRequest *)put_requestForURL:(NSURL *)url
 {
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:30];
     [request setHTTPMethod:@"PUT"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     return request;
@@ -1176,7 +1176,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 
 + (NSMutableURLRequest *)patch_requestForURL:(NSURL *)url
 {
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:30];
     [request setHTTPMethod:@"PATCH"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     return request;
@@ -1316,7 +1316,7 @@ static NSString *_OBSCurrentReachabilityStatus (void)
 
 + (NSMutableURLRequest *)delete_requestForURL:(NSURL *)url
 {
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:30];
     [request setHTTPMethod:@"DELETE"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     return request;

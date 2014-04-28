@@ -37,6 +37,7 @@ static NSString *const _didStopWithErrorObservers = @"didStopWithErrorObservers"
         CLLocationManager *locationManager = [[CLLocationManager alloc] init];
         [locationManager setDesiredAccuracy:kCLLocationAccuracyNearestTenMeters];
         [locationManager setDistanceFilter:kCLDistanceFilterNone];
+        [locationManager setPausesLocationUpdatesAutomatically:YES];
         [locationManager setDelegate:self];
         _locationManager = locationManager;
     }
