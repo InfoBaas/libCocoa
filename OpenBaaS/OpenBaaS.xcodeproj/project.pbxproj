@@ -97,6 +97,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B61A785E1A2F36F500431E7D /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		EEB0861518EAF9F2003927DE /* OBSRealTimeChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OBSRealTimeChannel.h; sourceTree = "<group>"; };
 		EEB0861618EAF9F2003927DE /* OBSRealTimeChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OBSRealTimeChannel.m; sourceTree = "<group>"; };
 		EEB0861818EAFA1E003927DE /* OBSRealTimeChannel+.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OBSRealTimeChannel+.h"; sourceTree = "<group>"; };
@@ -207,6 +208,7 @@
 		EECBA0D718D08CE10047241B /* OpenBaaS */ = {
 			isa = PBXGroup;
 			children = (
+				B61A785E1A2F36F500431E7D /* LICENSE.txt */,
 				EECBA13518D08F610047241B /* Utilities */,
 				EECBA12418D08F5B0047241B /* Common */,
 				EECBA10318D08F520047241B /* Library */,
