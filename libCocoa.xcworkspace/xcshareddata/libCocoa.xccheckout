@@ -12,20 +12,24 @@
 	<dict>
 		<key>01B2384B-FA37-4AED-A2D0-77E2AA49DC3F</key>
 		<string>https://github.com/InfoBaas/libCocoa.git</string>
+		<key>2A3F10E694A33536E095464700B47B3F4D784122</key>
+		<string>https://github.com/InfoBaas/libCocoa.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>libCocoa.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>01B2384B-FA37-4AED-A2D0-77E2AA49DC3F</key>
+		<string>../../libCocoa</string>
+		<key>2A3F10E694A33536E095464700B47B3F4D784122</key>
 		<string>..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/InfoBaas/libCocoa.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>01B2384B-FA37-4AED-A2D0-77E2AA49DC3F</string>
+	<string>2A3F10E694A33536E095464700B47B3F4D784122</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
@@ -35,6 +39,14 @@
 			<string>01B2384B-FA37-4AED-A2D0-77E2AA49DC3F</string>
 			<key>IDESourceControlWCCName</key>
 			<string>libCocoa</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>2A3F10E694A33536E095464700B47B3F4D784122</string>
+			<key>IDESourceControlWCCName</key>
+			<string>OpenBaaS</string>
 		</dict>
 	</array>
 </dict>

@@ -35,6 +35,11 @@ static NSString *const _didStopWithErrorObservers = @"didStopWithErrorObservers"
 #endif
         
         CLLocationManager *locationManager = [[CLLocationManager alloc] init];
+        
+        if ([locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
+            [locationManager requestAlwaysAuthorization];
+        }
+        
         [locationManager setDesiredAccuracy:kCLLocationAccuracyNearestTenMeters];
         [locationManager setDistanceFilter:kCLDistanceFilterNone];
         [locationManager setPausesLocationUpdatesAutomatically:YES];
